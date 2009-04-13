@@ -35,7 +35,7 @@ require 'open-uri'
 
 ## Define some per-user things.
 #RAILS_TEMPLATE_PATH = '../rails-template/' # Pull all our files from here.
-RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master/' # Pull all our files from here.
+RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master' # Pull all our files from here.
 
 
 # Check to ensure that we can get to all the files we need.
