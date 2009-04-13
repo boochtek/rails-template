@@ -1,0 +1,26 @@
+!!!
+%html
+  %head
+    %title= h((yield(:title) || 'Untitled') + SITE_TITLE)
+    -# TODO: Pull in jQuery from Google (unless dev/test, in which case pull the local copy).
+    -# TODO: Pull in jQuery-using scripts, minimised and combined into a single file.
+    -# TODO: Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed.
+    = stylesheet_link_tag 'application'
+    = yield(:head)
+  %body
+    #container
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}"
+
+      - if show_title?
+        %h1= h yield(:title)
+
+      = yield
+
+    #footer
+      #copyright
+        Copyright &copy;
+        =COPYRIGHT_YEARS
+        by
+        =COPYRIGHT_OWNER
+

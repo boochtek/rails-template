@@ -1,0 +1,18 @@
+# Database (MySQL) configuration file for development and testing w/ ActiveRecord or DataMapper/DataObjects.
+
+# NOTE: Our Capistrano deployment replaces this file with a configuration file pulled in from outside the repository.
+# NOTE: This defines the default DataMapper connection; other connections can be defined.
+# NOTE: To use these as-is, PROJECT_NAME must be defined in an initializer file.
+
+development:
+  adapter: mysql
+  database: <%= PROJECT_NAME %>_development
+  username: root
+  password:
+  host: localhost
+test:
+  adapter: mysql
+  database: <%= PROJECT_NAME %>_test
+  username: root
+  password:
+  host: localhost

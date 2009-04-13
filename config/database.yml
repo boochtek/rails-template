@@ -1,0 +1,11 @@
+# Database (SQLite) configuration file for development and testing w/ ActiveRecord or DataMapper/DataObjects.
+
+# NOTE: Our Capistrano deployment replaces this file with a configuration file pulled in from outside the repository.
+# NOTE: This defines the default DataMapper connection; other connections can be defined.
+
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3

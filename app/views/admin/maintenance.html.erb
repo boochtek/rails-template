@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <meta name="robots" content="noindex">
+    <title>Site Maintenance</title>
+  </head>
+  <body>
+    <h1>Site Down For <%= reason? ? reason: 'Maintenance' %></h1>
+    <p>We hope to have the site up <%= deadline ? "by #{deadline}" : 'shortly' %>.</p>
+    <p>We apologize for any inconvenience.</p>
+  </body>
+</html>

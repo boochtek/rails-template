@@ -1,0 +1,7 @@
+# If system/maintenance.html file exists, redirect all requests there.
+# NOTE: Since the page is set to noindex, make sure that we redirect to it temporarily (302); don't serve all requests with its content, or they may get removed from search engine indexes.
+RewriteEngine on
+RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+RewriteCond %{REQUEST_URI} !\.(gif|jpg|png|css)$
+RewriteRule ^.*$ %{DOCUMENT_ROOT}/system/maintenance.html [R=302,L]

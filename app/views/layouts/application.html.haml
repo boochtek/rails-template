@@ -1,0 +1,24 @@
+!!!
+%html
+  %head
+    %title= h((yield(:title) || 'Untitled') + SITE_TITLE)
+    = jquery_include_tag
+    -# TODO: Pull in all other JavaScript files, minimised and combined into a single file (prefixed w/ license and URLs of uncompressed copies).
+    -# TODO: Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed.
+    -# TODO: More header/footer stuff.
+    = stylesheet_link_tag 'application'
+    = yield(:head)
+  %body
+    #container
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}"
+
+      = yield
+
+    #footer
+      #copyright
+        Copyright &copy;
+        = COPYRIGHT_YEARS
+        by
+        = COPYRIGHT_OWNER
+
