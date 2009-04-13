@@ -40,7 +40,7 @@ RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master/' # 
 
 # Check to ensure that we can get to all the files we need.
 begin
-  File.open("#{RAILS_TEMPLATE_PATH}/rails-template.rb")
+  open("#{RAILS_TEMPLATE_PATH}/rails-template.rb")
 rescue 
   raise 'You need to have an Internet connection for this template to work.'
 end
@@ -54,7 +54,7 @@ puts 'You may need to be able to use sudo to install gems.' unless can_sudo
 
 # Make it easy to pull files from the template repository into the project.
 def pull_file(path)
-  file "#{path}", File.open("#{RAILS_TEMPLATE_PATH}/#{path}").read
+  file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read
 end
 
 
