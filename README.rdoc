@@ -1,0 +1,26 @@
+= BoochTek Rails Template
+
+This is my Rails template, used to create new Ruby on Rails applications.
+In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
+
+The template will prompt you to ask if you want some optional components.
+These include DataMapper, ActiveRecord, ActiveResource, ActionMailer, and more.
+
+The template can link to a local copy of Edge Rails, if available.
+
+Uses RSpec, Shoulda, RR, and Factory Girl for testing.
+
+HAML and ERB can both be used for view templates.
+
+My default layout uses jQuery.
+I'm considering whether to use jRails to replace Prototype with jQuery when Rails AJAX methods are used, or just not use those methods.
+
+
+== Credits
+
+I got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
+
+
+== Copyright
+
+Copyright (c) 2009 BoochTek, LLC
