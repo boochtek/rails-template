@@ -16,6 +16,11 @@ My default layout uses jQuery.
 I'm considering whether to use jRails to replace Prototype with jQuery when Rails AJAX methods are used, or just not use those methods.
 
 
+== Usage
+
+rails --template http://github.com/boochtek/rails-template/raw/master/rails-template.rb name_of_your_new_rails_app
+
+
 == Credits
 
 I got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
