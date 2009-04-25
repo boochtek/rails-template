@@ -147,6 +147,8 @@ gem 'cucumber', :lib => false, :version => '>= 0.2.0'
 gem 'webrat', :lib => false, :version => '>= 0.4.3'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
+gem 'rr', :lib => 'rr', :version => '>= 0.8.1'
+
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
 rake 'gems:install', :sudo => true
@@ -167,6 +169,9 @@ generate 'cucumber'
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/active_record/matchers
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/action_controller/matchers
 
+# TODO: Figure out a better way to do this. Probaby create spec/spec_helpers/*.
+run 'echo "require \'rr\'" >> spec/spec_helper.rb'
+run 'echo "Spec::Runner.configure do |config| {config.mock_with :rr}" >> spec/spec_helper.rb'
 
 
 # HAML templating system.
