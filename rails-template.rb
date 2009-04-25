@@ -261,12 +261,15 @@ pull_file 'config/initializers/site_config.rb'
 
 
 ## Deployment configuration for Capistrano.
-# FIXME: Be sure to force use of config/database.yml files outside of the deployment directories.
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano'
 pull_file 'config/deploy.rb'
 pull_file 'config/deploy/staging.rb'
 pull_file 'config/deploy/production.rb'
+# Create a config file for the staging environment that we added.
+run 'cp config/environments/production.rb config/environments/staging.rb'
+# Set the staging environment to display tracebacks when errors occur.
+run "sed -i config/environments/staging.rb -e 's/config.action_controller.consider_all_requests_local = false/config.action_controller.consider_all_requests_local = true/'"
 capify!
 
 
