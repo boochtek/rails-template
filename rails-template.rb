@@ -33,9 +33,12 @@
 require 'open-uri'
 
 
-## Define some per-user things.
-#RAILS_TEMPLATE_PATH = '../rails-template/' # Pull all our files from here.
-RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master' # Pull all our files from here.
+## Decide whether to pull all the files from local directory, or from GitHub.
+if File.exists?(Dir.getwd + '/../rails-template.rb')
+  RAILS_TEMPLATE_PATH = '..'
+else
+  RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
+end
 
 
 # Check to ensure that we can get to all the files we need.
@@ -175,7 +178,7 @@ generate 'cucumber'
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/active_record/matchers
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/action_controller/matchers
 
-# TODO: Figure out a better way to do this. Probaby create spec/spec_helpers/*.
+# TODO: Figure out a better way to do this. Probably create spec/spec_helpers/*.
 run 'echo "require \'rr\'" >> spec/spec_helper.rb'
 run 'echo "Spec::Runner.configure do |config| {config.mock_with :rr}" >> spec/spec_helper.rb'
 
@@ -186,12 +189,12 @@ run 'haml --rails .'
 
 
 # Remove Prototype JavaScript stuff.
-# TODO: Specify the eact files to delete.
+# TODO: Specify the exact files to delete.
 run 'rm public/javascripts/*.js' # Remove Prototype files.
 #TODO: Remove Prototype junk from ActionView::Helpers::JavaScriptHelper and ActionView::Helpers::PrototypeHelper, and scriptaculous_helper.
 
 
-# jQuery for client-side scripting.
+# jQuery for client-side scripting. TODO: The JQUERY_VERSION is duplicated in site_config.rb file.
 JQUERY_VERSION = '1.3.2'
 # TODO: Can we replace the code below with something like our open-uri code?
 run "curl -L http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js > public/javascripts/jquery-#{JQUERY_VERSION}.js"
@@ -243,10 +246,11 @@ end
 #plugin 'squirrel', :git => "git://github.com/thoughtbot/squirrel.git"
 
 
-# Footnotes at bottom of sie when in development, with lots of info and links.
-# TODO: Set up so we can use textmate links to edit files directly from web pages.
+# Footnotes at bottom of site when in development, with lots of info and links.
+# TODO: Set up so we can use textmate links to edit files (preferably in $VISUAL or Komodo) directly from web pages.
 # FIXME: Not working; try drnic version.
-plugin 'rails-footnotes', :git => 'http://github.com/activefx/rails-footnotes.git'
+# TODO: Add more notes types. Info on the current user would be great.
+plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.git'
 
 
 
