@@ -82,17 +82,23 @@ run 'rm doc/README_FOR_APP' # Needed for rake doc:app for some reason.
 
 
 ## DataMapper ORM.
+# TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
 if (datamapper = yes?('Include DataMapper?'))
+  gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.9.11'
   gem 'do_sqlite3', :version => '0.9.11'  # if ['development', 'test'].include?(Rails.env)    # Rails and RAILS_ENV not yet defined here.
   gem 'do_mysql', :version => '0.9.11'    # if ['production', 'staging'].include?(Rails.env)
-  gem 'dm-core', :version => '0.9.10'
-  gem 'dm-migrations', :version => '0.9.10'
-  gem 'dm-validations', :version => '0.9.10'
-  gem 'dm-timestamps', :version => '0.9.10'
-  gem 'rails_datamapper', :version => '0.9.10'
-  #gem 'dm-transaction', :version => '0.9.10' # For testing, once it gets separated from dm-core; see http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
-  generate 'dm_install'
+  gem 'dm-core', :version => '0.9.11'
+  gem 'dm-migrations', :version => '0.9.11'
+  gem 'dm-validations', :version => '0.9.11'
+  gem 'dm-timestamps', :version => '0.9.11'
+  #gem 'dm-transaction', :version => '0.9.11' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
+  # Not sure if I should be using rails_datamapper or datamapper4rails.
+  gem 'rails_datamapper', :version => '0.9.11' # FIXME: Not a valid gem at this point; have to pull manually from GitHub datamapper/dm-more.
+  #gem "datamapper4rail", :lib => 'datamapper4rails' # work around the typo
+  # Make datamapper load first as some plugins have dependencies on it  
+  config.plugins = [ :rails_datamapper, :all ]
+  generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
   puts "NOTE: For DataMapper models, use 'script/generate rspec_dm_model --skip-migration --skip-fixture' instead of 'script/generate rspec_model --skip-fixture'."
   puts "NOTE: Use 'rake db:auto_upgrade' to make your database schema match your DataMapper models."
@@ -103,7 +109,7 @@ end
 
 # ActiveRecord ORM.
 # TODO: Make sure this actually works.
-if !yes?('Include ActiveRecord?')
+if !(activerecord = yes?('Include ActiveRecord?'))
   initializer 'no_active_record.rb', <<-END
     Rails::Initializer.run do |config|
       config.frameworks -= [ :active_record ]
@@ -285,7 +291,7 @@ end
 
 # Create the database.
 rake 'db:automigrate' if datamapper
-rake 'db:migrate'
+rake 'db:migrate' if activerecord
 
 
 # Test the base app.
