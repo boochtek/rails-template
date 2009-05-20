@@ -5,8 +5,15 @@
 
 # Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
 
+# FIXME: rake gems:install no longer works if any initializers are added. There's a dependency loop somewhere.
 
+# TODO: Testing.
+#         Create a test Rails instance, and see if it works.
+#         Need to create a Rakefile.
 # TODO: Pull in BaseHTML stuff.
+# TODO: Add generators for models, controllers, and views.
+#         Use my own code in place of Rails defaults.
+#         Use rspec, shoulda, rr.
 # TODO: Figure out what to do about GEM version numbers.
 #         Should we be using git submodules, and pulling straight from github?
 #             I'd rather use shared system GEMs.
@@ -16,12 +23,13 @@
 #         Will :lib => false work?
 # TODO: Add more plugins:
 #         Asset Packager, or another way to combine/compress JS and CSS.
+#         Metrics_fu, and its dependencies.
 #         Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
 #         Auto-migrations?
 #         Annotate-models or ColumnComments. (Only if AR is enabled.)
 #         jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
 #         Machinist (fork that handles DM), FactoryGirl (leaning more toward this now)
-#         AuthLogic, Clearance, RPX
+#         AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
 #         Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 # TODO: jQuery functionality
 #         Disable submit buttons when clicked.
@@ -157,7 +165,7 @@ gem 'webrat', :lib => false, :version => '>= 0.4.3'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 gem 'rr', :lib => 'rr', :version => '>= 0.8.1'
-
+plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git' # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
 rake 'gems:install', :sudo => true
@@ -167,6 +175,10 @@ generate 'rspec'
 
 # Create feature directory structure.
 generate 'cucumber'
+
+# Create spec/javascripts directory structure. TODO: Write some sample tests. See http://github.com/relevance/blue-ridge/ for details.
+generate 'blue_ridge'
+
 
 # NOTE: Be sure to use the new syntax in features.
 #         Background (like a Scenario section, but runs before each Scenario, and after the Before section).
