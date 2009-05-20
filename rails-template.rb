@@ -196,6 +196,16 @@ run 'echo "require \'rr\'" >> spec/spec_helper.rb'
 run 'echo "Spec::Runner.configure do |config| {config.mock_with :rr}" >> spec/spec_helper.rb'
 
 
+## Stats and coverage tools.
+gem 'flay'
+gem 'flog'
+gem 'reek'
+gem 'roodi'
+gem 'chronic'
+gem 'jscruggs-metric_fu', :version => '1.0.2', :lib => 'metric_fu', :source => 'http://gems.github.com'
+run 'echo "require \'metric_fu\'" >> Rakefile'
+
+
 # HAML templating system.
 gem 'haml', :version => '>= 2.0.6'
 run 'haml --rails .'
@@ -315,9 +325,10 @@ rake 'db:migrate' if activerecord
 # Test the base app.
 rake 'features'
 rake 'spec'
-#rake 'spec:javascripts' # TODO: Requires application.js to exist.
+#rake 'spec:javascripts' # FIXME: Requires application.js to exist.
 
 # TODO: These should be in the rake task that gets run by the git pre_commit hook.
+#rake 'metrics:all' # Generate coverage, cyclomatic complexity, flog, flay, railroad, reek, roodi, stats... #FIXME: Not running properly.
 run 'rake stats > doc/stats.txt'
 run 'rake notes > doc/notes.txt'
 
