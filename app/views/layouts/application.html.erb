@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<!-- The DOCTYPE above is the best for putting all browsers into standards or almost-standards mode (per http://hsivonen.iki.fi/doctype/#choosing). -->
+<!-- NOTE: Quirks mode in IE 6, and in later versions of IE, will also be triggered if anything but whitespace precedes the DOCTYPE. -->
+<!-- NOTE: IE 6 will render a page in quirks mode if the DOCTYPE is preceded by an XML prolog, regardless of the DOCTYPE. -->
+
+<html lang="en">
+
+  <head>
+
+    <title><%= h((yield(:title) || 'Untitled') + SITE_TITLE) %></title>
+
+    <!-- Declare UTF-8 character encoding, for situations where we don't have a web server to do so for us. -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!-- Google will display this in its search results. TODO: Determine if the page wants to set this. -->
+    <meta name="description" content="" />
+
+    <!-- Make ABBR elements work in all versions of IE. See http://xopus.com/devblog/2008/style-unknown-elements.html -->
+    <script type="text/javascript">document.createElement('abbr');</script>
+
+    <!-- Include jQuery. If production, pull it from Google. -->
+    <%= jquery_include_tag %>
+
+    <!-- Include all other JavaScript files. If production, minimize and combine into a single files. -->
+    <% javascript_files = ['boochtek', 'application'] %>
+    <%= javascript_include_tag javascript_files, :cache => true %> 
+
+    <% # TODO: Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
+    <% # TODO: More header/footer stuff. %>
+    <%= stylesheet_link_tag 'application' %>
+    <%= yield(:head) %>
+
+  </head>
+
+  <body>
+
+    <div id="container">
+<% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, :id => "flash_#{name}" %>
+<% end %>
+
+      <%= yield %>
+    </div>
+
+    <div id="footer">
+      <div id="copyright">
+        Copyright &copy; <%= COPYRIGHT_YEARS %> by <%= COPYRIGHT_OWNER %>
+      </div>
+    </div>
+
+  </body>
+
+</html>
