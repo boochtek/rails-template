@@ -31,14 +31,15 @@
     <!-- Include jQuery. If production, pull it from Google. -->
     <%= jquery_include_tag %>
 
-    <!-- Include all other JavaScript files. If production, minimize and combine into a single files. -->
+    <!-- Include all other JavaScript files. If production, minimize and combine into a single file. -->
     <% javascript_files = ['boochtek', 'application'] %>
     <% javascript_files += 'boochtek.google-analytics' if GOOGLE_ANALYTICS_CODE %>
-    <%= javascript_include_tag javascript_files, :cache => true %> 
+    <%= javascript_include_merged javascript_files %>
 
-    <% # TODO: Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
+    <% # Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
+    <%= stylesheet_link_merged 'application' %>
+
     <% # TODO: More header/footer stuff. %>
-    <%= stylesheet_link_tag 'application' %>
     <%= yield(:head) %>
 
   </head>

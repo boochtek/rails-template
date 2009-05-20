@@ -58,9 +58,8 @@ namespace :deploy do
   end
 
   desc "Package up asset files - compress JavaScript and CSS files into a single file for each"
-  task :package_assets do
-    run "cd #{current_path}"
-    run "rake asset:packager:build_all"
+  task :package_assets, :roles => [:web] do
+    run "cd #{release_path} && rake asset:packager:build_all"
   end
 end
 after 'deploy:setup', 'deploy:create_database_yaml'
