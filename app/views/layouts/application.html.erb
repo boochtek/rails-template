@@ -18,11 +18,22 @@
     <!-- Make ABBR elements work in all versions of IE. See http://xopus.com/devblog/2008/style-unknown-elements.html -->
     <script type="text/javascript">document.createElement('abbr');</script>
 
+<% if GOOGLE_ANALYTICS_CODE do %>
+    <!-- Google Analytics code. (Used only by my JavaScript code.) -->
+    <meta name="google.analytics.code" content="<%= GOOGLE_ANALYTICS_CODE %>" />
+<% end %>
+
+<% if GOOGLE_WEBMASTERS_CODE do %>
+    <!-- Allow use of Google Webmaster Tools (http://www.google.com/webmasters/) to see how Google views your site. -->
+    <meta name="verify-v1" content="<%= GOOGLE_WEBMASTERS_CODE %>" />
+<% end %>
+
     <!-- Include jQuery. If production, pull it from Google. -->
     <%= jquery_include_tag %>
 
     <!-- Include all other JavaScript files. If production, minimize and combine into a single files. -->
     <% javascript_files = ['boochtek', 'application'] %>
+    <% javascript_files += 'boochtek.google-analytics' if GOOGLE_ANALYTICS_CODE %>
     <%= javascript_include_tag javascript_files, :cache => true %> 
 
     <% # TODO: Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>

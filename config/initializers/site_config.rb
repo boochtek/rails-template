@@ -8,9 +8,15 @@ PROJECT_NAME = RAILS_ROOT.split('/').last
 SITE_NAME = PROJECT_NAME.humanize
 SITE_TITLE = SITE_NAME + ('production' == RAILS_ENV ? '' : " (#{RAILS_ENV.upcase})")
 
-# Years listed in copyright statements.
+# Years and name to list in copyright statements.
 COPYRIGHT_YEARS = '2008, 2009'
 COPYRIGHT_OWNER = ''
 
 # Version of jQuery to use.
 JQUERY_VERSION = '1.3.2'
+
+# Google Analytics code. Set this to enable Google Analytics on the site.
+GOOGLE_ANALYTICS_CODE = nil
+
+# Google Webmaster Tools (http://www.google.com/webmasters/) code. Set this to verify that you control the site, so you can see how Google views your site.
+GOOGLE_WEBMASTERS_CODE = nil
