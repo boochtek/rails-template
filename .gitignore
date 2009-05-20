@@ -1,0 +1,3 @@
+# The test directory holds the Rails instance we wish to place under test.
+test/
+

@@ -7,6 +7,8 @@
 
 # FIXME: rake gems:install no longer works if any initializers are added. There's a dependency loop somewhere.
 
+# TODO: Allow a way to pass in configuration decisions.
+#         Will allow scripted testing.
 # TODO: Testing.
 #         Create a test Rails instance, and see if it works.
 #         Need to create a Rakefile.
@@ -22,7 +24,6 @@
 # TODO: Need to be able to specify GEMs that are only needed for development, not deployment.
 #         Will :lib => false work?
 # TODO: Add more plugins:
-#         Asset Packager, or another way to combine/compress JS and CSS.
 #         Metrics_fu, and its dependencies.
 #         Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
 #         Auto-migrations?
@@ -249,7 +250,8 @@ end
 
 
 ## Other
-#plugin 'asset_packager', :git => 'http://synthesis.sbecker.net/pages/asset_packager'
+plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git'
+rake 'asset:packager:create_yml' # TODO: Use/update the YAML file.
 #gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
 #gem 'nokogiri'
 #plugin 'http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids'
@@ -268,7 +270,7 @@ plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.g
 
 ## Default HTML code.
 # Default layout.
-pull_file 'app/views/layouts/application.html.haml'
+pull_file 'app/views/layouts/application.html.erb'
 # TODO: 404 and other files in public.
 
 # Display a custom message when site is down for maintenance. From Advanced Rails Recipes #69.
@@ -311,8 +313,9 @@ rake 'db:migrate' if activerecord
 
 
 # Test the base app.
-rake 'spec'
 rake 'features'
+rake 'spec'
+#rake 'spec:javascripts' # TODO: Requires application.js to exist.
 
 # TODO: These should be in the rake task that gets run by the git pre_commit hook.
 run 'rake stats > doc/stats.txt'
