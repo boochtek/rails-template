@@ -56,8 +56,15 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/config" 
     put '', "#{shared_path}/config/database.yml" 
   end
+
+  desc "Package up asset files - compress JavaScript and CSS files into a single file for each"
+  task :package_assets do
+    run "cd #{current_path}"
+    run "rake asset:packager:build_all"
+  end
 end
 after 'deploy:setup', 'deploy:create_database_yaml'
 after 'deploy:update_code', 'deploy:symlink_database_yaml'
+after 'deploy:update_code', 'deploy:package_assets'
 after 'deploy', 'deploy:cleanup' # Leaves current deployment, plus the 4 previous.
 after 'deploy:migrations', 'deploy:cleanup'
