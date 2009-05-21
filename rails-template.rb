@@ -5,17 +5,47 @@
 
 # Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
 
-# FIXME: rake gems:install no longer works if any initializers are added. There's a dependency loop somewhere.
+# FIXME: rake gems:install no longer works (in this script) if any initializers are added. There's a dependency loop somewhere.
 
+# TODO: Add custom generator for Blue Ridge javascript_specs.
+# TODO: Flesh out generators; use Shoulda and RSpec 'it' syntax.
+#           describe Users
+#             it { should belong_to(:account) }
+#             it { should have_many(:posts) }
+#             it { should validate_presence_of(:email) }
+#             it { should allow_value("test@example.com").for(:email) }
+#             it { should_not allow_value("test").for(:email) }
+#             it { should_not allow_mass_assignment_of(:salt, :hashed_password) }
+#             its(:title) { should allow_values('this is a title', 'Title', 't') }
+#           end
+#           describe UsersController, "routes" do
+#             it { should route(:get, '/users/1').to(:action => 'show', :id => '1') }
+#           end
+#           describe UsersController, "on GET to show with a valid id" do
+#             subject { controller }
+#             before(:each) do
+#               get :show, :id => User.first.to_param
+#             end
+#             it { should assign_to(:user) }
+#             it { should respond_with(:success) }
+#             it { should_not set_the_flash) }
+#           end
 # TODO: Allow a way to pass in configuration decisions.
 #         Will allow scripted testing.
+#         Probably either ENV variables, or maybe a config file.
 # TODO: Testing.
 #         Create a test Rails instance, and see if it works.
-#         Need to create a Rakefile.
+#           rails --template ./rails-template.rb test
+#           cd test && rake features && rake spec && rake spec:javascripts && rake ....
+#           cd test && script/generate model TestModel && rake features && rake spec
+#           cd test && script/generate controller TestController && rake features && rake spec
 # TODO: Pull in BaseHTML stuff.
-# TODO: Add generators for models, controllers, and views.
-#         Use my own code in place of Rails defaults.
-#         Use rspec, shoulda, rr.
+#         HTML fragments
+#           Tables
+#           Forms
+#         CSS fragment
+#           Tables
+#           Forms
 # TODO: Figure out what to do about GEM version numbers.
 #         Should we be using git submodules, and pulling straight from github?
 #             I'd rather use shared system GEMs.
@@ -24,7 +54,6 @@
 # TODO: Need to be able to specify GEMs that are only needed for development, not deployment.
 #         Will :lib => false work?
 # TODO: Add more plugins:
-#         Metrics_fu, and its dependencies.
 #         Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
 #         Auto-migrations?
 #         Annotate-models or ColumnComments. (Only if AR is enabled.)
@@ -36,6 +65,7 @@
 #         Disable submit buttons when clicked.
 #         Column sorting.
 #         Pagination.
+#         Google Analytics.
 
 
 # Allow opening URLs as if they are local files.
@@ -45,6 +75,7 @@ require 'open-uri'
 ## Decide whether to pull all the files from local directory, or from GitHub.
 if File.exists?(Dir.getwd + '/../rails-template.rb')
   RAILS_TEMPLATE_PATH = '..'
+  running_local = true
 else
   RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
 end
@@ -276,6 +307,15 @@ rake 'asset:packager:create_yml' # TODO: Use/update the YAML file.
 # TODO: Add more notes types. Info on the current user would be great.
 plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.git'
 
+
+## My custom generators.
+pull_file 'lib/generators/controller/USAGE'
+pull_file 'lib/generators/controller/controller_generator.rb'
+pull_file 'lib/generators/controller/templates/controller_spec.rb'
+pull_file 'lib/generators/controller/templates/helper_spec.rb'
+pull_file 'lib/generators/model/USAGE'
+pull_file 'lib/generators/model/model_generator.rb'
+pull_file 'lib/generators/model/templates/model_spec.rb'
 
 
 ## Default HTML code.
