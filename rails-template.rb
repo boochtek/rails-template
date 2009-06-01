@@ -62,7 +62,6 @@
 #         AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
 #         Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 # TODO: jQuery functionality
-#         Disable submit buttons when clicked.
 #         Column sorting.
 #         Pagination.
 #         Google Analytics.
