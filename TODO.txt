@@ -42,7 +42,8 @@ Add more plugins:
   Auto-migrations?
   Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
   jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
-  Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
+  Exceptional (in addition to HopToad and ExceptionNotifier).
+Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 jQuery functionality
   Validation.
       How do we tell the view to add required and data-type attributes to INPUT elements?

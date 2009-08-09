@@ -1,82 +1,30 @@
 #!/bin/env ruby
 
-# Rails template. Links to local copy of Edge Rails, if available. Loads DataMapper, HAML, jQuery, jRails, etc.
+# Rails template. Loads RSpec, Cucumber, DataMapper (optional), HAML, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
+# Copyright 2008,2009 by BoochTek, LLC.
+# Originally written by Craig Buchek.
+# Released under MIT license (same as Ruby on Rails).
+
+
 # Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
-
-# FIXME: rake gems:install no longer works (in this script) if any initializers are added. There's a dependency loop somewhere.
-
-# TODO: Add custom generator for Blue Ridge javascript_specs.
-# TODO: Flesh out generators; use Shoulda and RSpec 'it' syntax.
-#           describe Users
-#             it { should belong_to(:account) }
-#             it { should have_many(:posts) }
-#             it { should validate_presence_of(:email) }
-#             it { should allow_value("test@example.com").for(:email) }
-#             it { should_not allow_value("test").for(:email) }
-#             it { should_not allow_mass_assignment_of(:salt, :hashed_password) }
-#             its(:title) { should allow_values('this is a title', 'Title', 't') }
-#           end
-#           describe UsersController, "routes" do
-#             it { should route(:get, '/users/1').to(:action => 'show', :id => '1') }
-#           end
-#           describe UsersController, "on GET to show with a valid id" do
-#             subject { controller }
-#             before(:each) do
-#               get :show, :id => User.first.to_param
-#             end
-#             it { should assign_to(:user) }
-#             it { should respond_with(:success) }
-#             it { should_not set_the_flash) }
-#           end
-# TODO: Allow a way to pass in configuration decisions.
-#         Will allow scripted testing.
-#         Probably either ENV variables, or maybe a config file.
-# TODO: Testing.
-#         Create a test Rails instance, and see if it works.
-#           rails --template ./rails-template.rb test
-#           cd test && rake features && rake spec && rake spec:javascripts && rake ....
-#           cd test && script/generate model TestModel && rake features && rake spec
-#           cd test && script/generate controller TestController && rake features && rake spec
-# TODO: Pull in BaseHTML stuff.
-#         HTML fragments
-#           Tables
-#           Forms
-#         CSS fragment
-#           Tables
-#           Forms
-# TODO: Figure out what to do about GEM version numbers.
-#         Should we be using git submodules, and pulling straight from github?
-#             I'd rather use shared system GEMs.
-# TODO: Make sure we have a Rails layout and a favicon.
-#         Make sure app will run "out of the box" without errors or missing files.
-# TODO: Need to be able to specify GEMs that are only needed for development, not deployment.
-#         Will :lib => false work?
-# TODO: Add more plugins:
-#         Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
-#         Auto-migrations?
-#         Annotate-models or ColumnComments. (Only if AR is enabled.)
-#         jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
-#         Machinist (fork that handles DM), FactoryGirl (leaning more toward this now)
-#         AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
-#         Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
-# TODO: jQuery functionality
-#         Column sorting.
-#         Pagination.
-#         Google Analytics.
 
 
 # Allow opening URLs as if they are local files.
 require 'open-uri'
 
 
-## Decide whether to pull all the files from local directory, or from GitHub.
+## Decide whether to pull all the files from local directory, or from GitHub. PROBLEM: __FILE__ doesn't work here. :(
 if File.exists?(Dir.getwd + '/../rails-template.rb')
   RAILS_TEMPLATE_PATH = '..'
   running_local = true
+elsif File.exists?(Dir.getwd + '/../rails-template/rails-template.rb')
+  RAILS_TEMPLATE_PATH = '../rails-template'
+  running_local = true
 else
   RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
+  running_local = false
 end
 
 
@@ -88,44 +36,27 @@ rescue
 end
 
 
-# Check that we can sudo to root, and cache the credentials up front.
-# TODO: Use sudo conditionally later on, depending on the result here.
-can_sudo = ((run 'sudo echo testing sudo') == 'testing sudo')
-puts 'You may need to be able to use sudo to install gems.' unless can_sudo
-
-
 # Make it easy to pull files from the template repository into the project.
 def pull_file(path)
   file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read
 end
 
 
-# Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT externals/submodules.
+# Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
 
 
-# Pull in a copy of Rails, either from GitHub (as a submodule), or from a local copy.
-if yes?('Pull in Rails as a GIT sub-module?')
+# Pull in a copy of Rails as a GIT submodule.
+rails_submodule = ENV['SUBMODULE'] ? (ENV['SUBMODULE'] == 'y') : yes?('Pull in Rails as a GIT sub-module?')
+if rails_submodule
   git "submodule add git://github.com/rails/rails.git vendor/rails"
-elsif ask('Link to local copy of Rails Edge?')
-  # TODO: Guess and/or prompt for RAILS_EDGE_DIR
-  RAILS_EDGE_DIR = File.expand_path('~/Work/projects/rails-edge')
-  run "ln -s #{RAILS_EDGE_DIR} vendor/rails" if File.exists?(RAILS_EDGE_DIR)
 end
-
-
-## Delete some unnecessary files.
-run 'rm README' # Needed for rake doc:rails for some reason.
-run 'rm doc/README_FOR_APP' # Needed for rake doc:app for some reason.
-#run 'rm public/index.html'  # FIXME: Need a default route before deleting this.
-#run 'rm public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
-#run 'rm public/images/rails.png'
-#run 'rm public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
 
 
 ## DataMapper ORM.
 # TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
-if (datamapper = yes?('Include DataMapper?'))
+datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
+if datamapper
   gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.9.11'
   gem 'do_sqlite3', :version => '0.9.11'  # if ['development', 'test'].include?(Rails.env)    # Rails and RAILS_ENV not yet defined here.
@@ -150,31 +81,27 @@ end
 ## Optionally remove some portions of the standard Rails stack.
 
 # ActiveRecord ORM.
-# TODO: Make sure this actually works.
-if !(activerecord = yes?('Include ActiveRecord?'))
-  initializer 'no_active_record.rb', <<-END
-    Rails::Initializer.run do |config|
-      config.frameworks -= [ :active_record ]
-    end
-  END
+activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
+if !activerecord
+  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
+    "#{match}\n  config.frameworks -= [ :active_record ]\n"
+  end
 end
 
 # ActiveResource
-if !yes?('Include ActiveResource?')
-  initializer 'no_active_resource.rb', <<-END
-    Rails::Initializer.run do |config|
-      config.frameworks -= [ :active_resource ]
-    end
-  END
+activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
+if !activeresource
+  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
+    "#{match}\n  config.frameworks -= [ :active_resource ]\n"
+  end
 end
 
 # ActionMailer
-if !(email = yes?('Include ActionMailer?'))
-  initializer 'no_action_mailer.rb', <<-END
-    Rails::Initializer.run do |config|
-      config.frameworks -= [ :action_mailer ]
-    end
-  END
+email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
+if !email
+  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
+    "#{match}\n  config.frameworks -= [ :action_mailer ]\n"
+  end
 end
 
 
@@ -182,48 +109,80 @@ end
 run "cp config/database.yml config/database.yml.sample"
 pull_file 'config/database.yml'
 
-# Create databases.
+# Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
 rake 'db:create:all'
 
 
 ## Testing frameworks.
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
 # TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
+# NOTE: Rails (2.3.2, at least) places the config.gem statements in the reverse order that we specify them here.
 gem 'rspec', :lib => false, :version => '>= 1.2.2'
 gem 'rspec-rails', :lib => false, :version => '>= 1.2.2'
-gem 'cucumber', :lib => false, :version => '>= 0.2.0'
+gem 'cucumber', :lib => false, :version => '>= 0.3.0'
 gem 'webrat', :lib => false, :version => '>= 0.4.3'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
+gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.0', :source => 'http://gems.github.com'
 gem 'rr', :lib => 'rr', :version => '>= 0.8.1'
-plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git' # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
+# TODO: Only install this if Java is installed on the dev box.
+plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
-rake 'gems:install', :sudo => true
+rake 'gems:install' rescue puts 'Please run rake gems:install as root, to install gems locally on this computer.'
 
 # Create spec directory structure.
 generate 'rspec'
 
+# Pull in RSpec helpers from a subdirectory. TODO: Should we divide these into options, matchers, and helpers?
+# TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
+run 'echo "Dir.glob(File.join(Dir.pwd, \'helpers/**/*.rb\')).each { |file| require file }" >> spec/spec_helper.rb'
+pull_file 'spec/helpers/rr.rb'
+pull_file 'spec/helpers/should_each.rb'
+pull_file 'spec/helpers/its.rb'
+pull_file 'spec/helpers/running.rb'
+pull_file 'spec/helpers/be_in.rb'
+pull_file 'spec/helpers/be_sorted.rb'
+pull_file 'spec/helpers/allow_values.rb'
+pull_file 'spec/helpers/require.rb'
+pull_file 'spec/helpers/rails.rb'
+
 # Create feature directory structure.
 generate 'cucumber'
+
+# Allow use of FactoryGirl factories in Cucumber. FIXME: Doesn't work.
+#run 'echo "require \"#{Rails.root}/spec/factories\"" >> features/support/env.rb'
+#run 'mkdir -p spec/factories'
+
+# TODO: Create some commonly-used feature steps.
+
+# Specs and steps for email. FIXME: Not working.
+if email
+#  plugin 'email-spec', :git => 'git://github.com/bmabey/email-spec.git', :submodule => true
+#  run 'echo "require \'email_spec/cucumber\'" >> features/support/env.rb'
+#  generate email_spec # TODO: Not sure if I should do this here, or if it's like generating a feature.
+  # USAGE:
+  #   In features:
+  #     Then I should receive an email
+  #     When I open the email
+  #     Then I should see "blah" in the subject
+  #     When I click the first link in the email
+  #   In steps:
+  #     def current_email_address; @email || (@current_user && @current_user.email) || 'unknown@example.com'
+  #     unread_emails_for(current_email_address).size.should == 1
+  #     open_email(current_email_address)
+  #     current_email.should have_subject(/blah/)
+  #     click_first_link_in_email()
+end
 
 # Create spec/javascripts directory structure. TODO: Write some sample tests. See http://github.com/relevance/blue-ridge/ for details.
 generate 'blue_ridge'
 
-
-# NOTE: Be sure to use the new syntax in features.
-#         Background (like a Scenario section, but runs before each Scenario, and after the Before section).
-#run 'mkdir -p spec/options spec/matchers'
-#run 'echo "require spec/matchers/*" >> spec/spec_helper.rb' ;# FIXME: Do this the right way.
-#run 'echo "require spec/options/*" >> spec/spec_helper.rb' ;# FIXME: Do this the right way.
-# TODO: Add all my custom matchers. TODO: Should really put them in a GEM, if possible (see how Shoulda does it).
-# TODO: Make use of Shoulda RSpec matchers.
+## TODO: Create some sample specs and features that we can start with.
+# NOTE: Be sure to make use of Shoulda RSpec matchers.
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/active_record/matchers
 #       http://github.com/thoughtbot/shoulda/tree/master/lib/shoulda/action_controller/matchers
-
-# TODO: Figure out a better way to do this. Probably create spec/spec_helpers/*.
-run 'echo "require \'rr\'" >> spec/spec_helper.rb'
-run 'echo "Spec::Runner.configure do |config| {config.mock_with :rr}" >> spec/spec_helper.rb'
+# NOTE: Be sure to use the new syntax in features.
+#         Background (like a Scenario section, but runs before each Scenario, and after the Before section).
 
 
 ## Stats and coverage tools.
@@ -256,29 +215,27 @@ run "curl -L http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js > 
 
 
 ## Error notification.
-if yes?('Use HopToad Notifier?')
-  plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git"
+hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
+if hoptoad
+  plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git", :submodule => true
   file 'config/initializer/hoptoad.rb', open("#{RAILS_TEMPLATE_PATH}/config/initializer/hoptoad.rb").read
-  # FIXME/TODO: Need to add 'include HoptoadNotifier::Catcher' to ApplicationController.
   # TODO: Prompt for and change host (default to 'hoptoadapp.com') and api_key config settings.
-  rake 'hoptoad:test'
-elsif yes?('Use Exception Notifier?')
-  plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git'
-  # FIXME/TODO: Need to add 'include ExceptionNotifiable' to ApplicationController.  
+  # rake 'hoptoad:test'
+else
+  exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
+  if exception_notifier
+    plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git', :submodule => true
+  end
 end
-# TODO: Perhaps add the following to ApplicationController:
-# if const_defined?('HoptoadNotifier')
-#   include HoptoadNotifier::Catcher
-# elsif const_defined?('ExceptionNotifiable')
-#   include ExceptionNotifiable
+pull_file 'app/controllers/application_controller.rb'
 
 
 ## Authentication/authorization
 # TODO: Ask which one to use. Proably want to default to using OpenID at "login.#{my_domain}".
-#plugin 'restful-authentication', :git => 'git://github.com/technoweenie/restful-authentication.git'
-#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git'
+#plugin 'restful-authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule => true
+#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
 #gem 'ruby-openid' :lib => 'openid'
-#plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git'
+#plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
 #generate 'authenticated', 'user session' # Required ActiveRecord.
 #generate 'roles', 'Role User'
 #rake 'db:sessions:create'
@@ -287,34 +244,7 @@ end
 
 # TODO: Might be easier to use as a plugin for now.
 #gem 'boochtek-rails-crud_actions', :lib => 'rails-crud_actions', :source => 'http://gems.github.com' # Or gem 'rails-crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git"
-
-
-## Other
-plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git'
-rake 'asset:packager:create_yml' # TODO: Use/update the YAML file.
-#gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
-#gem 'nokogiri'
-#plugin 'http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids'
-#generate acts_as_taggable_migration
-#plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git"
-#plugin 'squirrel', :git => "git://github.com/thoughtbot/squirrel.git"
-
-
-# Footnotes at bottom of site when in development, with lots of info and links.
-# TODO: Set up so we can use textmate links to edit files (preferably in $VISUAL or Komodo) directly from web pages.
-# FIXME: Not working; try drnic version.
-# TODO: Add more notes types. Info on the current user would be great.
-plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.git'
-
-
-## My custom generators.
-pull_file 'lib/generators/controller/USAGE'
-pull_file 'lib/generators/controller/controller_generator.rb'
-pull_file 'lib/generators/controller/templates/controller_spec.rb'
-pull_file 'lib/generators/controller/templates/helper_spec.rb'
-pull_file 'lib/generators/model/USAGE'
-pull_file 'lib/generators/model/model_generator.rb'
-pull_file 'lib/generators/model/templates/model_spec.rb'
+#plugin 'rails-crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
 
 
 ## Default HTML code.
@@ -328,6 +258,52 @@ pull_file 'app/views/admin/maintenance.html.erb'
 pull_file 'public/.htaccess'
 pull_file 'config/deploy/maintenance.rb'
 
+## Delete some unnecessary files.
+run 'rm README' # Needed for rake doc:rails for some reason.
+run 'rm doc/README_FOR_APP' # Needed for rake doc:app for some reason.
+#run 'rm public/index.html'  # FIXME: Need a default route before deleting this.
+#run 'rm public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
+#run 'rm public/images/rails.png'
+#run 'rm public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
+
+## Default assets.
+
+# Add some images used by the HTML, CSS, and JavaScript.
+pull_file 'public/images/invalid.gif'
+
+
+## Other
+plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git', :submodule => true
+rake 'asset:packager:create_yml' # TODO: Use/update the YAML file.
+#gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
+#gem 'nokogiri'
+#plugin 'http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids', :submodule => true
+#generate acts_as_taggable_migration
+#plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git", :submodule => true
+#plugin 'squirrel', :git => "git://github.com/thoughtbot/squirrel.git", :submodule => true
+plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git', :submodule => true
+# USAGE: Add 'include SslRequirement' and 'ssl_required :action1, :action2' to controller (or ApplicationController).
+
+
+# Footnotes at bottom of site when in development, with lots of info and links.
+# TODO: Set up so we can use textmate links to edit files (preferably in $VISUAL or Komodo) directly from web pages.
+# FIXME: Not working; try drnic version.
+# TODO: Add more notes types. Info on the current user would be great. Notes on model methods, SQL table name/row-count/schema (info on each field).
+plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.git', :submodule => true
+
+
+## My custom generators.
+pull_file 'lib/generators/controller/USAGE'
+pull_file 'lib/generators/controller/controller_generator.rb'
+pull_file 'lib/generators/controller/templates/controller_spec.rb'
+pull_file 'lib/generators/controller/templates/helper_spec.rb'
+pull_file 'lib/generators/model/USAGE'
+pull_file 'lib/generators/model/model_generator.rb'
+pull_file 'lib/generators/model/templates/model_spec.rb'
+pull_file 'lib/generators/model/templates/model.rb'
+pull_file 'lib/generators/model/templates/migration.rb'
+pull_file 'lib/generators/model/templates/fixtures.yml'
+
 
 # Miscellaneous initializers.
 pull_file 'config/initializers/site_config.rb'
@@ -336,15 +312,16 @@ pull_file 'config/initializers/site_config.rb'
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano'
+capify!
 pull_file 'config/deploy.rb'
 pull_file 'config/deploy/staging.rb'
 pull_file 'config/deploy/production.rb'
 # Create a config file for the staging environment that we added.
 run 'cp config/environments/production.rb config/environments/staging.rb'
 # Set the staging environment to display tracebacks when errors occur.
-run "sed -i config/environments/staging.rb -e 's/config.action_controller.consider_all_requests_local = false/config.action_controller.consider_all_requests_local = true/'"
-capify!
-
+gsub_file 'config/environments/staging.rb', /config.action_controller.consider_all_requests_local = false/i do |match|
+  "config.action_controller.consider_all_requests_local = true"
+end
 
 
 # Create directory for temp files.
@@ -362,7 +339,7 @@ rake 'db:migrate' if activerecord
 
 
 # Test the base app.
-rake 'features'
+rake 'cucumber:all' # FIXME: Should this be cucumber:ok?
 rake 'spec'
 #rake 'spec:javascripts' # FIXME: Requires application.js to exist.
 
@@ -385,13 +362,17 @@ doc/api
 doc/app
 vendor/**/.git
 coverage/*
+autotest_result.html
+public/javascripts/*_[0-9]*.js
+public/stylesheets/*_[0-9]*.css
+public/attachments/*
 END
 
 
 # TODO: Set git pre-commit hook. FIXME: Need to define the rake task.
 #file '.git/hooks/pre-commit', <<-END
 #  #!/bin/sh
-#  rake git:pre-commit
+#  rake git:pre_commit
 #END
 #run 'chmod +x .git/hooks/pre-commit'
 
@@ -408,30 +389,33 @@ git :commit => "-a -m 'Initial commit'"
 #git push origin master
 
 # Make sure all the GEMs are installed on development system.
-#rake 'gems:install', :sudo => true
+#rake 'gems:install'
 
 
 puts <<END
 NEXT STEPS:
     CD into the newly created Rails app.
     Edit the constants defined in the "config/initializers/site_config.rb" file.
+    Make sure "rake spec" and "rake cucumber:all" run without errors.
+    Make sure the app runs: "script/server".
     Commit changes: "git commit -a -m 'Basic site configuration.'"
     TODO: Create a new GIT branch for the new feature.
-    Make sure "rake spec" and "rake features" run without errors.
-    Make sure the app runs: "script/server".
     Write feature ("script/generate feature feature_name") and feature steps.
-    Run "rake features". (FAILS)
-    TODO: Add routes.
+    Run "rake cucumber:all". (FAILS)
+    TODO: Add route.
     Write spec.
     Run "rake spec". (FAILS)
     Write code to pass spec.
     Run "rake spec". (PASSES)
+    OPTIONAL: Commit the changes: "git commit -a -m 'Add blah for xyz feature.'"
     Refactor.
     Run "rake spec". (PASSES)
-    Contine writing specs and code until feature is complete.
+    OPTIONAL: Commit the changes: "git commit -a -m 'Refactor blah.'"
+    Continue writing specs and code until feature is complete.
     Run "rake features". (PASSES)
     TODO: Merge feature back into master branch.
     Make sure "rake spec" and "rake features" still pass.
+    OPTIONAL: Generate metrics: "rake metrics:all"
     Commit the new feature: "git commit -a -m 'Added xyz feature.'"
     Push to GitHub: "git push".
 END
