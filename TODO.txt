@@ -1,0 +1,64 @@
+BUGS
+====
+Can't use ExceptionNotifier without ActionMailer.
+
+
+TODO
+====
+Use formtastic plugin.
+Figure out how to include my jQuery extensions, while keeping them in a separate repository.
+Test/refactor my custom RSpec stuff.
+Pull in my CRUD controller.
+    Use less before/after filters, pulling that stuff into the crud_actionname methods, which the actionname methods will call.
+    Put the scaffold/crud/resource generator in here?
+Pull in my generic views.
+Flesh out generators; use Shoulda and RSpec 'it' syntax.
+    Name the generator "crud_resource", have it do model, controller, route.
+        Also "crud_controller" (no model), "model", "route".
+Manual testing.
+  cd testsite
+  ./script/generate rspec_scaffold thing name:string age:integer admin:boolean
+  rake db:migrate
+  ./script/server
+  browse to http://localhost:3000/things
+Pull in BaseHTML stuff.
+  HTML fragments
+    Tables
+    Forms
+  CSS fragment
+    Tables
+    Forms
+Figure out what to do about GEM version numbers.
+  Should we be using git submodules, and pulling straight from github?
+      I'd rather use shared system GEMs, in most cases.
+Make sure we have a favicon (both that we defined in application layout) and robots.txt.
+  Make sure app will run "out of the box" without errors or missing files.
+Need to be able to specify GEMs that are only needed for development, not deployment.
+  Will :lib => false work?
+Add more plugins:
+  AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
+  Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
+  Annotate-models, ColumnComments, or my own annotation/labeling system. (Only if AR is enabled.)
+  Auto-migrations?
+  Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
+  jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
+  Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
+jQuery functionality
+  Validation.
+      How do we tell the view to add required and data-type attributes to INPUT elements?
+  Column sorting.
+  Pagination.
+  Autogrow TEXTAREAs.
+Add custom generator for Blue Ridge javascript_specs.
+    What's wrong with the ones that come with Blue Ridge?
+        I probably wanted to include more default functionality -- just not sure what I could add that would be pertinent for all tests.
+        Might want to add jQuery.
+More rake tasks.
+    git:pre_commit
+    spec:javascripts - blue-ridge says it adds it, but only adds test:javascripts
+    jquery:download
+    jquery:update
+    css:compress (asset:packager:build_all should cover this)
+    javascript:compress (asset:packager:build_all should cover this)
+
+
