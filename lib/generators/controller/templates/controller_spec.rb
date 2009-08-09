@@ -2,24 +2,31 @@ require File.expand_path(File.dirname(__FILE__) + '<%= '/..' * class_nesting_dep
 
 describe <%= class_name %>Controller do
 
-<% if actions.empty? -%>
-  #Delete this example and add some real ones
-<% else -%>
   #Delete these examples and add some real ones
-<% end -%>
   it "should use <%= class_name %>Controller" do
     controller.should be_an_instance_of(<%= class_name %>Controller)
   end
+
+  describe "routes" do
+    it { should route(:get, '/<%= class_name.downcase.pluralize %>/1').to(:action => 'show', :id => '1') }
+  end
+
+
 
 <% unless actions.empty? -%>
 <% for action in actions -%>
 
   describe "GET '<%= action %>'" do
-    it "should be successful" do
-      get '<%= action %>'
-      response.should be_success
+    subject { controller }
+    before(:each) do
+      get '<%= action %>', :id => <%= class_name %>.first.to_param
     end
+    # For full list of Shoulda ActionController macros, see http://dev.thoughtbot.com/shoulda/classes/Shoulda/ActionController/Matchers.html
+    it { should assign_to(:user) }
+    it { should respond_with(:success) }
+    it { should_not set_the_flash) }
   end
+
 <% end -%>
 <% end -%>
 end
