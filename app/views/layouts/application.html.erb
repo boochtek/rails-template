@@ -2,6 +2,7 @@
 <!-- The DOCTYPE above is the best for putting all browsers into standards or almost-standards mode (per http://hsivonen.iki.fi/doctype/#choosing). -->
 <!-- NOTE: Quirks mode in IE 6, and in later versions of IE, will also be triggered if anything but whitespace precedes the DOCTYPE. -->
 <!-- NOTE: IE 6 will render a page in quirks mode if the DOCTYPE is preceded by an XML prolog, regardless of the DOCTYPE. -->
+<!-- jQuery has known issues with quirks mode, and quirks mode makes other things more difficult to deal with. -->
 
 <html lang="en">
 
@@ -15,8 +16,13 @@
     <!-- Google will display this in its search results. TODO: Determine if the page wants to set this. -->
     <meta name="description" content="" />
 
-    <!-- Make ABBR elements work in all versions of IE. See http://xopus.com/devblog/2008/style-unknown-elements.html -->
-    <script type="text/javascript">document.createElement('abbr');</script>
+    <!-- Favorites icons for IE5+ and Mozilla. -->
+    <link rel="shortcut icon" href="/images/x16x16.ico" type="image/x-icon" /> <!-- TODO: ICO file should contain 16x16 and 32x32 icons. -->
+    <link rel="icon"          href="/images/x16x16.png" type="image/png" /> <!-- TODO: Test that Mozilla is using this one. -->
+
+    <!-- Tell IE6 not to add Image Toolbar to images, nor SmartTags. -->
+    <meta http-equiv="imagetoolbar"        content="false" /> <!-- See http://www.microsoft.com/windows/ie/using/howto/customizing/imgtoolbar.mspx -->
+    <meta name="MSSmartTagsPreventParsing" content="true" />
 
 <% if GOOGLE_ANALYTICS_CODE do %>
     <!-- Google Analytics code. (Used only by my JavaScript code.) -->
@@ -28,23 +34,29 @@
     <meta name="verify-v1" content="<%= GOOGLE_WEBMASTERS_CODE %>" />
 <% end %>
 
+    <!-- Make sure all CSS stylesheets come before all JavaScript. (http://code.google.com/speed/page-speed/docs/rtt.html#PutStylesBeforeScripts) -->
+    <% # Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
+    <%= stylesheet_link_merged 'application' %>
+
+    <!-- Make ABBR elements work in all versions of IE. See http://xopus.com/devblog/2008/style-unknown-elements.html -->
+    <script type="text/javascript">document.createElement('abbr');</script>
+
     <!-- Include jQuery. If production, pull it from Google. -->
     <%= jquery_include_tag %>
 
     <!-- Include all other JavaScript files. If production, minimize and combine into a single file. -->
-    <% javascript_files = ['boochtek', 'application'] %>
+    <% javascript_files = ['boochtek', 'boochtek.validation', 'application'] %>
     <% javascript_files += 'boochtek.google-analytics' if GOOGLE_ANALYTICS_CODE %>
     <%= javascript_include_merged javascript_files %>
-
-    <% # Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
-    <%= stylesheet_link_merged 'application' %>
 
     <% # TODO: More header/footer stuff. %>
     <%= yield(:head) %>
 
   </head>
 
-  <body>
+  <!-- Provide a CSS signature, derived from site's URI. (http://archivist.incutio.com/viewlist/css-discuss/13291) -->
+  <% css_signature = (SITE_URI || request.host).gsub(/[.\/]/, '-')  %>
+  <body id="<%= css_signature %>">
 
     <div id="container">
 <% flash.each do |name, msg| %>
