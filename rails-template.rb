@@ -117,13 +117,13 @@ rake 'db:create:all'
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
 # TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
 # NOTE: Rails (2.3.2, at least) places the config.gem statements in the reverse order that we specify them here.
-gem 'rspec', :lib => false, :version => '>= 1.2.2'
-gem 'rspec-rails', :lib => false, :version => '>= 1.2.2'
-gem 'cucumber', :lib => false, :version => '>= 0.3.0'
-gem 'webrat', :lib => false, :version => '>= 0.4.3'
+gem 'rspec', :lib => false, :version => '>= 1.2.8'
+gem 'rspec-rails', :lib => false, :version => '>= 1.2.7'
+gem 'cucumber', :lib => false, :version => '>= 0.3.94'
+gem 'webrat', :lib => false, :version => '>= 0.4.4'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.0', :source => 'http://gems.github.com'
-gem 'rr', :lib => 'rr', :version => '>= 0.8.1'
+gem 'rr', :lib => 'rr', :version => '>= 0.10.0'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
@@ -196,7 +196,7 @@ run 'echo "require \'metric_fu\'" >> Rakefile'
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.0.6'
+gem 'haml', :version => '>= 2.2.2'
 run 'haml --rails .'
 
 
@@ -287,7 +287,6 @@ plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git', 
 
 # Footnotes at bottom of site when in development, with lots of info and links.
 # TODO: Set up so we can use textmate links to edit files (preferably in $VISUAL or Komodo) directly from web pages.
-# FIXME: Not working; try drnic version.
 # TODO: Add more notes types. Info on the current user would be great. Notes on model methods, SQL table name/row-count/schema (info on each field).
 plugin 'rails-footnotes', :git => 'http://github.com/josevalim/rails-footnotes.git', :submodule => true
 
