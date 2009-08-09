@@ -203,13 +203,17 @@ run 'haml --rails .'
 # Remove Prototype JavaScript stuff.
 # TODO: Specify the exact files to delete.
 run 'rm public/javascripts/*.js' # Remove Prototype files.
+# Remove Prototype-using JavaScript from default Rails index page.
+run 'SCRIPT_START=$(grep -n "<script" public/index.html | head -1 | cut -d: -f1) &&
+     SCRIPT_END=$(grep -n "</script>" public/index.html | head -1 | cut -d: -f1) &&
+     sed < public/index.html -e "$SCRIPT_START,$SCRIPT_END d" > public/index.html.new &&
+     mv public/index.html.new public/index.html'
 #TODO: Remove Prototype junk from ActionView::Helpers::JavaScriptHelper and ActionView::Helpers::PrototypeHelper, and scriptaculous_helper.
 
 
-# jQuery for client-side scripting. TODO: The JQUERY_VERSION is duplicated in site_config.rb file.
+# jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '1.3.2'
-# TODO: Can we replace the code below with something like our open-uri code?
-run "curl -L http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js > public/javascripts/jquery-#{JQUERY_VERSION}.js"
+file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js").read
 #gem 'jrails'
 
 
@@ -306,6 +310,8 @@ pull_file 'lib/generators/model/templates/fixtures.yml'
 
 # Miscellaneous initializers.
 pull_file 'config/initializers/site_config.rb'
+# Inject JQUERY_VERSION (defined above) into site_config.rb file.
+run "sed 's|^JQUERY_VERSION =.*$|JQUERY_VERSION = \"#{JQUERY_VERSION}\"|' < config/initializers/site_config.rb > config/initializers/site_config.rb.new && mv config/initializers/site_config.rb.new config/initializers/site_config.rb"
 
 
 ## Deployment configuration for Capistrano.
