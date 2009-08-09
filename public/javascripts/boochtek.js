@@ -2,6 +2,8 @@
 jQuery.fn.extend({
     disable:    function(){ return this.attr('disabled', 'disabled'); }, // Disable the given elements. FIXME: Might not work for checkboxes.
     enable:     function(){ return this.removeAttr('disabled'); }, // Enable the given elements.
+    check:      function(){ return this.attr('checked', 'checked'); }, // Check the given checkbox elements.
+    uncheck:    function(){ return this.removeAttr('checked'); }, // Uncheck the given checkbox elements.
     ancestors:  function(expr){ return this.parents(expr); }, // Seems like a better name than parents(), which is too easily confused with parent().
     first:      function(){ return this.eq(0); }, // Returns the first item in the jQuery set. Same as filter(':first').
     id:         function(){ return this.eq(0).attr('id'); }, // Returns the ID of the first element. TODO: Look at 'name' attribute too?
