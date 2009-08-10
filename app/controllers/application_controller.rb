@@ -2,6 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  # Fall back to app/views/default if view file cannot be found.
+  include BoochTek::Rails::DefaultViews
+
   # Define the default layout.
   layout 'application'
 
