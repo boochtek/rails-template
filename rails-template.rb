@@ -195,6 +195,10 @@ gem 'jscruggs-metric_fu', :version => '1.0.2', :lib => 'metric_fu', :source => '
 run 'echo "require \'metric_fu\'" >> Rakefile'
 
 
+## My default_views plugin
+plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
+
+
 # HAML templating system.
 gem 'haml', :version => '>= 2.2.2'
 run 'haml --rails .'
