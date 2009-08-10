@@ -195,10 +195,6 @@ gem 'jscruggs-metric_fu', :version => '1.0.2', :lib => 'metric_fu', :source => '
 run 'echo "require \'metric_fu\'" >> Rakefile'
 
 
-## My default_views plugin
-plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
-
-
 # HAML templating system.
 gem 'haml', :version => '>= 2.2.2'
 run 'haml --rails .'
@@ -250,9 +246,9 @@ pull_file 'app/controllers/application_controller.rb'
 #rake 'open_id_authentication:db:create'
 
 
-# TODO: Might be easier to use as a plugin for now.
-#gem 'boochtek-rails-crud_actions', :lib => 'rails-crud_actions', :source => 'http://gems.github.com' # Or gem 'rails-crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git"
-#plugin 'rails-crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
+## My personal plugins.
+plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
+plugin 'crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
 
 
 ## Default HTML code.

@@ -6,9 +6,6 @@ Can't use ExceptionNotifier without ActionMailer.
 TODO
 ====
 Use formtastic plugin.
-Pull in my crud_actions plugin.
-    Use less before/after filters, pulling that stuff into the crud_actionname methods, which the actionname methods will call.
-    Put the scaffold/crud/resource generator in here?
 Figure out how to include my jQuery extensions, while keeping them in a separate repository.
     Put them in a sub-directory, pull that in via git submodule.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
