@@ -7,7 +7,6 @@ TODO
 ====
 Test using formtastic plugin.
 Grab some ideas from BigOldRailsTemplate.
-    Use environment to modify environment-specific config files.
 Figure out how to include my jQuery extensions, while keeping them in a separate repository.
     Put them in a sub-directory, pull that in via git submodule.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
