@@ -246,6 +246,12 @@ pull_file 'app/controllers/application_controller.rb'
 #rake 'open_id_authentication:db:create'
 
 
+## Formtastic and dependencies.
+plugin 'validation_reflection', :git => 'http://github.com/redinger/validation_reflection.git', :submodule => true
+plugin 'country-select', :git => 'http://github.com/rails/iso-3166-country-select.git', :submodule => true
+plugin 'formtastic', :git => 'http://github.com/justinfrench/formtastic.git', :submodule => true
+
+
 ## My personal plugins.
 plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
 plugin 'crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true

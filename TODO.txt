@@ -5,7 +5,10 @@ Can't use ExceptionNotifier without ActionMailer.
 
 TODO
 ====
-Use formtastic plugin.
+Test using formtastic plugin.
+Grab some ideas from BigOldRailsTemplate.
+    Determine location of template.
+    Use environment to modify environment-specific config files.
 Figure out how to include my jQuery extensions, while keeping them in a separate repository.
     Put them in a sub-directory, pull that in via git submodule.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
@@ -25,6 +28,7 @@ Pull in BaseHTML stuff.
   CSS fragment
     Tables
     Forms
+Look into jqGrid.
 Figure out what to do about GEM version numbers.
   Should we be using git submodules, and pulling straight from github?
       I'd rather use shared system GEMs, in most cases.
