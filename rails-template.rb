@@ -16,15 +16,19 @@ require 'open-uri'
 
 
 ## Decide whether to pull all the files from local directory, or from GitHub.
-if File.exists?(File.join(Dir.getwd, template))
-  RAILS_TEMPLATE_PATH = File.basename(File.join(Dir.getwd, template))
+if template.match(%r{^/}) and File.exists?(template)
+  RAILS_TEMPLATE_PATH = File.dirname(template)
+  running_local = true
+elsif File.exists?(File.join(Dir.getwd, template))
+  RAILS_TEMPLATE_PATH = File.dirname(File.join(Dir.getwd, template))
+  running_local = true
+elsif File.exists?(File.join(Dir.getwd, '..', template))
+  RAILS_TEMPLATE_PATH = File.dirname(File.join(Dir.getwd, '..', template))
   running_local = true
 else
   RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
   running_local = false
 end
-puts "Template location: #{template}"
-puts "Template path: #{RAILS_TEMPLATE_PATH}"
 
 
 # Check to ensure that we can get to all the files we need.

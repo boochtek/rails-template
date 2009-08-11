@@ -6,7 +6,7 @@ Can't use ExceptionNotifier without ActionMailer.
 TODO
 ====
 Test using formtastic plugin.
-Grab some ideas from BigOldRailsTemplate.
+Grab some more ideas from BigOldRailsTemplate.
 Figure out how to include my jQuery extensions, while keeping them in a separate repository.
     Put them in a sub-directory, pull that in via git submodule.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
@@ -32,8 +32,6 @@ Figure out what to do about GEM version numbers.
       I'd rather use shared system GEMs, in most cases.
 Make sure we have a favicon (both that we defined in application layout) and robots.txt.
   Make sure app will run "out of the box" without errors or missing files.
-Need to be able to specify GEMs that are only needed for development, not deployment.
-  Will :lib => false work?
 Add more plugins:
   AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
   Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
@@ -48,7 +46,7 @@ jQuery functionality
       How do we tell the view to add required and data-type attributes to INPUT elements?
   Column sorting.
   Pagination.
-  Autogrow TEXTAREAs.
+  Autogrow all TEXTAREAs.
 Add custom generator for Blue Ridge javascript_specs.
     What's wrong with the ones that come with Blue Ridge?
         I probably wanted to include more default functionality -- just not sure what I could add that would be pertinent for all tests.
