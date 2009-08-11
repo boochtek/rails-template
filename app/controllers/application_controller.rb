@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Ensure that sensitive data doesn't get logged.
-  filter_parameter_logging :password, :password_confirmation
+  filter_parameter_logging :password, :password_confirmation, :confirm_password, :ssn, :social_security_number, :credit_card, :credit_card_number, :cvv, :cvv2
 
   # Activate exception handlers, if we've got them, and we're in production.
   if ['production', 'staging'].include? ENV['RAILS_ENV']
