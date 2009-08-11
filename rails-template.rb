@@ -61,8 +61,8 @@ datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMa
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.9.11'
-  gem 'do_sqlite3', :version => '0.9.11'  # if ['development', 'test'].include?(Rails.env)    # Rails and RAILS_ENV not yet defined here.
-  gem 'do_mysql', :version => '0.9.11'    # if ['production', 'staging'].include?(Rails.env)
+  gem 'do_sqlite3', :version => '0.9.11', :env => [:development, :test]
+  gem 'do_mysql', :version => '0.9.11', :env => [:production, :staging]
   gem 'dm-core', :version => '0.9.11'
   gem 'dm-migrations', :version => '0.9.11'
   gem 'dm-validations', :version => '0.9.11'
@@ -71,8 +71,7 @@ if datamapper
   # Not sure if I should be using rails_datamapper or datamapper4rails.
   gem 'rails_datamapper', :version => '0.9.11' # FIXME: Not a valid gem at this point; have to pull manually from GitHub datamapper/dm-more.
   #gem "datamapper4rail", :lib => 'datamapper4rails' # work around the typo
-  # Make datamapper load first as some plugins have dependencies on it  
-  config.plugins = [ :rails_datamapper, :all ]
+  config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it
   generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
   puts "NOTE: For DataMapper models, use 'script/generate rspec_dm_model --skip-migration --skip-fixture' instead of 'script/generate rspec_model --skip-fixture'."
@@ -85,25 +84,19 @@ end
 # ActiveRecord ORM.
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 if !activerecord
-  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
-    "#{match}\n  config.frameworks -= [ :active_record ]\n"
-  end
+  environment 'config.frameworks -= [ :active_record ]'
 end
 
 # ActiveResource
 activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
 if !activeresource
-  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
-    "#{match}\n  config.frameworks -= [ :active_resource ]\n"
-  end
+  environment 'config.frameworks -= [ :active_resource ]'
 end
 
 # ActionMailer
-email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
+email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
 if !email
-  gsub_file 'config/environment.rb', /^.*config.frameworks.*$/i do |match|
-    "#{match}\n  config.frameworks -= [ :action_mailer ]\n"
-  end
+  environment 'config.frameworks -= [ :action_mailer ]'
 end
 
 
@@ -219,7 +212,6 @@ file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://jqueryjs.goo
 #gem 'jrails'
 
 
-
 ## Error notification.
 hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
 if hoptoad
@@ -332,9 +324,7 @@ pull_file 'config/deploy/production.rb'
 # Create a config file for the staging environment that we added.
 run 'cp config/environments/production.rb config/environments/staging.rb'
 # Set the staging environment to display tracebacks when errors occur.
-gsub_file 'config/environments/staging.rb', /config.action_controller.consider_all_requests_local = false/i do |match|
-  "config.action_controller.consider_all_requests_local = true"
-end
+environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
 
 
 # Create directory for temp files.
