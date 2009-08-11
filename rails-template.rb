@@ -8,24 +8,23 @@
 # Released under MIT license (same as Ruby on Rails).
 
 
-# Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/.
+# Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/ and http://github.com/ffmike/BigOldRailsTemplate/.
 
 
 # Allow opening URLs as if they are local files.
 require 'open-uri'
 
 
-## Decide whether to pull all the files from local directory, or from GitHub. PROBLEM: __FILE__ doesn't work here. :(
-if File.exists?(Dir.getwd + '/../rails-template.rb')
-  RAILS_TEMPLATE_PATH = '..'
-  running_local = true
-elsif File.exists?(Dir.getwd + '/../rails-template/rails-template.rb')
-  RAILS_TEMPLATE_PATH = '../rails-template'
+## Decide whether to pull all the files from local directory, or from GitHub.
+if File.exists?(File.join(Dir.getwd, template))
+  RAILS_TEMPLATE_PATH = File.basename(File.join(Dir.getwd, template))
   running_local = true
 else
   RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
   running_local = false
 end
+puts "Template location: #{template}"
+puts "Template path: #{RAILS_TEMPLATE_PATH}"
 
 
 # Check to ensure that we can get to all the files we need.
@@ -39,6 +38,9 @@ end
 # Make it easy to pull files from the template repository into the project.
 def pull_file(path)
   file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read
+rescue
+  puts "ERROR - Could not pull file."
+  exit!
 end
 
 
