@@ -203,10 +203,7 @@ run 'haml --rails .'
 # TODO: Specify the exact files to delete.
 run 'rm public/javascripts/*.js' # Remove Prototype files.
 # Remove Prototype-using JavaScript from default Rails index page.
-run 'SCRIPT_START=$(grep -n "<script" public/index.html | head -1 | cut -d: -f1) &&
-     SCRIPT_END=$(grep -n "</script>" public/index.html | head -1 | cut -d: -f1) &&
-     sed < public/index.html -e "$SCRIPT_START,$SCRIPT_END d" > public/index.html.new &&
-     mv public/index.html.new public/index.html'
+gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 #TODO: Remove Prototype junk from ActionView::Helpers::JavaScriptHelper and ActionView::Helpers::PrototypeHelper, and scriptaculous_helper.
 
 
@@ -315,7 +312,7 @@ pull_file 'lib/generators/model/templates/fixtures.yml'
 # Miscellaneous initializers.
 pull_file 'config/initializers/site_config.rb'
 # Inject JQUERY_VERSION (defined above) into site_config.rb file.
-run "sed 's|^JQUERY_VERSION =.*$|JQUERY_VERSION = \"#{JQUERY_VERSION}\"|' < config/initializers/site_config.rb > config/initializers/site_config.rb.new && mv config/initializers/site_config.rb.new config/initializers/site_config.rb"
+gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_VERSION = '#{JQUERY_VERSION}'"
 
 
 ## Deployment configuration for Capistrano.
