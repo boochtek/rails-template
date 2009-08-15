@@ -235,10 +235,10 @@ clearance = ENV['CLEARANCE'] ? ENV['CLEARANCE'] == 'y' : yes?('Use Clearance for
 if clearance
   gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.7.0', :source => 'http://gems.github.com'
   generate 'clearance'
-  generate 'clearance_features' # Cucumber feature specs.
+  #generate 'clearance_features' # Cucumber feature specs. FIXME: Hangs.
   generate 'clearance_views' # Requires Formtastic to run, which we include below.
-  # TODO: Follow instructions at http://wiki.github.com/thoughtbot/clearance/sign-up-sign-in-with-user-name to use usernames to sign in, instead of email addresses.
-  # TODO: Do we need to create our own User model? If so, we need to use attr_accessible to it.
+  # TODO: Follow instructions at http://ropiku.tumblr.com/post/77138388/clearance-login-with-username to use usernames to sign in, instead of email addresses.
+  # TODO: We should define our own fields in the User model. Don't forget to use attr_accessible for any user-updatable fields.
   rake 'db:migrate'
   # NOTE May need to add these paths to features/support/paths.rb:  when /the sign up page/i; new_user_path; when /the sign in page/i; new_session_path; when /the password reset request page/i; new_password_path
 end
@@ -331,8 +331,8 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 
 ## Create a controller and route for the root/home page.
 generate :controller, "home index"
-route "map.root :controller => 'home'"
-route "map.home :controller => 'home'"
+route "map.root '', :controller => 'home'"
+route "map.home '', :controller => 'home'"
 pull_file 'app/views/home/index.html.erb'
 
 
