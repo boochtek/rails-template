@@ -3,50 +3,71 @@ BUGS
 Can't use ExceptionNotifier without ActionMailer.
 
 
+TO CONSIDER
+===========
+Ask questions up front, then act on them later.
+    Makes it easier o deal with the ExceptionNotifier/ActionMailer problem.
+Break this up into several smaller templates?
+    Then use 'rake rails:template LOCATION=~/template.rb' to load them all.
+        Can we run that rake task from within the main template? I don't see why not.
+    Or use load_template.
+
 TODO
 ====
-Test using formtastic plugin.
+Test using formtastic, crud_actions, crud_views, default_views, Clearance plugins.
 Grab some more ideas from BigOldRailsTemplate.
-Figure out how to include my jQuery extensions, while keeping them in a separate repository.
-    Put them in a sub-directory, pull that in via git submodule.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
     Name the generator "crud_resource", have it do model, controller, route.
         Also "crud_controller" (no model), "model", "route".
 Test/refactor my custom RSpec stuff.
-Manual testing.
-  cd testsite
-  ./script/generate rspec_scaffold thing name:string age:integer admin:boolean
-  rake db:migrate
-  ./script/server
-  browse to http://localhost:3000/things
+Semi-manual testing. (Make this a rake task, to augment the default test.)
+    rm -rf test/rails_site
+    rails -m ./rails-template.rb test/rails_site
+    cd test/rails_site
+    ./script/server -p 9070 &
+    open http://127.0.0.1:9070
+    kill %
+    ./script/generate rspec_scaffold thing name:string age:integer admin:boolean
+    rake db:migrate
+    ./script/server -p 9070 &
+    open http://localhost:9070/things
+    kill %
 Pull in BaseHTML stuff.
-  HTML fragments
-    Tables
-    Forms
-  CSS fragment
-    Tables
-    Forms
+    HTML fragments
+        Tables
+        Forms
+    CSS fragment
+        Tables
+        Forms
 Look into jqGrid.
 Figure out what to do about GEM version numbers.
-  Should we be using git submodules, and pulling straight from github?
-      I'd rather use shared system GEMs, in most cases.
+    Should we be using git submodules, and pulling straight from github?
+        I'd rather use shared system GEMs, in most cases.
 Make sure we have a favicon (both that we defined in application layout) and robots.txt.
-  Make sure app will run "out of the box" without errors or missing files.
+    Make sure app will run "out of the box" without errors or missing files.
+Delete the default routes in config/routes.rb file.
 Add more plugins:
-  AuthLogic, Clearance, RPX (leaning towards this -- outsource authentication to an external source)
-  Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
-  Annotate-models, ColumnComments, or my own annotation/labeling system. (Only if AR is enabled.)
-  Auto-migrations?
-  Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
-  jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
-  Exceptional (in addition to HopToad and ExceptionNotifier).
+    AuthLogic (was considering RPX for OpenID, but it's a pay site for most uses)
+    Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
+    Annotate-models, ColumnComments, or my own annotation/labeling system. (Only if AR is enabled.)
+    Auto-migrations?
+    Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
+    jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
+    Exceptional (in addition to HopToad and ExceptionNotifier).
 Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 jQuery functionality
-  Validation.
-      How do we tell the view to add required and data-type attributes to INPUT elements?
-  Column sorting.
-  Pagination.
-  Autogrow all TEXTAREAs.
+    Extract my BoochTek jQuery extensions into a separate repository.
+        Put them in a 'boochtek' sub-directory, pull that in via git submodule.
+    Autogrow all TEXTAREAs.
+        Git clone the github repo (http://github.com/akaihola/jquery-autogrow).
+            Note that the code has not been updated in well over a year.
+                Despite bug reports and patches at http://plugins.jquery.com/project/issues/autogrow?categories=support&states=all.
+        Include the following in application.js:
+            if ( jQuery.fn['autogrow'] ) jQuery('textarea').autogrow();
+    Pagination.
+    Validation.
+        How do we tell the view to add required and data-type attributes to INPUT elements?
+    Column sorting.
 Add custom generator for Blue Ridge javascript_specs.
     What's wrong with the ones that come with Blue Ridge?
         I probably wanted to include more default functionality -- just not sure what I could add that would be pertinent for all tests.

@@ -229,16 +229,30 @@ end
 pull_file 'app/controllers/application_controller.rb'
 
 
-## Authentication/authorization
-# TODO: Ask which one to use. Proably want to default to using OpenID at "login.#{my_domain}".
+## Authentication
+# TODO: Ask which one to use. Probably want to default to using OpenID at "login.#{my_domain}".
+clearance = ENV['CLEARANCE'] ? ENV['CLEARANCE'] == 'y' : yes?('Use Clearance for authentication?')
+if clearance
+  gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.7.0', :source => 'http://gems.github.com'
+  generate 'clearance'
+  generate 'clearance_features' # Cucumber feature specs.
+  generate 'clearance_views' # Requires Formtastic to run, which we include below.
+  # TODO: Follow instructions at http://wiki.github.com/thoughtbot/clearance/sign-up-sign-in-with-user-name to use usernames to sign in, instead of email addresses.
+  # TODO: Do we need to create our own User model? If so, we need to use attr_accessible to it.
+  rake 'db:migrate'
+  # NOTE May need to add these paths to features/support/paths.rb:  when /the sign up page/i; new_user_path; when /the sign in page/i; new_session_path; when /the password reset request page/i; new_password_path
+end
 #plugin 'restful-authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule => true
-#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
 #gem 'ruby-openid' :lib => 'openid'
 #plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
-#generate 'authenticated', 'user session' # Required ActiveRecord.
-#generate 'roles', 'Role User'
+#generate 'authenticated', 'user session' # Requires ActiveRecord.
 #rake 'db:sessions:create'
 #rake 'open_id_authentication:db:create'
+
+
+## Authorization
+#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
+#generate 'roles', 'Role User'
 
 
 ## Formtastic and dependencies.
