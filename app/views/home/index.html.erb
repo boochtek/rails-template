@@ -1,0 +1,13 @@
+<h2>Welcome to <%= SITE_NAME %>!</h2>
+
+<p>
+ This site is a new Ruby on Rails application.
+ The site owner has yet to configure the home/index view.
+</p>
+
+<%- if consider_all_requests_local || local_request? -%>
+<h3>Site Info</h3>
+<p>
+<%= render :inline => Rails::Info.to_html %>
+</p>
+<%- end -%>

@@ -266,13 +266,13 @@ pull_file 'config/deploy/maintenance.rb'
 ## Delete some unnecessary files.
 run 'rm README' # Needed for rake doc:rails for some reason.
 run 'rm doc/README_FOR_APP' # Needed for rake doc:app for some reason.
-#run 'rm public/index.html'  # FIXME: Need a default route before deleting this.
+run 'rm public/index.html'
+run 'rm public/images/rails.png'
 #run 'rm public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
-#run 'rm public/images/rails.png'
 #run 'rm public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
 
-## Default assets.
 
+## Default assets.
 # Add some images used by the HTML, CSS, and JavaScript.
 pull_file 'public/images/invalid.gif'
 
@@ -313,6 +313,13 @@ pull_file 'lib/generators/model/templates/fixtures.yml'
 pull_file 'config/initializers/site_config.rb'
 # Inject JQUERY_VERSION (defined above) into site_config.rb file.
 gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_VERSION = '#{JQUERY_VERSION}'"
+
+
+## Create a controller and route for the root/home page.
+generate :controller, "home index"
+route "map.root :controller => 'home'"
+route "map.home :controller => 'home'"
+pull_file 'app/views/home/index.html.erb'
 
 
 ## Deployment configuration for Capistrano.
