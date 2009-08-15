@@ -55,8 +55,7 @@
   </head>
 
   <!-- Provide a CSS signature, derived from site's URI. (http://archivist.incutio.com/viewlist/css-discuss/13291) -->
-  <% css_signature = (SITE_URI || request.host).gsub(/[.\/]/, '-')  %>
-  <body id="<%= css_signature %>">
+  <body id="<%= CSS_SIGNATURE %>">
 
     <div id="container">
       <div id="flash">

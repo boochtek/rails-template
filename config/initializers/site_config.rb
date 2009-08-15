@@ -8,8 +8,12 @@ PROJECT_NAME = RAILS_ROOT.split('/').last
 SITE_NAME = PROJECT_NAME.humanize
 SITE_TITLE = SITE_NAME + ('production' == RAILS_ENV ? '' : " (#{RAILS_ENV.upcase})")
 
-# It is highly recommended that you define this to your top-level URL. It will be used to create a CSS signature (http://archivist.incutio.com/viewlist/css-discuss/13291) for pages in your site.
-SITE_URI = nil
+# Hostname of the site. This will be used by Clearance to generate URLs in emails, to create a CSS signature, and possibly in several other places.
+# NOTE: It's highly recommended that you hard-code this.
+HOST = ENV['SERVER_NAME'].gsub(/[^A-Za-z0-9._-]/, '') # Ensure we get a valid hostname -- see http://shiflett.org/blog/2006/mar/server-name-versus-http-host.
+
+# Create a CSS signature (http://archivist.incutio.com/viewlist/css-discuss/13291) for pages in your site.
+CSS_SIGNATURE = HOST.gsub(/[.]/, '-')
 
 # Years and name to list in copyright statements.
 COPYRIGHT_YEARS = '2008, 2009'
@@ -26,3 +30,6 @@ GOOGLE_WEBMASTERS_CODE = nil
 
 # Email exceptions to this list of addresses, if ExceptionNotifier is loaded.
 EMAIL_EXCEPTIONS_TO = []
+
+# Reply address for emails. Used by Clearance, and possibly other gems/plugins.
+DO_NOT_REPLY = "donotreply@#{HOST}"
