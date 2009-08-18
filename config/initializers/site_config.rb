@@ -5,7 +5,7 @@
 PROJECT_NAME = RAILS_ROOT.split('/').last
 
 # Override these - they will be used in the default layout.
-SITE_NAME = PROJECT_NAME.humanize
+SITE_NAME = PROJECT_NAME.humanize.titleize
 SITE_TITLE = SITE_NAME + ('production' == RAILS_ENV ? '' : " (#{RAILS_ENV.upcase})")
 
 # Hostname of the site. This will be used by Clearance to generate URLs in emails, to create a CSS signature, and possibly in several other places.
