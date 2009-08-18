@@ -322,7 +322,7 @@ pull_file 'lib/generators/controller/USAGE'
 pull_file 'lib/generators/controller/controller_generator.rb'
 pull_file 'lib/generators/controller/templates/controller_spec.rb'
 pull_file 'lib/generators/controller/templates/helper_spec.rb'
-pull_file 'lib/generators/controller/templates/controller.rb
+pull_file 'lib/generators/controller/templates/controller.rb'
 pull_file 'lib/generators/controller/templates/functional_test.rb'
 pull_file 'lib/generators/controller/templates/helper.rb'
 pull_file 'lib/generators/controller/templates/helper_test.rb'
