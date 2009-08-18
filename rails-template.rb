@@ -19,22 +19,18 @@ require 'open-uri'
 if template.match(%r{^/}) and File.exists?(template)
   RAILS_TEMPLATE_PATH = File.dirname(template)
   running_local = true
-elsif File.exists?(File.join(Dir.getwd, template))
-  RAILS_TEMPLATE_PATH = File.dirname(File.join(Dir.getwd, template))
-  running_local = true
-elsif File.exists?(File.join(Dir.getwd, '..', template))
-  RAILS_TEMPLATE_PATH = File.dirname(File.join(Dir.getwd, '..', template))
+elsif File.exists?(File.join(ENV['PWD'], template)) # Dir.getwd is the Rails root, so we have to find what it was when the 'rails' command was run.
+  RAILS_TEMPLATE_PATH = File.dirname(File.join(ENV['PWD'], template))
   running_local = true
 else
   RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
   running_local = false
 end
 
-
 # Check to ensure that we can get to all the files we need.
 begin
   open("#{RAILS_TEMPLATE_PATH}/rails-template.rb")
-rescue 
+rescue
   raise 'You need to have an Internet connection for this template to work.'
 end
 
