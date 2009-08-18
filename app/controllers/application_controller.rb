@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   # Define the default layout.
   layout 'application'
 
+  # Pull in some helpers.
+  helper 'javascript'
+
   # Add CSRF protection, by adding hidden fields to forms, containing a token.
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 

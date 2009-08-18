@@ -24,12 +24,12 @@
     <meta http-equiv="imagetoolbar"        content="false" /> <!-- See http://www.microsoft.com/windows/ie/using/howto/customizing/imgtoolbar.mspx -->
     <meta name="MSSmartTagsPreventParsing" content="true" />
 
-<% if GOOGLE_ANALYTICS_CODE do %>
+<% if GOOGLE_ANALYTICS_CODE %>
     <!-- Google Analytics code. (Used only by my JavaScript code.) -->
     <meta name="google.analytics.code" content="<%= GOOGLE_ANALYTICS_CODE %>" />
 <% end %>
 
-<% if GOOGLE_WEBMASTERS_CODE do %>
+<% if GOOGLE_WEBMASTERS_CODE %>
     <!-- Allow use of Google Webmaster Tools (http://www.google.com/webmasters/) to see how Google views your site. -->
     <meta name="verify-v1" content="<%= GOOGLE_WEBMASTERS_CODE %>" />
 <% end %>
