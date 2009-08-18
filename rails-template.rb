@@ -78,9 +78,9 @@ end
 # TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
-  gem 'data_objects', :version => '0.9.11'
-  gem 'do_sqlite3', :version => '0.9.11', :env => [:development, :test]
-  gem 'do_mysql', :version => '0.9.11', :env => [:production, :staging]
+  gem 'data_objects', :version => '0.9.12'
+  gem 'do_sqlite3', :version => '0.9.12', :env => [:development, :test]
+  gem 'do_mysql', :version => '0.9.12', :env => [:production, :staging]
   gem 'dm-core', :version => '0.9.11'
   gem 'dm-migrations', :version => '0.9.11'
   gem 'dm-validations', :version => '0.9.11'
