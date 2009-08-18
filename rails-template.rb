@@ -11,6 +11,18 @@
 # Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/ and http://github.com/ffmike/BigOldRailsTemplate/.
 
 
+## Get user input, via environment variables or prompting the user.
+rails_submodule = ENV['SUBMODULE'] ? (ENV['SUBMODULE'] == 'y') : yes?('Pull in Rails as a GIT sub-module?')
+datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
+activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
+activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
+email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
+clearance = ENV['CLEARANCE'] ? ENV['CLEARANCE'] == 'y' : yes?('Use Clearance for authentication?')
+hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
+exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
+email = true if exception_notifier || clearance # Force email if we've enabled a plugin that requires it.
+
+
 # Allow opening URLs as if they are local files.
 require 'open-uri'
 
@@ -57,7 +69,6 @@ git :init
 
 
 # Pull in a copy of Rails as a GIT submodule.
-rails_submodule = ENV['SUBMODULE'] ? (ENV['SUBMODULE'] == 'y') : yes?('Pull in Rails as a GIT sub-module?')
 if rails_submodule
   git "submodule add git://github.com/rails/rails.git vendor/rails"
 end
@@ -65,7 +76,6 @@ end
 
 ## DataMapper ORM.
 # TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
-datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.9.11'
@@ -90,19 +100,16 @@ end
 ## Optionally remove some portions of the standard Rails stack.
 
 # ActiveRecord ORM.
-activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 if !activerecord
   environment 'config.frameworks -= [ :active_record ]'
 end
 
 # ActiveResource
-activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
 if !activeresource
   environment 'config.frameworks -= [ :active_resource ]'
 end
 
 # ActionMailer
-email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
 if !email
   environment 'config.frameworks -= [ :action_mailer ]'
 end
@@ -218,24 +225,20 @@ file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://jqueryjs.goo
 
 
 ## Error notification.
-hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
 if hoptoad
   plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git", :submodule => true
   file 'config/initializer/hoptoad.rb', open("#{RAILS_TEMPLATE_PATH}/config/initializer/hoptoad.rb").read
   # TODO: Prompt for and change host (default to 'hoptoadapp.com') and api_key config settings.
   # rake 'hoptoad:test'
-else
-  exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
-  if exception_notifier
-    plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git', :submodule => true
-  end
+end
+if exception_notifier
+  plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git', :submodule => true
 end
 pull_file 'app/controllers/application_controller.rb'
 
 
 ## Authentication
 # TODO: Ask which one to use. Probably want to default to using OpenID at "login.#{my_domain}".
-clearance = ENV['CLEARANCE'] ? ENV['CLEARANCE'] == 'y' : yes?('Use Clearance for authentication?')
 if clearance
   gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.7.0', :source => 'http://gems.github.com'
   generate 'clearance'
