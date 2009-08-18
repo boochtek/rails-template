@@ -347,6 +347,7 @@ generate :controller, "home index"
 route "map.root :controller => 'home'"
 route "map.home '', :controller => 'home'"
 pull_file 'app/views/home/index.html.erb'
+pull_file 'app/controllers/home_controller.rb'
 
 
 ## Deployment configuration for Capistrano.
