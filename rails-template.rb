@@ -14,6 +14,14 @@
 # Allow opening URLs as if they are local files.
 require 'open-uri'
 
+# Include FileUtils functionality. Note that we can't use include or define_method from within this app template file.
+require 'fileutils'
+def cp(src, dest, options = {}); FileUtils.cp(src, dest, options); end
+def mv(src, dest, options = {}); FileUtils.mv(src, dest, options); end
+def mkdir_p(list, options = {}); FileUtils.mkdir_p(list, options); end
+def rm_f(list, options = {}); FileUtils.rm_f(list, options); end
+def touch(list, options = {}); FileUtils.touch(list, options); end
+
 
 ## Decide whether to pull all the files from local directory, or from GitHub.
 if template.match(%r{^/}) and File.exists?(template)
@@ -101,7 +109,7 @@ end
 
 
 ## Database config.
-run "cp config/database.yml config/database.yml.sample"
+cp 'config/database.yml', 'config/database.yml.sample'
 pull_file 'config/database.yml'
 
 # Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
@@ -146,14 +154,14 @@ generate 'cucumber'
 
 # Allow use of FactoryGirl factories in Cucumber. FIXME: Doesn't work.
 #run 'echo "require \"#{Rails.root}/spec/factories\"" >> features/support/env.rb'
-#run 'mkdir -p spec/factories'
+#mkdir_p 'spec/factories'
 
 # TODO: Create some commonly-used feature steps.
 
 # Specs and steps for email. FIXME: Not working.
 if email
 #  plugin 'email-spec', :git => 'git://github.com/bmabey/email-spec.git', :submodule => true
-#  run 'echo "require \'email_spec/cucumber\'" >> features/support/env.rb'
+#  append_file 'features/support/env.rb', "require 'email_spec/cucumber'"
 #  generate email_spec # TODO: Not sure if I should do this here, or if it's like generating a feature.
   # USAGE:
   #   In features:
@@ -187,7 +195,7 @@ gem 'reek'
 gem 'roodi'
 gem 'chronic'
 gem 'jscruggs-metric_fu', :version => '1.0.2', :lib => 'metric_fu', :source => 'http://gems.github.com'
-run 'echo "require \'metric_fu\'" >> Rakefile'
+append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
@@ -197,7 +205,7 @@ run 'haml --rails .'
 
 # Remove Prototype JavaScript stuff.
 # TODO: Specify the exact files to delete.
-run 'rm public/javascripts/*.js' # Remove Prototype files.
+rm_f 'public/javascripts/*.js' # Remove Prototype files.
 # Remove Prototype-using JavaScript from default Rails index page.
 gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 #TODO: Remove Prototype junk from ActionView::Helpers::JavaScriptHelper and ActionView::Helpers::PrototypeHelper, and scriptaculous_helper.
@@ -274,12 +282,12 @@ pull_file 'public/.htaccess'
 pull_file 'config/deploy/maintenance.rb'
 
 ## Delete some unnecessary files.
-run 'rm README' # Needed for rake doc:rails for some reason.
-run 'rm doc/README_FOR_APP' # Needed for rake doc:app for some reason.
-run 'rm public/index.html'
-run 'rm public/images/rails.png'
-#run 'rm public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
-#run 'rm public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
+rm_f 'README' # Needed for rake doc:rails for some reason.
+rm_f 'doc/README_FOR_APP' # Needed for rake doc:app for some reason.
+rm_f 'public/index.html'
+rm_f 'public/images/rails.png'
+#rm_f 'public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
+#rm_f 'public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
 
 
 ## Default assets.
@@ -340,7 +348,7 @@ pull_file 'config/deploy.rb'
 pull_file 'config/deploy/staging.rb'
 pull_file 'config/deploy/production.rb'
 # Create a config file for the staging environment that we added.
-run 'cp config/environments/production.rb config/environments/staging.rb'
+cp 'config/environments/production.rb', 'config/environments/staging.rb'
 # Set the staging environment to display tracebacks when errors occur.
 environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
 
@@ -350,8 +358,8 @@ rake 'tmp:create'
 
 # Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
 ['tmp', 'log', 'vendor', 'test'].each do |dir|
-  run "mkdir -p #{dir}"
-  run "touch #{dir}/.gitignore"
+  mkdir_p "#{dir}"
+  touch "#{dir}/.gitignore"
 end
 
 # Create the database.
