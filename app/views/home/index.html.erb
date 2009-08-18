@@ -5,7 +5,7 @@
  The site owner has yet to configure the home/index view.
 </p>
 
-<%- if consider_all_requests_local || local_request? -%>
+<%- if local_request? || consider_all_requests_local -%>
 <h3>Site Info</h3>
 <p>
 <%= render :inline => Rails::Info.to_html %>
