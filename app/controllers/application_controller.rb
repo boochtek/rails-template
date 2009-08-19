@@ -3,7 +3,7 @@
 
 class ApplicationController < ActionController::Base
   # Fall back to app/views/default if view file cannot be found in its expected location.
-  include BoochTek::Rails::DefaultViews if const_defined?('BoochTek::Rails::DefaultViews')
+  include BoochTek::Rails::DefaultViews rescue nil
 
   # Define the default layout.
   layout 'application'
