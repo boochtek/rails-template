@@ -2,14 +2,11 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  # Fall back to app/views/default if view file cannot be found.
-  include BoochTek::Rails::DefaultViews
+  # Fall back to app/views/default if view file cannot be found in its expected location.
+  include BoochTek::Rails::DefaultViews if const_defined?('BoochTek::Rails::DefaultViews')
 
   # Define the default layout.
   layout 'application'
-
-  # Look in a app/views/default if a view file cannot be found in its expected location.
-  include BoochTek::Rails::DefaultViews if const_defined?('BoochTek::Rails::DefaultViews')
 
   # Pull in some helpers.
   helper 'javascript'
