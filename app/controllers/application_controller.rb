@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   # Define the default layout.
   layout 'application'
 
+  # Look in a app/views/default if a view file cannot be found in its expected location.
+  include BoochTek::Rails::DefaultViews if const_defined?('BoochTek::Rails::DefaultViews')
+
   # Pull in some helpers.
   helper 'javascript'
 
