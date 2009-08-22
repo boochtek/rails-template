@@ -29,9 +29,10 @@ module Footnotes
       end
       # The fieldset content
       def content
-        '<pre>' + escape(Object.constants.select{|c| ![Class, Module].include?(c.constantize.class)}.sort.map{|c| {c => "#{c.constantize}"}}.to_yaml) + '</pre>'
+        '<pre>' + escape(Object.constants.select{|c| ![Class, Module].include?(c.constantize.class)}.sort.map{|c| {c => " = #{c.constantize.inspect}\n"}}.to_s) + '</pre>'
       end
     end
   end
 end
-Footnotes::Filter.notes += [:current_user, :global_constants]
+Footnotes::Filter.notes -= [:general] # I don't see the point of this item.
+Footnotes::Filter.notes += [:current_user, :global_constants] # Add our custom items.
