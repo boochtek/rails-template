@@ -243,7 +243,7 @@ pull_file 'app/controllers/application_controller.rb'
 if clearance
   gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.7.0', :source => 'http://gems.github.com'
   generate 'clearance'
-  #generate 'clearance_features' # Cucumber feature specs. FIXME: Hangs.
+  generate '--force clearance_features' # Cucumber feature specs. NOTE: Hangs prompting user whether to overwrite 'features/support/paths.rb', if we don't specify --force.
   generate 'clearance_views' # Requires Formtastic to run, which we include below.
   # TODO: Follow instructions at http://ropiku.tumblr.com/post/77138388/clearance-login-with-username to use usernames to sign in, instead of email addresses.
   # TODO: We should define our own fields in the User model. Don't forget to use attr_accessible for any user-updatable fields.

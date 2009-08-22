@@ -2,7 +2,6 @@ BUGS
 ====
 Need a better way to tell the user to install their own gems locally.
     Maybe run 'rake gems', see what's not installed, and inform the user.
-For some reason, generate 'clearance_features' seems to hang.
 I don't like the way git sends lots of "got" and "walk" messages to stderr.
 
 
