@@ -36,7 +36,7 @@
 
     <!-- Make sure all CSS stylesheets come before all JavaScript. (http://code.google.com/speed/page-speed/docs/rtt.html#PutStylesBeforeScripts) -->
     <% # Combine all stylesheets into a single CSS file (possibly excepting IE-specific file(s)), preferably compressed. %>
-    <%= stylesheet_link_merged 'application' %>
+    <%= stylesheet_link_merged 'formtastic', 'application' %>
 
     <!-- Make ABBR elements work in all versions of IE. See http://xopus.com/devblog/2008/style-unknown-elements.html -->
     <script type="text/javascript">document.createElement('abbr');</script>

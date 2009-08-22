@@ -267,6 +267,8 @@ end
 plugin 'validation_reflection', :git => 'http://github.com/redinger/validation_reflection.git', :submodule => true
 plugin 'country-select', :git => 'http://github.com/rails/iso-3166-country-select.git', :submodule => true
 plugin 'formtastic', :git => 'http://github.com/justinfrench/formtastic.git', :submodule => true
+generate 'formtastic_stylesheets'
+rm_f 'public/stylesheets/formtastic_changes.css'
 
 
 ## My personal plugins.
