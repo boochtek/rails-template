@@ -142,6 +142,9 @@ rake 'gems:install' rescue puts 'Please run rake gems:install as root, to instal
 
 # Create spec directory structure.
 generate 'rspec'
+# Use the 'profile' format, to show 10 slowest specs. (Includes all the info the progress format does, as well.)
+gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
+
 
 # Pull in RSpec helpers from a subdirectory. TODO: Should we divide these into options, matchers, and helpers?
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
