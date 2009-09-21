@@ -122,6 +122,24 @@ pull_file 'config/database.yml'
 # Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
 rake 'db:create:all'
 
+# Use the Bullet gem to alert developers of unoptimized SQL queries.
+gem 'flyerhzm-bullet', :lib => 'bullet', :version => '>= 1.5', :source => 'http://gems.github.com', :env => [:development, :test]
+append_file 'config/environments/development.rb', %{
+config.after_initialize do
+  Bullet.enable = true
+  Bullet.bullet_logger = true
+  Bullet.console = true
+  Bullet.rails_logger = true
+  Bullet.disable_browser_cache = true
+  begin
+    require 'ruby-growl'
+    Bullet.growl = true
+  rescue MissingSourceFile
+    Bullet.alert = true
+  end
+end
+}
+
 
 ## Testing frameworks.
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
