@@ -78,18 +78,18 @@ end
 # TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
-  gem 'data_objects', :version => '0.9.12'
-  gem 'do_sqlite3', :version => '0.9.12', :env => [:development, :test]
-  gem 'do_mysql', :version => '0.9.12', :env => [:production, :staging]
-  gem 'dm-core', :version => '0.9.11'
-  gem 'dm-migrations', :version => '0.9.11'
-  gem 'dm-validations', :version => '0.9.11'
-  gem 'dm-timestamps', :version => '0.9.11'
-  #gem 'dm-transaction', :version => '0.9.11' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
-  # Not sure if I should be using rails_datamapper or datamapper4rails.
-  gem 'rails_datamapper', :version => '0.9.11' # FIXME: Not a valid gem at this point; have to pull manually from GitHub datamapper/dm-more.
+  gem 'data_objects', :version => '0.10.0'
+  gem 'do_sqlite3', :version => '0.10.0', :env => [:development, :test]
+  gem 'do_mysql', :version => '0.10.0', :env => [:production, :staging]
+  gem 'dm-core', :version => '0.10.0'
+  gem 'dm-migrations', :version => '0.10.0'
+  gem 'dm-validations', :version => '0.10.0'
+  gem 'dm-timestamps', :version => '0.10.0'
+  #gem 'dm-transaction', :version => '0.10.0' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
+  # Not sure if I should be using rails_datamapper or datamapper4rails -- rails_datamapper stays synched w/ DataMapper, so I suspect it's the best bet.
+  gem 'rails_datamapper', :version => '0.10.0'
   #gem "datamapper4rail", :lib => 'datamapper4rails' # work around the typo
-  config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it
+  config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it.
   generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
   puts "NOTE: For DataMapper models, use 'script/generate rspec_dm_model --skip-migration --skip-fixture' instead of 'script/generate rspec_model --skip-fixture'."
@@ -206,7 +206,7 @@ append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.2.2'
+gem 'haml', :version => '>= 2.2.5'
 run 'haml --rails .'
 
 
