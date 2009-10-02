@@ -15,10 +15,36 @@ Break this up into several smaller templates?
 
 TODO
 ====
-Test using formtastic, crud_views, Clearance plugins.
+Add some CSS.
+    Make formtastic stuff look presentable.
+        form.formtastic fieldset ol li {display: block}
+        li.string input is set to width:74%, but li.password input is not.
+        remove (most padding-left from fieldset.buttons)
+
+Test using Clearance.
+    Add before_filter :authenticate to controllers we need to protect.
+    Add to app_controller:
+      private
+      def sign_in(user)
+        # store current time to display "last signed in at" message
+        user.update_attribute(:last_signed_in_at, Time.now)
+        super user
+      end
+    end
+    Go to pages for /sign_up, /sign_in, /sign_out, /users/1/password, /users/1/password/edit, /users/1, 
+    By default, allows users to sign up (/sign_up == /users/new) themselves.
+    Need to create a route for our own user-management stuff (users show/index/edit)
+        Or just create the route for ALL of user, and then:
+            class UsersController < Clearance::UsersController
+            end
+    Need to use attr_accessible :first_name, :last_name, ... on User model.
+
+Work on CrudViews:
+    Create simple show_for, index_for.
+
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
     Name the generator "crud_resource", have it do model, controller, route.
-        Also "crud_controller" (no model), "model", "route".
+        Also "crud_controller" (no model), "crud_model", "crud_route".
 Test/refactor my custom RSpec stuff.
 Make sure we have a favicon (both that we defined in application layout) and robots.txt.
     Make sure app will run "out of the box" without errors or missing files.
@@ -35,9 +61,14 @@ Semi-manual testing. (Make this a rake task, to augment the default test.)
     ./script/generate rspec_model thing name:string age:integer admin:boolean
     rake db:migrate
     ./script/generate rspec_controller things
+    # Add to config/routes.rb: map.resources 'things', :member => { :delete => :get }
     # Edit app/controllers/things_controller.rb, to add crud_actions.
+    mkdir app/views/default
+    # Create and edit app/views/default/index.html.erb: <pre><%= crud.items.to_yaml %></pre>
+    # Create and edit app/views/default/new.html.erb: <% semantic_form_for crud.item do |form| %><%= form.inputs + form.buttons %><% end %>
     ./script/server -p 9070 &
     open http://localhost:9070/things
+    open http://localhost:9070/things/new
     # Test the site functionality.
     kill %
 Pull in BaseHTML stuff.
@@ -85,4 +116,72 @@ More rake tasks.
     css:compress (asset:packager:build_all should cover this)
     javascript:compress (asset:packager:build_all should cover this)
 Grab some more ideas from BigOldRailsTemplate.
+
+From DataMapper/extlib
+======================
+# Methods I like, pulled from http://github.com/datamapper/extlib/.
+# TODO/FIXME: Need to guard against redefining these.
+class Object
+  def meta_class() class << self; self end end
+  def in?(arrayish,*more)
+    arrayish = more.unshift(arrayish) unless more.empty?
+    arrayish.include?(self)
+  end
+  def blank?
+    nil? || (respond_to?(:empty?) && empty?)
+  end
+end
+module ObjectSpace
+  class << self
+    def classes
+      klasses = []
+      ObjectSpace.each_object(Class) {|o| klasses << o}
+      klasses
+    end
+  end
+end
+class NilClass
+  def blank?
+    true
+  end
+end
+class TrueClass
+  def blank?
+    false
+  end
+end
+class FalseClass
+  def blank?
+    true
+  end
+end
+class Numeric
+  def blank?
+    false
+  end
+end
+class Pathname
+  def /(path)
+    (self + path).expand_path
+  end
+end
+class String
+  def blank?
+    strip.empty?
+  end
+  def /(o)
+    File.join(self, o.to_s)
+  end
+end
+require 'date'
+class DateTime
+  def to_time
+    Time.parse self.to_s
+  end
+end
+class Time
+  def to_datetime
+    DateTime.new(year, month, day, hour, min, sec, Rational(gmt_offset, 24 * 3600))
+  end
+end
 
