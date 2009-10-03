@@ -78,16 +78,16 @@ end
 # TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
-  gem 'data_objects', :version => '0.10.0'
-  gem 'do_sqlite3', :version => '0.10.0', :env => [:development, :test]
-  gem 'do_mysql', :version => '0.10.0', :env => [:production, :staging]
-  gem 'dm-core', :version => '0.10.0'
-  gem 'dm-migrations', :version => '0.10.0'
-  gem 'dm-validations', :version => '0.10.0'
-  gem 'dm-timestamps', :version => '0.10.0'
-  #gem 'dm-transaction', :version => '0.10.0' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
+  gem 'data_objects', :version => '0.10.1'
+  gem 'do_sqlite3', :version => '0.10.1', :env => [:development, :test]
+  gem 'do_mysql', :version => '0.10.1', :env => [:production, :staging]
+  gem 'dm-core', :version => '0.10.1'
+  gem 'dm-migrations', :version => '0.10.1'
+  gem 'dm-validations', :version => '0.10.1'
+  gem 'dm-timestamps', :version => '0.10.1'
+  #gem 'dm-transaction', :version => '0.10.1' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
   # Not sure if I should be using rails_datamapper or datamapper4rails -- rails_datamapper stays synched w/ DataMapper, so I suspect it's the best bet.
-  gem 'rails_datamapper', :version => '0.10.0'
+  gem 'rails_datamapper', :version => '0.10.1'
   #gem "datamapper4rail", :lib => 'datamapper4rails' # work around the typo
   config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it.
   generate 'dm_install' # install datamapper rake tasks
@@ -147,11 +147,11 @@ end
 # NOTE: Rails (2.3.2, at least) places the config.gem statements in the reverse order that we specify them here.
 gem 'rspec', :lib => false, :version => '>= 1.2.8'
 gem 'rspec-rails', :lib => false, :version => '>= 1.2.7'
-gem 'cucumber', :lib => false, :version => '>= 0.3.94'
+gem 'cucumber', :lib => false, :version => '>= 0.3.104'
 gem 'webrat', :lib => false, :version => '>= 0.4.4'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.0', :source => 'http://gems.github.com'
-gem 'rr', :lib => 'rr', :version => '>= 0.10.0'
+gem 'rr', :lib => 'rr', :version => '>= 0.10.4'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
@@ -227,7 +227,7 @@ append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.2.5'
+gem 'haml', :version => '>= 2.2.6'
 run 'haml --rails .'
 
 

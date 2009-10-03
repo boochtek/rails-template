@@ -1,4 +1,5 @@
 # This provides an inverse of [a,b,c].should include(x) -- x.should be_in([a, b, c]); (Craig Buchek)
+# NOTE: If we define Object#in? we don't need this RSpec helper!
 
 Spec::Matchers.define :be_in do |expected|
   description { "be a member of (included in) #{expected}" }

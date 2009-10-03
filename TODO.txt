@@ -42,6 +42,8 @@ Test using Clearance.
 Work on CrudViews:
     Create simple show_for, index_for.
 
+Improve initial deployment.
+    Have cap deploy:setup prompt for database name/user/password, and build the shared database.yml instead of just leaving a blank one.
 Flesh out generators; use Shoulda and RSpec 'it' syntax.
     Name the generator "crud_resource", have it do model, controller, route.
         Also "crud_controller" (no model), "crud_model", "crud_route".
@@ -121,6 +123,7 @@ From DataMapper/extlib
 ======================
 # Methods I like, pulled from http://github.com/datamapper/extlib/.
 # TODO/FIXME: Need to guard against redefining these.
+# NOTE: If we define in?, we can get rid of the RSpec be_in matcher.
 class Object
   def meta_class() class << self; self end end
   def in?(arrayish,*more)
