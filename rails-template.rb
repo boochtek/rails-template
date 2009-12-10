@@ -123,7 +123,7 @@ pull_file 'config/database.yml'
 rake 'db:create:all'
 
 # Use the Bullet gem to alert developers of unoptimized SQL queries.
-gem 'flyerhzm-bullet', :lib => 'bullet', :version => '>= 1.5', :source => 'http://gems.github.com', :env => [:development, :test]
+gem 'bullet', :version => '>= 1.7,2', :source => 'http://gemcutter.org', :env => [:development, :test]
 append_file 'config/environments/development.rb', %{
 config.after_initialize do
   Bullet.enable = true
