@@ -79,16 +79,14 @@ end
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.10.1'
-  gem 'do_sqlite3', :version => '0.10.1', :env => [:development, :test]
+  gem 'do_sqlite3', :version => '0.10.1.1', :env => [:development, :test]
   gem 'do_mysql', :version => '0.10.1', :env => [:production, :staging]
-  gem 'dm-core', :version => '0.10.1'
-  gem 'dm-migrations', :version => '0.10.1'
-  gem 'dm-validations', :version => '0.10.1'
-  gem 'dm-timestamps', :version => '0.10.1'
-  #gem 'dm-transaction', :version => '0.10.1' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
-  # Not sure if I should be using rails_datamapper or datamapper4rails -- rails_datamapper stays synched w/ DataMapper, so I suspect it's the best bet.
-  gem 'rails_datamapper', :version => '0.10.1'
-  #gem "datamapper4rail", :lib => 'datamapper4rails' # work around the typo
+  gem 'dm-core', :version => '0.10.2'
+  gem 'dm-migrations', :version => '0.10.2'
+  gem 'dm-validations', :version => '0.10.2'
+  gem 'dm-timestamps', :version => '0.10.2'
+  #gem 'dm-transaction', :version => '0.10.2' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
+  gem 'rails_datamapper', :version => '0.10.2'
   config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it.
   generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
@@ -123,7 +121,7 @@ pull_file 'config/database.yml'
 rake 'db:create:all'
 
 # Use the Bullet gem to alert developers of unoptimized SQL queries.
-gem 'bullet', :version => '>= 1.7,2', :source => 'http://gemcutter.org', :env => [:development, :test]
+gem 'bullet', :version => '>= 1.7.6', :env => [:development, :test]
 append_file 'config/environments/development.rb', %{
 config.after_initialize do
   Bullet.enable = true
@@ -145,13 +143,13 @@ end
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
 # TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
 # NOTE: Rails (2.3.2, at least) places the config.gem statements in the reverse order that we specify them here.
-gem 'rspec', :lib => false, :version => '>= 1.2.8'
-gem 'rspec-rails', :lib => false, :version => '>= 1.2.7'
-gem 'cucumber', :lib => false, :version => '>= 0.3.104'
-gem 'webrat', :lib => false, :version => '>= 0.4.4'
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.0', :source => 'http://gems.github.com'
-gem 'rr', :lib => 'rr', :version => '>= 0.10.4'
+gem 'rspec', :lib => false, :version => '>= 1.3.0'
+gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
+gem 'cucumber', :lib => false, :version => '>= 0.6.3'
+gem 'webrat', :lib => false, :version => '>= 0.7.0'
+gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.3', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
+gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
+gem 'rr', :lib => 'rr', :version => '>= 0.10.10'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
@@ -227,7 +225,7 @@ append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.2.6'
+gem 'haml', :version => '>= 2.2.21'
 run 'haml --rails .'
 
 
@@ -240,7 +238,7 @@ gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
-JQUERY_VERSION = '1.3.2'
+JQUERY_VERSION = '1.4.2'
 file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js").read
 pull_file 'app/helpers/javascript_helper.rb'
 #gem 'jrails'
@@ -262,7 +260,7 @@ pull_file 'app/controllers/application_controller.rb'
 ## Authentication
 # TODO: Ask which one to use. Probably want to default to using OpenID at "login.#{my_domain}".
 if clearance
-  gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.7.0', :source => 'http://gems.github.com'
+  gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.8.8', :source => 'http://gems.github.com'
   generate 'clearance'
   generate '--force clearance_features' # Cucumber feature specs. NOTE: Hangs prompting user whether to overwrite 'features/support/paths.rb', if we don't specify --force.
   generate 'clearance_views' # Requires Formtastic to run, which we include below.
@@ -411,7 +409,7 @@ rake 'spec'
 run 'rake stats > doc/stats.txt'
 run 'rake notes > doc/notes.txt'
 
-# Set up .gitignore file.
+# Set up .gitignore file. We load it from here, instead of using pull_file, because the template itself has its own .gitignore file.
 file '.gitignore', <<END
 # NOTE: We're NOT ignoring config/database.yml, because we're pulling the production passwords from a separate file.
 .DS_Store

@@ -15,12 +15,24 @@ Break this up into several smaller templates?
 
 TODO
 ====
+Add to config/environments/development.rb:
+    # Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
+    if "irb" == $0
+      ActiveRecord::Base.logger = Logger.new(STDOUT)
+    end
+    Or add this to ~/.irbrc:
+        ActiveRecord::Base.logger = Logger.new(STDOUT) if Object.const_defined?('ActiveRecord')
+Consider adding RailRoad (http://railroad.rubyforge.org/) to generate model diagrams.
+    Requires GraphViz.
+    Perhaps just create a doc:diagram:model rake task that looks for it.
 Add some CSS.
     Make formtastic stuff look presentable.
         form.formtastic fieldset ol li {display: block}
         li.string input is set to width:74%, but li.password input is not.
         remove (most padding-left from fieldset.buttons)
 
+Use Warden and Devise for authentication.
+    Add include Devise::TestHelpers to Controller and View specs (but not integration specs).
 Test using Clearance.
     Add before_filter :authenticate to controllers we need to protect.
     Add to app_controller:
@@ -80,6 +92,11 @@ Pull in BaseHTML stuff.
     CSS fragment
         Tables
         Forms
+Upgrade to hoptoad_notifier gem.
+    generate hoptoad --api-key your_key_here
+    HoptoadNotifier.configure do |config|
+      config.api_key 'your_key_here'
+    end
 jQuery functionality
     Extract my BoochTek jQuery extensions into a separate repository.
         Put them in a 'boochtek' sub-directory, pull that in via git submodule.
@@ -105,6 +122,7 @@ Add more plugins:
     Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
     jRails (maybe, or just use hand-written jQuery) - probably include it just in case.
     Exceptional (in addition to HopToad and ExceptionNotifier).
+    http://github.com/engineyard/rails_metrics - metrics pulled from ActiveSupport notifications.
 Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 Add custom generator for Blue Ridge javascript_specs.
     What's wrong with the ones that come with Blue Ridge?
@@ -118,6 +136,7 @@ More rake tasks.
     css:compress (asset:packager:build_all should cover this)
     javascript:compress (asset:packager:build_all should cover this)
 Grab some more ideas from BigOldRailsTemplate.
+
 
 From DataMapper/extlib
 ======================
