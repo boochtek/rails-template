@@ -1,0 +1,258 @@
+Rails 3.0
+=========
+Creating a new app.
+
+PROJECT=rails3-test
+rails $PROJECT --template rails3-template.rb --skip-testunit --skip-prototype #--skip-activerecord
+cd $PROJECT
+
+gem 'rspec', :lib => false, :version => '>= 1.3.0'
+gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
+rake 'db:create:all'
+rake 'db:migrate'
+rake 'db:seed'
+run 'bundle check'
+run 'bundle install'
+run 'rails generate rspec:install'
+rake 'spec --trace'
+rails server
+
+
+
+Bugs
+    In template, gem command not working.
+        Need to put line breaks between gem lines in Gemfile.
+        Need to put quotes around version numbers.        
+    'rails server' uses Webrick instead of mongrel. (3864)
+        Add this to Gemfile: gem "mongrel", :group => :development
+        Or run rails --server mongrel
+    'rails server --help' doesn't show any of the default settings. (3910)
+    'rails server --help' shows the help info twice. (3874)
+Plugins to use
+    rspec-rails 2.0.0 --pre (rspec rspec-core rspec-expectations rspec-mocks rr)
+    devise 1.1.0 --pre (warden >= 0.6.4)
+        Example application at github.com/plataformatec/devise_example
+        ruby script/generate devise_install # Then edit the config in the initializer.
+        ruby script/generate devise User
+        ruby script/generate devise_views
+        class User < ActiveRecord::Base
+          devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :activatable, :registerable, :timeoutable
+        end
+        create_table :users do |t|
+          t.authenticatable
+          t.confirmable
+          t.recoverable
+          t.rememberable
+          t.trackable
+          t.timestamps
+        end
+        Add routing:
+            map.devise_for :users, :as => "users", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock' }
+        Use in the controllers (NOTE that "user" in the method names is due to use of the User model and/or the devise_for routing):
+            before_filter :authenticate_user!
+            user_signed_in?
+            current_user
+            user_session
+    http://github.com/rails/jquery-ujs
+        Copy src/rails.js to public/javascripts/jquery.rails.js
+        # Tell JavaScript how to add CSRF-prevention tokens.
+        <%= csrf_meta_tag %>
+        # Load jQuery and jQuery Rails plugin.
+        javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"
+        javascript_include_tag 'jquery.rails.js'
+
+Can now use these in Rails templates:
+    remove_file 'filename'
+    create_file 'Gemfile' { puts 'text of file contents'}
+    apply 'template file to include.rb'
+    run 'bundle install'
+    run 'rails generate rspec:install'
+    run 'rails generate scaffold Person name:string'    
+    run 'rake spec --trace'
+    gsub_file 'config/application.rb', /require 'rails\/all'/ do
+    <<-RUBY
+    # Pick the frameworks you want:
+    require 'action_controller/railtie'
+    require 'action_mailer/railtie'
+    require 'dm-rails/railtie'
+    rake 'db:seed'
+
+Gemfile
+    gem 'data_objects',      '~> 0.10.1'
+    gem 'do_sqlite3',        '~> 0.10.1'
+    #gem 'do_mysql',          '~> 0.10.1'
+    git 'git://github.com/snusnu/dm-core.git', 'branch' => 'active_support'
+    git "git://github.com/snusnu/dm-more.git", 'branch' => 'active_support'
+    gem 'dm-core',           '~> 0.10.2'
+    gem 'dm-types',          '~> 0.10.2'
+    gem 'dm-validations',    '~> 0.10.2'
+    gem 'dm-constraints',    '~> 0.10.2'
+    gem 'dm-aggregates',     '~> 0.10.2'
+    gem 'dm-timestamps',     '~> 0.10.2'
+    gem 'dm-migrations',     '~> 0.10.2'
+    gem 'dm-observer',       '~> 0.10.2'
+    git 'git://github.com/datamapper/dm-rails.git'
+    gem 'dm-rails', '~> 0.10.2'
+    git 'git://github.com/rspec/rspec.git'
+    git 'git://github.com/rspec/rspec-core.git'
+    git 'git://github.com/rspec/rspec-expectations.git'
+    git 'git://github.com/rspec/rspec-mocks.git'
+    git 'git://github.com/rspec/rspec-rails.git'
+    group(:test) do
+      gem 'rspec',              '2.0.0.a8'
+      gem 'rspec-core',         '2.0.0.a8', :require => 'rspec/core'
+      gem 'rspec-expectations', '2.0.0.a8', :require => 'rspec/expectations'
+      gem 'rspec-mocks',        '2.0.0.a8', :require => 'rspec/mocks'
+      gem 'rspec-rails',        '2.0.0.a9'
+    end
+
+Converting plugins/gems from 2.x to 3.x:
+    Make everything a gem.
+        Use newgem or jeweler to create it.
+        Be sure to specify all dependencies, including Rails' default gems.
+        Tell users to add it to the Gemfile.
+            Or add this to lib/my_gem.rb:
+                module MyGem
+                  require 'lib/my_gem/railtie' if defined?(Rails)
+                end
+    If it needs to be an engine, start with the code at http://github.com/josevalim/enginex
+    Explicitly require any Rails dependencies (like ActiveRecord).
+        require "active_record" 
+        require "your_lib/extension"
+        ActiveRecord::Base.class_eval { include YourLib::Extension }
+    Iff you hook into Rails, make the plugin a Railtie:
+        # Require any railties that you intend to extend.
+        require Òaction_controller/railtie
+        class TestingFu < Rails::Railtie
+          # This creates config.testing_fu in the user's Application
+          railtie_name :testing_fu
+          rake_task do
+            load "testing_fu/tasks.rake" 
+          end
+          generators do
+            require "path/to/my_railtie_generator"
+          end
+          # specify the default generators for test frameworks
+          config.generators.test_framework :testing_fu
+          # you can also specify :before or :after to ensure that
+          # your initializer block runs before or after another
+          # initializer block
+          initializer :setup_my_plugin do |app|
+            # in here, I have access to the user's application,
+            # which gives me access to app.config
+          end
+        end
+    Iff you want to be an engine, use above example, but inherit from Rails::Engine and use engine_name instead f railtie_name.
+        Engines pull things (models, controllers, helpers and metals) in from their app subdirectory.
+        Engines load routes at "config/routes.rb".
+        Engines automatically load tasks at "lib/tasks/*".
+    Submit the plugin to railsplugins.org site.
+When converting an app from 2.x to 3.x:
+    Install the beta version of Rails:
+        sudo gem install tzinfo builder memcache-client rack rack-test rack-mount erubis mail text-format thor bundler i18n
+        sudo gem install rails --prerelease
+    Use only flash[:notice] and flash[:alert], if possible.
+    flash[:notice] = "message"; redirect_to url -> redirect_to url, :notice => "message"
+    To start your app on Edge Rails:
+        rails myapp --edge
+    Use the http://github.com/rails/rails_upgrade plugin to automate as much as possible.
+        Read http://omgbloglol.com/post/364624593/rails-upgrade-is-now-an-official-plugin and http://omgbloglol.com/post/353978923/the-path-to-rails-3-approaching-the-upgrade
+        rails plugin install git://github.com/rails/rails_upgrade.git
+        rake rails:upgrade:check
+        rake rails:upgrade:gems
+        rake rails:upgrade:routes
+    Move config.gem items in config/environment.rb to Gemfile.
+    Create the config/application.rb file.
+        Move configuration items from config/environment.rb to config/application.rb.
+    No more script directory.
+        script/server -> rails server
+        script/console -> rails console
+    Use new routing syntax.
+    Rails application generation has extra flags to skip installation of Test::Unit, ActiveRecord, Prototype, and Git.
+    File.join(RAILS_ROOT, "path") -> Rails.root.join("path")
+    Rails.env == 'development' -> Rails.env.development?
+    RAILS_ROOT -> Rails.root
+    RAILS_ENV -> Rails.env
+    RAILS_DEFAULT_LOGGER -> Rails.logger
+    Don't need to explicitly call protect_from_forgery.
+    Can remove cookie_verifier_secret and session_store config from ApplicationController.
+        They're now in their own initializers.
+    Figure out how to use Responders effectively.
+    filter_parameter_logging :password -> config.filter_parameters << :password
+    ActionController::Routing::Routes.draw -> AppName::Application.routes
+    named_scope -> scope
+    save(false) -> save(:validate => false)
+        Note that I prefer to use object.save if object.valid?
+    model.errors.on -> model.errors[]
+    ActiveRecord::Base.colorize_logging -> Rails::Subscriber.colorize_logging
+    config.active_record.colorize_logging -> or config.colorize_logging
+    Use new-style ActiveRecord (ActiveRelation) query syntax
+        ModelName.where(:x => x).group(:suit).order(:rank).limit(10).last
+    Learn how to use Object#presence effectively.
+        Returns the object if itÕs #present? otherwise returns nil.
+    Use new-style validations.
+        validates :attribute1, :presence => true
+        validates :attribute2, :length => { :minimum => 6, :maximum => 25 }
+        validates :attribute3, :inclusion => { :in => [1,2,4,8,16,32,64,128] }
+        validates :attribute4, :format => { :with => /blah/, :on => :create }
+        validates :attribute5, :numericality => true
+    Move all mailers into app/mailers.
+    Move observers into app/observers.
+Convert plugins to use Railties
+    if Rails::VERSION::MAJOR == 2
+      Rails.configuration.middleware.use Rack::Cache,
+        :metastore => "file:#{Rails.root + "cache/rack/meta"}",
+        :entitystore => "file:#{Rails.root + "cache/rack/body"}",
+        :verbose => true
+    else
+      module Cache
+        class Railtie < Rails::Railtie
+          railtie_name :rails_cache
+     
+          initializer "rails_cache.insert_rack_cache" do |app|
+            app.config.middleware.use Rack::Cache,
+              :metastore => "file:#{Rails.root + "cache/rack/meta"}",
+              :entitystore => "file:#{Rails.root + "cache/rack/body"}",
+              :verbose => true
+          end
+        end
+      end
+    end
+Create new custom generators.
+    Test them with Rails::Generators::TestCase.
+Use new routing syntax.
+    MyAppName::Application.routes do
+      resources :products do # Still should normally use RESTful routes.
+        member do
+          get :short
+          post :toggle
+        end
+        collection do
+          get :sold
+        end
+      end
+      match "/:controller(/:action(/:id))(.:format)" # Default. Note that optional parts must now be explicitly put in parentheses.
+      match "/foo", :to => redirect("/bar")
+      match "/main/:id", :to => "main#home" # Same as :to => {:controller => "main", :action => "home"}.
+      match "/main/:id", :to => "main#home", :as => :homepage # Set the name for named routes and path/url helpers.
+      post "/main/:id", :to => "main#home" # Can also specify the HTTP method here.
+      match "/home", :to => HomeApp # Can specify a Rack app.
+      match "/foo/bar", :to => "foo#bar", :constraints => {:subdomain => /support\d/} # Match only if contraints (properties of the request object) all match.
+      scope '/admin' do # Create a scope around a block of matchers.
+        match "/:action", :to => "admin"
+      end
+      constraints(:subdomain => "support") do # There are several matchers that can be used as block scopers.
+        match "/foo/bar", :to => "foo#bar"
+      end
+    end
+Bring back the app:rename task, since the app name is used lots of places.
+    Note that app name cannot have dashes -- only alphanum + underscores.
+Figure out how to use config.generators in config files.
+Use Gemfile instead of config.gem in the config files.
+    Do Rails templates handle this properly?
+    Only include the testing gems in test mode:
+        only :test do
+          gem 'rspec'
+          gem 'webrat'
+        end
+
