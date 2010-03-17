@@ -10,11 +10,29 @@ TO CONSIDER
 Break this up into several smaller templates?
     Then use 'rake rails:template LOCATION=~/template.rb' to load them all.
         Can we run that rake task from within the main template? I don't see why not.
-    Or use load_template.
+    Or use load_template (apply in Rails 3).
 
 
 TODO
 ====
+Add hobofields >= 1.0.0.
+    Will want to use --skip-migration when using model or scaffold generators.
+    Make models look like this:
+        class BlogPost < ActiveRecord::Base
+          fields do
+            title :string # Other types: password, email_address, html, textile, markdown, boolean, date, datetime, float, integer, big_integer, decimal
+            body  :text, :default => ''
+            name  :string, :unique, :required
+            price :decimal, :scale => 4, :precision => 4
+            quantity :integer, :limit => 4
+            timestamps
+          end
+        end
+    Run ./script/genearte hobo_migration.
+        NOTE: It may ask you to verify if something was renamed.
+    Check/edit the migration.
+    Run rake db:migrate.
+Add show_for >= 0.2.0.
 Add to config/environments/development.rb:
     # Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
     if "irb" == $0

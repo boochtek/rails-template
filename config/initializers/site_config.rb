@@ -16,11 +16,11 @@ HOST = (ENV['SERVER_NAME']||'localhost').gsub(/[^A-Za-z0-9._-]/, '') # Ensure we
 CSS_SIGNATURE = HOST.gsub(/[.]/, '-')
 
 # Years and name to list in copyright statements.
-COPYRIGHT_YEARS = '2008, 2009'
+COPYRIGHT_YEARS = '2008, 2009, 2010'
 COPYRIGHT_OWNER = Etc.getpwuid().gecos # NOTE: This probably isn't what you want -- you should really hard-code this.
 
 # Version of jQuery to use.
-JQUERY_VERSION = '1.3.2'
+JQUERY_VERSION = '1.4.2'
 
 # Google Analytics code. Set this to enable Google Analytics on the site.
 GOOGLE_ANALYTICS_CODE = nil

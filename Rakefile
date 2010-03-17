@@ -25,6 +25,6 @@ end
 desc 'Create a new Rails instance from the template.'
 task :rails_test_app do
   puts %x{rm -rf test/rails}
-  options = 'ACTIVERECORD=y DATAMAPPER=n SUBMODULE=n ACTIONMAILER=n ACTIVERESOURCE=n HOPTOAD=n EXCEPTIONNOTIFIER=n DEVISE=y'
+  options = 'ACTIVERECORD=y DATAMAPPER=n SUBMODULE=n ACTIONMAILER=n ACTIVERESOURCE=n HOPTOAD=n EXCEPTIONNOTIFIER=n DEVISE=y OPEN_ID=n'
   puts %x(env #{options} rails --template ./rails-template.rb test/rails)
 end
