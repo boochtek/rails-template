@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation, :confirm_password, :ssn, :social_security_number, :credit_card, :credit_card_number, :cvv, :cvv2
 
   # Activate exception handlers, if we've got them, and we're in production.
-  if ['production', 'staging'].include? ENV['RAILS_ENV']
+  if ['production', 'staging'].include? Rails.env
     if const_defined?('HoptoadNotifier') and Hoptoad.api_key
       include HoptoadNotifier::Catcher
     end
