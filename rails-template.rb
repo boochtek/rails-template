@@ -239,7 +239,7 @@ gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '1.4.2'
-file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://jqueryjs.googlecode.com/files/jquery-#{JQUERY_VERSION}.js").read
+file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
 pull_file 'app/helpers/javascript_helper.rb'
 #gem 'jrails'
 
