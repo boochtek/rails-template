@@ -147,7 +147,7 @@ gem 'rspec', :lib => false, :version => '>= 1.3.0'
 gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
 gem 'cucumber', :lib => false, :version => '>= 0.6.3'
 gem 'webrat', :lib => false, :version => '>= 0.7.0'
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.3', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
+gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
 gem 'rr', :lib => 'rr', :version => '>= 0.10.10'
 # TODO: Only install this if Java is installed on the dev box.
