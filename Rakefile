@@ -4,7 +4,7 @@ task :default => [:test]
 
 desc 'Test creating a new Rails instance.'
 task :test => :rails_test_app do
-  %x{cd test/rails && rake cucumber:all && rake spec}
+  %x{cd test/rails && cucumber && rake spec}
 end
 
 namespace :test do
