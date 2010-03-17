@@ -17,10 +17,10 @@ datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMa
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
-clearance = ENV['CLEARANCE'] ? ENV['CLEARANCE'] == 'y' : yes?('Use Clearance for authentication?')
+devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
 exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
-email = true if exception_notifier || clearance # Force email if we've enabled a plugin that requires it.
+email = true if exception_notifier || devise # Force email if we've enabled a plugin that requires it.
 
 
 # Allow opening URLs as if they are local files.
@@ -258,23 +258,34 @@ pull_file 'app/controllers/application_controller.rb'
 
 
 ## Authentication
-# TODO: Ask which one to use. Probably want to default to using OpenID at "login.#{my_domain}".
-if clearance
-  gem 'thoughtbot-clearance', :lib => 'clearance', :version => '>= 0.8.8', :source => 'http://gems.github.com'
-  generate 'clearance'
-  generate '--force clearance_features' # Cucumber feature specs. NOTE: Hangs prompting user whether to overwrite 'features/support/paths.rb', if we don't specify --force.
-  generate 'clearance_views' # Requires Formtastic to run, which we include below.
-  # TODO: Follow instructions at http://ropiku.tumblr.com/post/77138388/clearance-login-with-username to use usernames to sign in, instead of email addresses.
-  # TODO: We should define our own fields in the User model. Don't forget to use attr_accessible for any user-updatable fields.
-  rake 'db:migrate'
-  # NOTE May need to add these paths to features/support/paths.rb:  when /the sign up page/i; new_user_path; when /the sign in page/i; new_session_path; when /the password reset request page/i; new_password_path
+if devise
+  # Devise and Warden.
+  gem 'warden', :version => '>= 0.9.7'
+  gem 'devise', :version => '>= 1.0.4'
+  gem 'bcrypt-ruby', :version => '>= 2.1.2', :lib => 'bcrypt'
+  generate 'devise_install'
+  generate 'devise User'
+  # Using bcrypt is highly recommended. So we change the Devise configuration and the migration to use it.
+  gsub_file 'config/initializers/devise.rb', /^.*config.encryptor =.*$/, 'config.encryptor = :bcrypt'
+  gsub_file Dir.glob('db/migrate/*_devise_create_users.rb'), /t.authenticatable :encryptor => :sha1/, 't.authenticatable :encryptor => :bcrypt'
+  puts 'NOTE: To use Devise, edit config/initializers/devise.rb, the generated User model, and the migration.'
+  puts '  It is recommended to use bcrypt for encryption. (Change in the migration and initializer.)'
+  puts '  After running the migration, you can use these in your controllers:'
+  puts '    before_filter :authenticate_user!'
+  puts '    user_signed_in?'
+  puts '    current_user'
+  puts '    user_session'
+  puts '  In controller specs, include Devise::TestHelpers in ActionController::TestCase, then sign_in @user and sign_out @user.'
+  puts '  In cucumber feature stories, '
 end
-#plugin 'restful-authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule => true
-#gem 'ruby-openid' :lib => 'openid'
-#plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
-#generate 'authenticated', 'user session' # Requires ActiveRecord.
-#rake 'db:sessions:create'
-#rake 'open_id_authentication:db:create'
+if open_id
+  # NOTE: We should probably use an OpenID strategy from within Warden and Devise instead of open_id_authentication. See http://blog.bitfluent.com/post/318173262/openid-strategy-for-warden for a good start, as well as http://groups.google.com/group/plataformatec-devise/browse_thread/thread/2dd6d14f59d21e83/f033896e83ac8b70.
+  #gem 'ruby-openid' :lib => 'openid'
+  #plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
+  #generate 'authenticated', 'user session' # Requires ActiveRecord.
+  #rake 'db:sessions:create'
+  #rake 'open_id_authentication:db:create'
+end
 
 
 ## Authorization
