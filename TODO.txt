@@ -33,13 +33,6 @@ Add hobofields >= 1.0.0.
     Check/edit the migration.
     Run rake db:migrate.
 Add show_for >= 0.2.0.
-Add to config/environments/development.rb:
-    # Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
-    if "irb" == $0
-      ActiveRecord::Base.logger = Logger.new(STDOUT)
-    end
-    Or add this to ~/.irbrc:
-        ActiveRecord::Base.logger = Logger.new(STDOUT) if Object.const_defined?('ActiveRecord')
 Consider adding RailRoad (http://railroad.rubyforge.org/) to generate model diagrams.
     Requires GraphViz.
     Perhaps just create a doc:diagram:model rake task that looks for it.

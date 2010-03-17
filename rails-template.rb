@@ -396,6 +396,9 @@ cp 'config/environments/production.rb', 'config/environments/staging.rb'
 # Set the staging environment to display tracebacks when errors occur.
 environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
 
+# Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
+environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :env => :development
+
 
 # Create directory for temp files.
 rake 'tmp:create'
