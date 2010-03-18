@@ -290,7 +290,7 @@ plugin 'validation_reflection', :git => 'http://github.com/redinger/validation_r
 plugin 'country-select', :git => 'http://github.com/rails/iso-3166-country-select.git', :submodule => true
 plugin 'formtastic', :git => 'http://github.com/justinfrench/formtastic.git', :submodule => true
 generate 'formtastic'
-rm_f 'public/stylesheets/formtastic_changes.css'
+rm_f 'public/stylesheets/formtastic_changes.css' # I'll put my changes in the application.css file.
 
 
 ## My personal plugins.
@@ -320,6 +320,7 @@ rm_f 'public/images/rails.png'
 
 ## Default assets.
 # Add some images used by the HTML, CSS, and JavaScript.
+pull_file 'public/stylesheets/application.css'
 pull_file 'public/images/invalid.gif'
 
 
