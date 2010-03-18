@@ -1,4 +1,4 @@
-module JavascriptHelper
+module JqueryHelper
   # Pull in jQuery from Google (unless dev/test, in which case pull the local copy).
   def jquery_include_tag
     if %w(development test).include?(Rails.env)

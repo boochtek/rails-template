@@ -216,7 +216,7 @@ gem 'haml', :version => '>= 2.2.21'
 run 'haml --rails .'
 
 
-## Remove Prototype JavaScript stuff.
+## Remove Prototype JavaScript stuff and use jQuery instead.
 # Remove the Prototype files.
 %w{prototype controls dragdrop effects}.each do |f|
   rm_f "public/javascripts/#{f}.js"
@@ -225,12 +225,10 @@ end
 gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 # NOTE: We're leaving in ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::PrototypeHelper, and ActionView::Helpers::ScriptaculousHelper. It'd be too difficult to extract them.
 
-
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '1.4.2'
 file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
-pull_file 'app/helpers/javascript_helper.rb'
-#gem 'jrails'
+pull_file 'app/helpers/jquery_helper.rb'
 
 
 ## Error notification.
