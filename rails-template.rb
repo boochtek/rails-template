@@ -234,7 +234,7 @@ pull_file 'app/helpers/javascript_helper.rb'
 ## Error notification.
 if hoptoad
   plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git", :submodule => true
-  file 'config/initializer/hoptoad.rb', open("#{RAILS_TEMPLATE_PATH}/config/initializer/hoptoad.rb").read
+  pull_file 'config/initializers/hoptoad.rb'
   # TODO: Prompt for and change host (default to 'hoptoadapp.com') and api_key config settings.
   # rake 'hoptoad:test'
 end
