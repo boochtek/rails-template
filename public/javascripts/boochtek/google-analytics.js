@@ -68,7 +68,7 @@ jQuery(document).ready(function() {
   });
 
   // Add tracking of anything marked as a 'download' (via class). Inspired by http://www.thewhyandthehow.com/tracking-events-with-google-analytics/
-  jQuery(’a.download’).click(function(){
+  jQuery('a.download').click(function(){
     if ( pageTracker )
     {
       var label = getLabel(this);
