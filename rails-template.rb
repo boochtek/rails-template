@@ -123,21 +123,7 @@ rake 'db:create:all'
 
 # Use the Bullet gem to alert developers of unoptimized SQL queries.
 gem 'bullet', :version => '>= 1.7.6', :env => [:development, :test]
-append_file 'config/environments/development.rb', %{
-config.after_initialize do
-  Bullet.enable = true
-  Bullet.bullet_logger = true
-  Bullet.console = true
-  Bullet.rails_logger = true
-  Bullet.disable_browser_cache = true
-  begin
-    require 'ruby-growl'
-    Bullet.growl = true
-  rescue MissingSourceFile
-    Bullet.alert = true
-  end
-end
-}
+pull_file 'config/initializers/bullet.rb'
 
 
 ## Testing frameworks.
