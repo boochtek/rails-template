@@ -216,12 +216,14 @@ gem 'haml', :version => '>= 2.2.21'
 run 'haml --rails .'
 
 
-# Remove Prototype JavaScript stuff.
-# TODO: Specify the exact files to delete.
-rm_f 'public/javascripts/*.js' # Remove Prototype files.
+## Remove Prototype JavaScript stuff.
+# Remove the Prototype files.
+%w{prototype controls dragdrop effects}.each do |f|
+  rm_f "public/javascripts/#{f}.js"
+end
 # Remove Prototype-using JavaScript from default Rails index page.
 gsub_file 'public/index.html', /<script.*<\/script>/m, ''
-#TODO: Remove Prototype junk from ActionView::Helpers::JavaScriptHelper and ActionView::Helpers::PrototypeHelper, and scriptaculous_helper.
+# NOTE: We're leaving in ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::PrototypeHelper, and ActionView::Helpers::ScriptaculousHelper. It'd be too difficult to extract them.
 
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
