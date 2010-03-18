@@ -230,6 +230,11 @@ JQUERY_VERSION = '1.4.2'
 file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
 pull_file 'app/helpers/jquery_helper.rb'
 
+# Pull in my custom JavaScript code.
+pull_file 'public/javascripts/boochtek.js'
+pull_file 'public/javascripts/boochtek/validation.js'
+pull_file 'public/javascripts/boochtek/google-analytics.js'
+
 
 ## Error notification.
 if hoptoad

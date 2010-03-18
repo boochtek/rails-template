@@ -45,9 +45,9 @@
     <%= jquery_include_tag %>
 
     <!-- Include all other JavaScript files. If production, minimize and combine into a single file. -->
-    <% javascript_files = ['boochtek', 'boochtek.validation', 'application'] %>
-    <% javascript_files += 'boochtek.google-analytics' if GOOGLE_ANALYTICS_CODE %>
-    <%= javascript_include_merged javascript_files %>
+    <% javascript_files = ['boochtek', 'boochtek/validation', 'application'] %>
+    <% javascript_files += 'boochtek/google-analytics' if GOOGLE_ANALYTICS_CODE %>
+    <%= javascript_include_merged *javascript_files %>
 
     <% # TODO: More header/footer stuff. %>
     <%= yield(:head) %>
