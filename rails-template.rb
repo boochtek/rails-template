@@ -133,6 +133,8 @@ pull_file 'config/initializers/bullet.rb'
 gem 'rspec', :lib => false, :version => '>= 1.3.0'
 gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
 gem 'cucumber', :lib => false, :version => '>= 0.6.3'
+gem 'cucumber-rails', :lib => false, :version => '>= 0.3.0'
+gem 'database_cleaner', :lin => false # Required by cucumber-rails.
 gem 'webrat', :lib => false, :version => '>= 0.7.0'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
@@ -162,8 +164,8 @@ pull_file 'spec/helpers/allow_values.rb'
 pull_file 'spec/helpers/require.rb'
 pull_file 'spec/helpers/rails.rb'
 
-# Create feature directory for Cucumber.
-mkdir_p 'features'
+# Create features directory for Cucumber.
+generate 'cucumber --rspec --webrat'
 
 # Allow use of FactoryGirl factories in Cucumber. FIXME: Doesn't work.
 #run 'echo "require \"#{Rails.root}/spec/factories\"" >> features/support/env.rb'
@@ -396,7 +398,7 @@ environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :en
 rake 'tmp:create'
 
 # Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
-['tmp', 'log', 'vendor', 'test', 'features'].each do |dir|
+['tmp', 'log', 'vendor', 'test'].each do |dir|
   mkdir_p "#{dir}"
   touch "#{dir}/.gitignore"
 end
@@ -407,7 +409,7 @@ rake 'db:migrate' if activerecord
 
 
 # Test the base app.
-run 'cucumber'
+rake 'cucumber'
 rake 'spec'
 #rake 'spec:javascripts' # FIXME: Requires application.js to exist.
 
@@ -464,12 +466,12 @@ puts <<END
 NEXT STEPS:
     CD into the newly created Rails app.
     Edit the constants defined in the "config/initializers/site_config.rb" file.
-    Make sure "rake spec" and "cucumber" run without errors.
+    Make sure "rake spec" and "rake cucumber" run without errors.
     Make sure the app runs: "script/server".
     Commit changes: "git commit -a -m 'Basic site configuration.'"
     TODO: Create a new GIT branch for the new feature.
     Write feature ("script/generate feature feature_name") and feature steps.
-    Run "cucumber". (FAILS)
+    Run "rake cucumber". (FAILS)
     TODO: Add route.
     Write spec.
     Run "rake spec". (FAILS)
@@ -480,9 +482,9 @@ NEXT STEPS:
     Run "rake spec". (PASSES)
     OPTIONAL: Commit the changes: "git commit -a -m 'Refactor blah.'"
     Continue writing specs and code until feature is complete.
-    Run "cucumber". (PASSES)
+    Run "rake cucumber". (PASSES)
     TODO: Merge feature back into master branch.
-    Make sure "rake spec" and "cucumber" still pass.
+    Make sure "rake spec" and "rake cucumber" still pass.
     OPTIONAL: Generate metrics: "rake metrics:all"
     Commit the new feature: "git commit -a -m 'Added xyz feature.'"
     Push to GitHub: "git push".
