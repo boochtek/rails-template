@@ -138,7 +138,7 @@ gem 'database_cleaner', :lin => false # Required by cucumber-rails.
 gem 'webrat', :lib => false, :version => '>= 0.7.0'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
-gem 'rr', :lib => 'rr', :version => '>= 0.10.10'
+gem 'rr', :lib => 'rr', :version => '>= 0.10.11'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
@@ -214,7 +214,7 @@ append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.2.21'
+gem 'haml', :version => '>= 2.2.22'
 run 'haml --rails .'
 
 
@@ -254,8 +254,8 @@ pull_file 'app/controllers/application_controller.rb'
 ## Authentication
 if devise
   # Devise and Warden.
-  gem 'warden', :version => '>= 0.9.7'
-  gem 'devise', :version => '>= 1.0.4'
+  gem 'warden', :version => '0.9.7'
+  gem 'devise', :version => '>= 1.0.5'
   gem 'bcrypt-ruby', :version => '>= 2.1.2', :lib => 'bcrypt'
   generate 'devise_install'
   generate 'devise User'
