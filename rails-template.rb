@@ -12,7 +12,6 @@
 
 
 ## Get user input, via environment variables or prompting the user.
-rails_submodule = ENV['SUBMODULE'] ? (ENV['SUBMODULE'] == 'y') : yes?('Pull in Rails as a GIT sub-module?')
 datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
@@ -67,12 +66,6 @@ end
 
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
-
-
-# Pull in a copy of Rails as a GIT submodule.
-if rails_submodule
-  git "submodule add git://github.com/rails/rails.git vendor/rails"
-end
 
 
 ## DataMapper ORM.
