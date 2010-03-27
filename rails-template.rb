@@ -160,9 +160,9 @@ pull_file 'spec/helpers/rails.rb'
 # Create features directory for Cucumber.
 generate 'cucumber --rspec --webrat'
 
-# Allow use of FactoryGirl factories in Cucumber. FIXME: Doesn't work.
-#run 'echo "require \"#{Rails.root}/spec/factories\"" >> features/support/env.rb'
-#mkdir_p 'spec/factories'
+# Allow use of FactoryGirl factories in Cucumber.
+pull_file 'features/support/factory_girl.rb'
+mkdir_p 'spec/factories'
 
 # TODO: Create some commonly-used feature steps.
 
