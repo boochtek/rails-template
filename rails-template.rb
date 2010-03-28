@@ -157,8 +157,10 @@ pull_file 'spec/helpers/allow_values.rb'
 pull_file 'spec/helpers/require.rb'
 pull_file 'spec/helpers/rails.rb'
 
-# Create features directory for Cucumber.
+# Create features directory for Cucumber, as well as a cucumber config file.
 generate 'cucumber --rspec --webrat'
+gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt'
+
 
 # Allow use of FactoryGirl factories in Cucumber.
 pull_file 'features/support/factory_girl.rb'
@@ -426,6 +428,8 @@ doc/app
 vendor/**/.git
 coverage/*
 autotest_result.html
+rerun.txt
+features/rerun.txt
 public/javascripts/*_[0-9]*.js
 public/stylesheets/*_[0-9]*.css
 public/attachments/*
