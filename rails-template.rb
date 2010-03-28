@@ -168,11 +168,12 @@ mkdir_p 'spec/factories'
 
 # TODO: Create some commonly-used feature steps.
 
-# Specs and steps for email. FIXME: Not working.
+# Specs and steps for email.
 if email
-#  plugin 'email-spec', :git => 'git://github.com/bmabey/email-spec.git', :submodule => true
-#  append_file 'features/support/env.rb', "require 'email_spec/cucumber'"
-#  generate email_spec # TODO: Not sure if I should do this here, or if it's like generating a feature.
+  gem 'email_spec', :lib => 'email_spec', :version => '>= 0.6.2' # See http://github.com/bmabey/email-spec for docs.
+  generate 'email_spec' # Generate email_steps.rb file.
+  pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
+  pull_file 'spec/helpers/email_spec_helper.rb' # Integration into RSpec.
   # USAGE:
   #   In features:
   #     Then I should receive an email
