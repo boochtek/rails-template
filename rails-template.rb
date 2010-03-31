@@ -144,18 +144,20 @@ generate 'rspec'
 gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
 
 
-# Pull in RSpec helpers from a subdirectory. TODO: Should we divide these into options, matchers, and helpers?
+# Pull in RSpec helpers and matchers from a subdirectory.
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
-run 'echo "Dir.glob(File.join(Dir.pwd, \'helpers/**/*.rb\')).each { |file| require file }" >> spec/spec_helper.rb'
-pull_file 'spec/helpers/rr.rb'
-pull_file 'spec/helpers/should_each.rb'
-pull_file 'spec/helpers/its.rb'
-pull_file 'spec/helpers/running.rb'
-pull_file 'spec/helpers/be_in.rb'
-pull_file 'spec/helpers/be_sorted.rb'
-pull_file 'spec/helpers/allow_values.rb'
-pull_file 'spec/helpers/require.rb'
-pull_file 'spec/helpers/rails.rb'
+pull_file 'spec/support/rr.rb'
+pull_file 'spec/support/its.rb'
+pull_file 'spec/support/running.rb'
+pull_file 'spec/support/require.rb'
+pull_file 'spec/support/matchers/be_in.rb'
+pull_file 'spec/support/matchers/be_sorted.rb'
+pull_file 'spec/support/matchers/allow_values.rb'
+pull_file 'spec/support/matchers/rails.rb'
+pull_file 'spec/support/matchers/should_each.rb'
+
+
+email_spec_helper.rb
 
 # Create features directory for Cucumber, as well as a cucumber config file.
 generate 'cucumber --rspec --webrat'
@@ -173,7 +175,7 @@ if email
   gem 'email_spec', :lib => 'email_spec', :version => '>= 0.6.2' # See http://github.com/bmabey/email-spec for docs.
   generate 'email_spec' # Generate email_steps.rb file.
   pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
-  pull_file 'spec/helpers/email_spec_helper.rb' # Integration into RSpec.
+  pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
   # USAGE:
   #   In features:
   #     Then I should receive an email
