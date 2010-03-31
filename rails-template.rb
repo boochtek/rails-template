@@ -144,9 +144,8 @@ generate 'rspec'
 gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
 
 
-# Pull in RSpec helpers and matchers from a subdirectory.
+# Pull in RSpec support files and matchers.
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
-pull_file 'spec/support/rr.rb'
 pull_file 'spec/support/running.rb'
 pull_file 'spec/support/require.rb'
 pull_file 'spec/support/matchers/be_in.rb'
@@ -161,6 +160,11 @@ email_spec_helper.rb
 # Create features directory for Cucumber, as well as a cucumber config file.
 generate 'cucumber --rspec --webrat'
 gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt'
+
+
+# Pull in support for RR mocking in RSpec and Cucumber.
+pull_file 'spec/support/rr.rb'
+pull_file 'features/support/rr.rb'
 
 
 # Allow use of FactoryGirl factories in Cucumber.
