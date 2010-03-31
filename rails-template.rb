@@ -147,7 +147,6 @@ gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
 # Pull in RSpec helpers and matchers from a subdirectory.
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
 pull_file 'spec/support/rr.rb'
-pull_file 'spec/support/its.rb'
 pull_file 'spec/support/running.rb'
 pull_file 'spec/support/require.rb'
 pull_file 'spec/support/matchers/be_in.rb'
