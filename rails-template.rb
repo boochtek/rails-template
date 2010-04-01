@@ -160,7 +160,8 @@ email_spec_helper.rb
 
 # Create features directory for Cucumber, as well as a cucumber config file.
 generate 'cucumber --rspec --webrat'
-gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt'
+gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt' # Move the rerun flag file.
+gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to use when more than one matches.
 
 
 # Pull in support for RR mocking in RSpec and Cucumber.
