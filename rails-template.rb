@@ -148,6 +148,7 @@ gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
 pull_file 'spec/support/running.rb'
 pull_file 'spec/support/require.rb'
+pull_file 'spec/support/shoulda.rb'
 pull_file 'spec/support/matchers/be_in.rb'
 pull_file 'spec/support/matchers/be_sorted.rb'
 pull_file 'spec/support/matchers/allow_values.rb'
