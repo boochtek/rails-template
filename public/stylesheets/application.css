@@ -108,8 +108,10 @@ form { width: 100%; }
 /* Search box should be on the far right. */
 form.search { width: auto; float: right; }
 
-/* Ensure that forms have some space below. */
+/* Ensure that forms have some space below, unless they're in a table. */
 form { margin: 0 0 20px; }
+table form { margin: 0; }
+
 
 /* Make sure search boxes have rounded corners. */
 input[type=search] {
