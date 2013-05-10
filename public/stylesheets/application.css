@@ -13,7 +13,7 @@ body { margin: 12px; }
 /* Base font. */
 html { font-size: 16px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Verdana, sans-serif; }
 
-/* Base monospoaced font. Used for code and output anywhere, including within paragraphs. */
+/* Base mono-spaced font. Used for code and output anywhere, including within paragraphs. */
 pre, code, tt, kbd, samp, var { font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Courier New', Courier, monospace; }
 
 
