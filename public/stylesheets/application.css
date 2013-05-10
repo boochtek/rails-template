@@ -1,1 +1,344 @@
-/* Nothing here yet, but we want to include the file so there's not a 404 trying to load it. */
+/*
+** LAYOUT
+*/
+
+/* Put some spacing around the edges of the page. */ 
+body { margin: 12px; }
+
+
+/*
+** FONTS
+*/
+
+body { font-family: 'Verdana'; }
+
+
+/*
+** LINKS
+*/
+
+/* Don't underline links until they are hovered over. */
+a:link { text-decoration: none; }
+a:link:hover { text-decoration: underline; }
+
+
+/*
+** LISTS
+*/
+
+/* Put definition list terms and definitions on a single line (to save space). TODO: Should limit this to DLs with a specific class. */
+dl dt { font-weight: bold; width: 200px; line-height: 1.5em; }
+dl dd { margin-bottom: 20px; margin-left: 200px; margin-top: -1.5em; }
+
+
+/*
+** TABLES
+*/
+
+/* Allow option to make tables as wide as their containers. */
+table.wide { width: 100%; }
+
+/* Give the tables and cells some borders. */
+/* NOTE: You can't easily override the cell borders for the entire table, unless you make the table borders thicker. */  
+table td, table th { border: 1px solid #888; }
+table { border: 2px solid #666; }
+table thead { border-bottom: 2px solid #666; }
+
+/* Left-align header cells. */
+th { text-align: left; }
+
+/* Give the table cells some reasonable spacing. */ 
+table td, table th { line-height: 18px; }
+table tbody tr th, table tbody tr td { padding: 9px 10px; }
+table thead tr th, table tfoot tr td { padding: 8px 10px 9px; }
+
+/* Give the header, footer, and alternating data lines some subtle background colors to improve readability. */
+table tbody tr:nth-child(even) { background: #eeeeee; }
+table thead, table tfoot { background: #dddddd; }
+
+/* Highlight the row we're hovering over, and make clicking on any part of a cell follow the link. */
+table.hoverable tr:hover { background: #ccccf9; }
+table.hoverable a { display: block; height: 100%; width: 100%; }
+
+/* Tables within forms are special -- make them lighter, don't stripe them, etc. */
+form table, form table thead, form table tfoot, form table tbody tr:nth-child(n) { background: #f8f8f8; }
+form table td, form table th { border: 0px solid #666; }
+form table tfoot { border-top: 1px solid #AAA; }
+
+/* Additional styling for jQuery DataTables. */
+table.dataTable thead th { cursor: pointer; *cursor: hand; }
+table.dataTable thead th.sorting:after { content: ' \21d5'; color: #AAA; }
+table.dataTable thead th.sorting_asc:after { content: ' \21d1'; color: #000; }
+table.dataTable thead th.sorting_desc:after { content: ' \21d3'; color: #000; }
+table.dataTable thead th.sorting_asc_disabled:after { content: ' \21d1'; color: #AAA; }
+table.dataTable thead th.sorting_desc_disabled:after { content: ' \21d3'; color: #AAA; }
+
+
+/*
+** BUTTONS
+*/
+
+/* By default, buttons are a nice blue color, with slightly rounded corners. */
+button, input[type=button], input[type=submit] {
+    background-color: rgb(0, 96, 255);
+    color: white;
+    font-weight: bold;
+    border-radius: 3px 3px 3px 3px;
+    border: 1px solid rgba(0, 72, 192, 0.5);
+    padding: 5px;
+}
+
+/* Buttons in inline forms need to be a bit shorter. */
+form.search button, form.search input[type=button], form.search input[type=submit] {
+    padding: 2px 5px;
+}
+
+/* Right-align Submit buttons in table footer within a form. */
+form table tfoot input[type=submit] { float: right; }
+
+
+/*
+** FORMS
+*/
+
+/* Forms are the full width of the container by default. */
+form { width: 100%; }
+
+/* Search box should be on the far right. */
+form.search { width: auto; float: right; }
+
+/* Ensure that forms have some space below. */
+form { margin: 0 0 20px; }
+
+/* Make sure search boxes have rounded corners. */
+input[type=search] {
+    font-size: 100%;
+    -webkit-appearance: searchfield;
+    padding-right: 14px;
+    padding-left: 14px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    padding-right: 4px \9;
+    padding-left: 4px \9;
+    border-radius: 15px;
+    border-style: inset;
+    border-width: 2px;
+}
+
+
+legend {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333333;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.label,
+.badge {
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  font-weight: bold;
+  line-height: 14px;
+  color: #ffffff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #999999;
+}
+.label {
+  border-radius: 3px;
+}
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  border-radius: 9px;
+}
+a.label:hover,
+a.badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn .label,
+.btn .badge {
+  position: relative;
+  top: -1px;
+}
+.btn-mini .label,
+.btn-mini .badge {
+  top: 0;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+label {
+  margin-bottom: 5px;
+}
+textarea {
+  height: auto;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 4px 0 0;
+  *margin-top: 0;
+  /* IE7 */
+
+  margin-top: 1px \9;
+  /* IE8-9 */
+
+  line-height: normal;
+  cursor: pointer;
+}
+input[type="file"],
+input[type="image"],
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="radio"],
+input[type="checkbox"] {
+  width: auto;
+}
+select[multiple],
+select[size] {
+  height: auto;
+}
+select:focus,
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+input.uneditable,
+textarea.uneditable {
+  color: #999999;
+  background-color: #fcfcfc;
+  border-color: #cccccc;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
+  cursor: not-allowed;
+}
+input.uneditable {
+  overflow: hidden;
+  white-space: nowrap;
+}
+textarea.uneditable {
+  width: auto;
+  height: auto;
+}
+input:-moz-placeholder,
+textarea:-moz-placeholder,
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #999999;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  min-height: 20px;
+  padding-left: 20px;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  float: left;
+  margin-left: -20px;
+}
+.controls > input[type="radio"]:first-child,
+.controls > input[type="checkbox"]:first-child {
+  padding-top: 5px;
+}
+input[type="radio"].inline,
+input[type="checkbox"].inline {
+  display: inline-block;
+  padding-top: 5px;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+input[type="radio"].inline + input[type="radio"].inline,
+input[type="checkbox"].inline + input[type="checkbox"].inline {
+  margin-left: 10px;
+}
+input,
+textarea {
+  margin-left: 0;
+}
+
+
+/*
+** CODE
+*/
+
+/* Code anywhere, including within paragraphs. */
+code, samp, kbd {
+    font-family: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', consolas, courier, monospace;
+}
+
+/* Code blocks. */
+pre code {
+    display: block;
+    overflow: auto;
+    white-space: pre;
+    width: auto;
+    clear: both;
+    color: #555;
+    background: #EEE;
+    border: solid 1px #111;
+    padding: 5px;
+    margin: auto 10px;
+    line-height: 1.5em;
+    font-size: 12px;
+}
+
+/* Display the language of the code block in a header above the block. */
+pre code[class]:before {
+    color: white;
+    background-color: #E18728;
+    content: attr(class);
+    text-align: right;
+    font-family: 'Gotham Rounded A', 'Gotham Rounded B', "proxima-nova-soft", sans-serif;
+    left: 0;
+    padding: 5px 0;
+    position: absolute;
+    text-indent: 15px;
+    top: 0;
+    width: 100%;
+}
+
+/* Highlight rootshell code in red. */
+pre code[class=rootshell] {
+    background-color: #FDD;
+}
+pre code[class=rootshell]:before {
+    color: white;
+    background-color: #B22;
+}
+
+
+/*
+** MISC
+*/
+
+/* Message box. */
+.message { padding: 1em; max-width: 60%; border: solid black 2px; }
+
+/* Provide background color indicators for error and warning messages. */
+.error { background-color: #FFAAAA; }
+.warning { background-color: #FFFF88; }
+.highlight { background-color: #FFFF88; }
+
+/* Provide color indicators for good and bad conditions. */
+.good { color: green; }
+.bad { color: red; }
+   
+/* Left-to-right layout of form and output on pages where that's the main content. */
+#query { float: left; }
+#results { float: left; margin-left: 5em; }
+#query .error.message { max-width: 100%; }
