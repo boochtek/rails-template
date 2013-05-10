@@ -10,7 +10,7 @@ body { margin: 12px; }
 ** FONTS
 */
 
-body { font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Verdana, sans-serif; }
+html { font-size: 16px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Verdana, sans-serif; }
 pre, code, tt, kbd, samp, var { font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Courier New', Courier, monospace; }
 
 
