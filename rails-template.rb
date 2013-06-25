@@ -1,6 +1,6 @@
 #!/bin/env ruby
 
-# Rails template. Loads RSpec, Cucumber, DataMapper (optional), HAML, jQuery, etc.
+# Rails template. Loads RSpec, Cucumber, DataMapper (optional), HAML, Sass, Slim, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
 # Copyright 2008,2009,2013 by BoochTek, LLC.
@@ -204,6 +204,10 @@ generate 'jasmine:examples'
 ## Stats and coverage tools.
 gem 'metric_fu', version: '~> 4.2.1', env: ['development' 'test']
 append_file 'Rakefile', "require 'metric_fu'"
+
+
+# Slim templating system.
+gem 'slim-rails', :version => '~> 2.0'
 
 
 # HAML templating system.
