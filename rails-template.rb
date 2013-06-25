@@ -125,7 +125,6 @@ gem 'database_cleaner', :lin => false # Required by cucumber-rails.
 gem 'webrat', :lib => false, :version => '>= 0.7.0'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
-gem 'rr', :lib => 'rr', :version => '>= 0.10.11'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
@@ -157,10 +156,6 @@ generate 'cucumber --rspec --webrat'
 gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt' # Move the rerun flag file.
 gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to use when more than one matches.
 
-
-# Pull in support for RR mocking in RSpec and Cucumber.
-pull_file 'spec/support/rr.rb'
-pull_file 'features/support/rr.rb'
 
 
 # Allow use of FactoryGirl factories in Cucumber.
