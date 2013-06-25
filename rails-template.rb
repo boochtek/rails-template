@@ -123,6 +123,7 @@ end
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
 gem 'rspec', :lib => false, :version => '~> 2.13'
 gem 'rspec-rails', :lib => false, :version => '~> 2.13', :env => ['test']
+gem 'bogus', :version => '~> 0.1.0', :env => ['test']
 gem 'cucumber', :lib => false, :version => '~> 1.3'
 gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
 gem 'capybara', :lib => false, :version => '~> 2.1'
