@@ -68,7 +68,7 @@ git :init
 
 
 ## DataMapper ORM.
-# TODO: See what we can learn from http://github.com/jeremymcanally/rails-templates/tree/master/datamapper.rb
+# TODO: See what we can learn from http://github.com/jm/rails-templates/tree/master/datamapper.rb
 if datamapper
   gem 'addressable', :lib => 'addressable/uri'
   gem 'data_objects', :version => '0.10.1'
