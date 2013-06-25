@@ -223,8 +223,8 @@ gsub_file 'public/index.html', /<script.*<\/script>/m, ''
 # NOTE: We're leaving in ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::PrototypeHelper, and ActionView::Helpers::ScriptaculousHelper. It'd be too difficult to extract them.
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
-JQUERY_VERSION = '1.4.2'
-file "public/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
+JQUERY_VERSION = '2.0.2'
+file "vendor/assets/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
 pull_file 'app/helpers/jquery_helper.rb'
 
 # Pull in my custom JavaScript code.
