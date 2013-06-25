@@ -8,7 +8,7 @@ These include DataMapper, ActiveRecord, ActiveResource, ActionMailer, and more.
 
 The template can link to a local copy of Edge Rails, if available.
 
-Uses RSpec, Shoulda, RR, and Factory Girl for testing.
+Uses RSpec, Shoulda, Bogus, and Factory Girl for testing.
 
 HAML and ERB can both be used for view templates.
 
