@@ -201,12 +201,7 @@ generate 'jasmine:examples'
 
 
 ## Stats and coverage tools.
-gem 'flay'
-gem 'flog'
-gem 'reek'
-gem 'roodi'
-gem 'chronic'
-gem 'jscruggs-metric_fu', :version => '1.0.2', :lib => 'metric_fu', :source => 'http://gems.github.com'
+gem 'metric_fu', version: '~> 4.2.1', env: ['development' 'test']
 append_file 'Rakefile', "require 'metric_fu'"
 
 
