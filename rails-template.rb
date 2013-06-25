@@ -121,14 +121,14 @@ end
 
 ## Testing frameworks.
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
-# TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
 gem 'rspec', :lib => false, :version => '~> 2.13'
-gem 'rspec-rails', :lib => false, :version => '~> 2.13'
+gem 'rspec-rails', :lib => false, :version => '~> 2.13', :env => ['test']
 gem 'cucumber', :lib => false, :version => '~> 1.3'
 gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
 gem 'capybara', :lib => false, :version => '~> 2.1'
 gem 'factory_girl_rails', :lib => false, :version => '~> 4.2'
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
+gem 'shoulda', :lib => false, :version => '~> 3.5', :env => ['test']
+gem 'shoulda-matchers', :lib => false, :version => '~> 2.2', :env => ['test']
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
