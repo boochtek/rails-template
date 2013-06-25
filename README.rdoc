@@ -10,7 +10,7 @@ The template can link to a local copy of Edge Rails, if available.
 
 Uses RSpec, Shoulda, Bogus, and Factory Girl for testing.
 
-HAML and ERB can both be used for view templates.
+Slime, HAML, or ERB can be used for view templates.
 
 My default layout uses jQuery.
 I'm considering whether to use jRails to replace Prototype with jQuery when Rails AJAX methods are used, or just not use those methods.
