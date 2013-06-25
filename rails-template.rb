@@ -123,7 +123,7 @@ gem 'rspec', :lib => false, :version => '~> 2.13'
 gem 'rspec-rails', :lib => false, :version => '~> 2.13'
 gem 'cucumber', :lib => false, :version => '~> 1.3'
 gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
-gem 'webrat', :lib => false, :version => '>= 0.7.0'
+gem 'capybara', :lib => false, :version => '~> 2.1'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
 # TODO: Only install this if Java is installed on the dev box.
@@ -153,7 +153,7 @@ pull_file 'spec/support/matchers/should_each.rb'
 email_spec_helper.rb
 
 # Create features directory for Cucumber, as well as a cucumber config file.
-generate 'cucumber --rspec --webrat'
+generate 'cucumber --rspec --capybara'
 gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt' # Move the rerun flag file.
 gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to use when more than one matches.
 
