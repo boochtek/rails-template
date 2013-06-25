@@ -206,8 +206,11 @@ append_file 'Rakefile', "require 'metric_fu'"
 
 
 # HAML templating system.
-gem 'haml', :version => '>= 2.2.22'
+gem 'haml', :version => '~> 4.0'
 run 'haml --rails .'
+
+# Sass CSS templating.
+gem 'sass', :version => '~> 3.2'
 
 
 ## Remove Prototype JavaScript stuff and use jQuery instead.
