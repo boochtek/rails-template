@@ -119,9 +119,8 @@ end
 ## Testing frameworks.
 # NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
 # TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
-# NOTE: Rails (2.3.2, at least) places the config.gem statements in the reverse order that we specify them here.
-gem 'rspec', :lib => false, :version => '>= 1.3.0'
-gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
+gem 'rspec', :lib => false, :version => '~> 2.13'
+gem 'rspec-rails', :lib => false, :version => '~> 2.13'
 gem 'cucumber', :lib => false, :version => '>= 0.6.3'
 gem 'cucumber-rails', :lib => false, :version => '>= 0.3.0'
 gem 'database_cleaner', :lin => false # Required by cucumber-rails.
