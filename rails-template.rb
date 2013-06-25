@@ -127,8 +127,8 @@ gem 'rspec-rails', :lib => false, :version => '~> 2.13'
 gem 'cucumber', :lib => false, :version => '~> 1.3'
 gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
 gem 'capybara', :lib => false, :version => '~> 2.1'
+gem 'factory_girl_rails', :lib => false, :version => '~> 4.2'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
 # TODO: Only install this if Java is installed on the dev box.
 plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
 
