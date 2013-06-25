@@ -14,6 +14,7 @@
 ## Get user input, via environment variables or prompting the user.
 datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
+mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
 devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 open_id = ENV['OPEN_ID'] ? ENV['OPEN_ID'] == 'y' : yes?('Use OpenID?')
@@ -108,9 +109,11 @@ pull_file 'config/database.yml'
 # Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
 rake 'db:create:all'
 
-# Use the Bullet gem to alert developers of unoptimized SQL queries.
-gem 'bullet', :version => '>= 1.7.6', :env => [:development, :test]
-pull_file 'config/initializers/bullet.rb'
+if activerecord or mongoid
+  # Use the Bullet gem to alert developers of unoptimized SQL queries.
+  gem 'bullet', :version => '~>4.6', :env => [:development, :test]
+  pull_file 'config/initializers/bullet.rb'
+end
 
 
 ## Testing frameworks.
