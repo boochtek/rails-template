@@ -121,9 +121,8 @@ end
 # TODO: Do we need to tell rspec/cucumber to use shoulda and factory_girl?
 gem 'rspec', :lib => false, :version => '~> 2.13'
 gem 'rspec-rails', :lib => false, :version => '~> 2.13'
-gem 'cucumber', :lib => false, :version => '>= 0.6.3'
-gem 'cucumber-rails', :lib => false, :version => '>= 0.3.0'
-gem 'database_cleaner', :lin => false # Required by cucumber-rails.
+gem 'cucumber', :lib => false, :version => '~> 1.3'
+gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
 gem 'webrat', :lib => false, :version => '>= 0.7.0'
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '>= 2.10.1', :source => 'http://gems.github.com' # FIXME: Really want 3.0+ for complete RSpec integration.
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :version => '>= 1.2.2', :source => 'http://gems.github.com'
