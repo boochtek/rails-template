@@ -3,7 +3,7 @@
 # Rails template. Loads RSpec, Cucumber, DataMapper (optional), HAML, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
-# Copyright 2008,2009 by BoochTek, LLC.
+# Copyright 2008,2009,2013 by BoochTek, LLC.
 # Originally written by Craig Buchek.
 # Released under MIT license (same as Ruby on Rails).
 
@@ -14,7 +14,6 @@
 ## Get user input, via environment variables or prompting the user.
 datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
-activeresource = ENV['ACTIVERESOURCE'] ? ENV['ACTIVERESOURCE'] == 'y' : yes?('Include ActiveResource?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
 devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 open_id = ENV['OPEN_ID'] ? ENV['OPEN_ID'] == 'y' : yes?('Use OpenID?')
@@ -94,11 +93,6 @@ end
 # ActiveRecord ORM.
 if !activerecord
   environment 'config.frameworks -= [ :active_record ]'
-end
-
-# ActiveResource
-if !activeresource
-  environment 'config.frameworks -= [ :active_resource ]'
 end
 
 # ActionMailer
