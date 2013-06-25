@@ -129,8 +129,7 @@ gem 'capybara', :lib => false, :version => '~> 2.1'
 gem 'factory_girl_rails', :lib => false, :version => '~> 4.2'
 gem 'shoulda', :lib => false, :version => '~> 3.5', :env => ['test']
 gem 'shoulda-matchers', :lib => false, :version => '~> 2.2', :env => ['test']
-# TODO: Only install this if Java is installed on the dev box.
-plugin 'blue-ridge', :git => 'git://github.com/relevance/blue-ridge.git', :submodule => true # NOTE: Requires Java to run the tests. Run 'rake spec:javascripts' to run tests.
+gem 'jasmine', :version => '~> 1.3', :env => ['development', 'test']
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
 rake 'gems:install' rescue puts 'Please run rake gems:install as root, to install gems locally on this computer.'
@@ -188,8 +187,10 @@ if email
   #     click_first_link_in_email()
 end
 
-# Create spec/javascripts directory structure. TODO: Write some sample tests. See http://github.com/relevance/blue-ridge/ for details.
-generate 'blue_ridge'
+# Create spec/javascripts directory structure.
+generate 'jasmine:install'
+generate 'jasmine:examples'
+
 
 ## TODO: Create some sample specs and features that we can start with.
 # NOTE: Be sure to make use of Shoulda RSpec matchers.
