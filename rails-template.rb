@@ -71,16 +71,19 @@ git :init
 ## DataMapper ORM.
 # TODO: See what we can learn from http://github.com/jm/rails-templates/tree/master/datamapper.rb
 if datamapper
-  gem 'addressable', :lib => 'addressable/uri'
-  gem 'data_objects', :version => '0.10.1'
-  gem 'do_sqlite3', :version => '0.10.1.1', :env => [:development, :test]
-  gem 'do_mysql', :version => '0.10.1', :env => [:production, :staging]
-  gem 'dm-core', :version => '0.10.2'
-  gem 'dm-migrations', :version => '0.10.2'
-  gem 'dm-validations', :version => '0.10.2'
-  gem 'dm-timestamps', :version => '0.10.2'
-  #gem 'dm-transaction', :version => '0.10.2' # For testing, if/when it gets separated from dm-core; see first line of dm-core/transaction.rb or http://blog.teksol.info/2008/10/17/how-to-use-datamapper-with-rails-part-2
-  gem 'rails_datamapper', :version => '0.10.2'
+  DM_VERSION = '~> 1.2'
+  gem 'dm-rails',             version: DM_VERSION
+  gem 'dm-sqlite-adapter',    version: DM_VERSION, env: [:development, :test]
+  gem 'dm-mysql-adapter',     version: DM_VERSION, env: [:production, :staging]
+  gem 'dm-postgres-adapter',  version: DM_VERSION
+  gem 'dm-migrations',        version: DM_VERSION
+  gem 'dm-types',             version: DM_VERSION
+  gem 'dm-validations',       version: DM_VERSION
+  gem 'dm-constraints',       version: DM_VERSION
+  gem 'dm-transactions',      version: DM_VERSION
+  gem 'dm-aggregates',        version: DM_VERSION
+  gem 'dm-timestamps',        version: DM_VERSION
+  gem 'dm-observer',          version: DM_VERSION
   config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it.
   generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
