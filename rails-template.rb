@@ -341,9 +341,9 @@ plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git', 
 
 
 # Footnotes at bottom of site when in development, with lots of info and links.
-# TODO: Set up so we can use textmate links to edit files (preferably in $VISUAL or Komodo) directly from web pages.
+# TODO: Set up so we can use textmate links to edit files directly from web pages.
 # TODO: Add more notes types. Notes on model methods, SQL table name/row-count/schema (info on each field).
-gem 'rails-footnotes', :version => '>= 3.6.6', :env => [:development]
+gem 'rails-footnotes', :version => '~> 3.7', :env => [:development]
 pull_file 'config/initializers/footnotes.rb'
 
 
