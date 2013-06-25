@@ -36,14 +36,10 @@ def touch(list, options = {}); FileUtils.touch(list, options); end
 
 
 ## Decide whether to pull all the files from local directory, or from GitHub.
-if template.match(%r{^/}) and File.exists?(template)
-  RAILS_TEMPLATE_PATH = File.dirname(template)
-  running_local = true
-elsif File.exists?(File.join(ENV['PWD'], template)) # Dir.getwd is the Rails root, so we have to find what it was when the 'rails' command was run.
-  RAILS_TEMPLATE_PATH = File.dirname(File.join(ENV['PWD'], template))
+RAILS_TEMPLATE_PATH = File.dirname(rails_template)
+if rails_template.match(%r{^/})
   running_local = true
 else
-  RAILS_TEMPLATE_PATH = 'http://github.com/boochtek/rails-template/raw/master'
   running_local = false
 end
 
