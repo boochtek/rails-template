@@ -18,7 +18,7 @@ I'm considering whether to use jRails to replace Prototype with jQuery when Rail
 
 == Usage
 
-rails --template http://github.com/boochtek/rails-template/raw/master/rails-template.rb name_of_your_new_rails_app
+rails _4.0.0_ new name_of_your_new_rails_app --template https://raw.github.com/boochtek/rails-template/master/rails-template.rb
 
 
 == Credits
