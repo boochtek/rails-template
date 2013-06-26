@@ -118,7 +118,7 @@ end
 
 
 ## Database config.
-cp 'config/database.yml', 'config/database.yml.sample'
+mv 'config/database.yml', 'config/database.yml.sample'
 pull_file 'config/database.yml'
 
 if activerecord or mongoid
