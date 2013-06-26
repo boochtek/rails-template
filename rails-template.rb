@@ -89,14 +89,31 @@ end
 
 ## Optionally remove some portions of the standard Rails stack.
 
+# Make sure that the config/application.rb lists the individual frameworks, so we can remove ones we don't want.
+# The 'rails new' command will use "require 'rails/all'" if none of the --skip options are used, and these individual lines otherwise.
+gsub_file 'config/application.rb', %r(^require 'rails/all'$), <<'EOF'
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "sprockets/railtie"
+require "rails/test_unit/railtie"
+EOF
+
+
 # ActiveRecord ORM.
 if !activerecord
-  environment 'config.frameworks -= [ :active_record ]'
+  gsub_file 'config/application.rb', %r(^require "active_record/railtie"$), '#require "active_record/railtie"'
+  ['development', 'test', 'production'].each do |env|
+    gsub_file "config/environments/#{env}.rb", %r(^  config\.active_record\.), '  #config.active_record.'
+  end
 end
 
 # ActionMailer
 if !email
-  environment 'config.frameworks -= [ :action_mailer ]'
+  gsub_file 'config/application.rb', %r(^require "action_mailer/railtie"$), '#require "action_mailer/railtie"'
+  ['development', 'test', 'production'].each do |env|
+    gsub_file "config/environments/#{env}.rb", %r(^  config\.action_mailer\.), '  #config.action_mailer.'
+  end
 end
 
 
