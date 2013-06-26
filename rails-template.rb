@@ -126,8 +126,8 @@ gem 'shoulda',            '~> 3.5',   groups: ['test']
 gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
 gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 
-# Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
-rake 'gems:install' rescue puts 'Please run rake gems:install as root, to install gems locally on this computer.'
+# Make sure we've got the rspec and cucumber GEMs installed, before we run their generators.
+run 'bundle install --path vendor/bundle'
 
 # Create spec directory structure.
 generate 'rspec'
