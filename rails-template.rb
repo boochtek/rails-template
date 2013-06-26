@@ -116,17 +116,16 @@ end
 
 
 ## Testing frameworks.
-# NOTE: Using :lib => false on these, as Rails doesn't need to load them. See http://wiki.github.com/dchelimsky/rspec/configgem-for-rails/.
-gem 'rspec', :lib => false, :version => '~> 2.13'
-gem 'rspec-rails', :lib => false, :version => '~> 2.13', :env => ['test']
-gem 'bogus', :version => '~> 0.1.0', :env => ['test']
-gem 'cucumber', :lib => false, :version => '~> 1.3'
-gem 'cucumber-rails', :lib => false, :version => '~> 1.3'
-gem 'capybara', :lib => false, :version => '~> 2.1'
-gem 'factory_girl_rails', :lib => false, :version => '~> 4.2'
-gem 'shoulda', :lib => false, :version => '~> 3.5', :env => ['test']
-gem 'shoulda-matchers', :lib => false, :version => '~> 2.2', :env => ['test']
-gem 'jasmine', :version => '~> 1.3', :env => ['development', 'test']
+gem 'rspec',              '~> 2.13'
+gem 'rspec-rails',        '~> 2.13',  env: ['test']
+gem 'bogus',              '~> 0.1.0', env: ['test']
+gem 'cucumber',           '~> 1.3'
+gem 'cucumber-rails',     '~> 1.3'
+gem 'capybara',           '~> 2.1'
+gem 'factory_girl_rails', '~> 4.2'
+gem 'shoulda',            '~> 3.5', env: ['test']
+gem 'shoulda-matchers',   '~> 2.2', env: ['test']
+gem 'jasmine',            '~> 1.3', env: ['development', 'test']
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
 rake 'gems:install' rescue puts 'Please run rake gems:install as root, to install gems locally on this computer.'
@@ -252,7 +251,7 @@ if devise
   # Devise and Warden.
   gem 'warden', :version => '0.9.7'
   gem 'devise', :version => '>= 1.0.5'
-  gem 'bcrypt-ruby', :version => '>= 2.1.2', :lib => 'bcrypt'
+  gem 'bcrypt-ruby', :version => '>= 2.1.2'
   generate 'devise_install'
   generate 'devise User'
   # Using bcrypt is highly recommended. So we change the Devise configuration and the migration to use it.
