@@ -69,8 +69,8 @@ git :init
 if datamapper
   DM_VERSION = '~> 1.2'
   gem 'dm-rails',             version: DM_VERSION
-  gem 'dm-sqlite-adapter',    version: DM_VERSION, env: [:development, :test]
-  gem 'dm-mysql-adapter',     version: DM_VERSION, env: [:production, :staging]
+  gem 'dm-sqlite-adapter',    version: DM_VERSION, groups: [:development, :test]
+  gem 'dm-mysql-adapter',     version: DM_VERSION, groups: [:production, :staging]
   gem 'dm-postgres-adapter',  version: DM_VERSION
   gem 'dm-migrations',        version: DM_VERSION
   gem 'dm-types',             version: DM_VERSION
@@ -109,22 +109,22 @@ rake 'db:create:all'
 
 if activerecord or mongoid
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
-  gem 'bullet', :version => '~>4.6', :env => [:development, :test]
+  gem 'bullet', :version => '~> 4.6', groups: [:development, :test]
   pull_file 'config/initializers/bullet.rb'
 end
 
 
 ## Testing frameworks.
 gem 'rspec',              '~> 2.13'
-gem 'rspec-rails',        '~> 2.13',  env: ['test']
-gem 'bogus',              '~> 0.1.0', env: ['test']
+gem 'rspec-rails',        '~> 2.13',  groups: ['test']
+gem 'bogus',              '~> 0.1.0', groups: ['test']
 gem 'cucumber',           '~> 1.3'
 gem 'cucumber-rails',     '~> 1.3'
 gem 'capybara',           '~> 2.1'
 gem 'factory_girl_rails', '~> 4.2'
-gem 'shoulda',            '~> 3.5', env: ['test']
-gem 'shoulda-matchers',   '~> 2.2', env: ['test']
-gem 'jasmine',            '~> 1.3', env: ['development', 'test']
+gem 'shoulda',            '~> 3.5',   groups: ['test']
+gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
+gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 
 # Make sure we've got the rspec and cucumber GEMs loaded, before we run their generators.
 rake 'gems:install' rescue puts 'Please run rake gems:install as root, to install gems locally on this computer.'
@@ -164,7 +164,7 @@ mkdir_p 'spec/factories'
 
 # Specs and steps for email.
 if email
-  gem 'email_spec', :version => '~> 1.4', :env => ['test'] # See http://github.com/bmabey/email-spec for docs.
+  gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   generate 'email_spec' # Generate email_steps.rb file.
   pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
   pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
@@ -196,20 +196,20 @@ generate 'jasmine:examples'
 
 
 ## Stats and coverage tools.
-gem 'metric_fu', version: '~> 4.2.1', env: ['development' 'test']
+gem 'metric_fu', '~> 4.2.1', groups: ['development' 'test']
 append_file 'Rakefile', "require 'metric_fu'"
 
 
 # Slim templating system.
-gem 'slim-rails', :version => '~> 2.0'
+gem 'slim-rails', '~> 2.0'
 
 
 # HAML templating system.
-gem 'haml', :version => '~> 4.0'
+gem 'haml', '~> 4.0'
 run 'haml --rails .'
 
 # Sass CSS templating.
-gem 'sass', :version => '~> 3.2'
+gem 'sass', '~> 3.2'
 
 
 ## Remove Prototype JavaScript stuff and use jQuery instead.
