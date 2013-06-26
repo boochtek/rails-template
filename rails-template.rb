@@ -104,9 +104,6 @@ end
 cp 'config/database.yml', 'config/database.yml.sample'
 pull_file 'config/database.yml'
 
-# Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
-rake 'db:create:all'
-
 if activerecord or mongoid
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
   gem 'bullet', :version => '~> 4.6', groups: [:development, :test]
@@ -128,6 +125,9 @@ gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 
 # Make sure we've got the rspec and cucumber GEMs installed, before we run their generators.
 run 'bundle install --path vendor/bundle'
+
+# Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
+rake 'db:create:all'
 
 # Create spec directory structure.
 generate 'rspec'
