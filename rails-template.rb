@@ -143,8 +143,10 @@ gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 # Make sure we've got the rspec and cucumber GEMs installed, before we run their generators.
 run 'bundle install --path vendor/bundle'
 
-# Create databases. TODO: Is it OK to do this if not using DataMapper or ActiveRecord?
-rake 'db:create:all'
+# Create databases.
+if activerecord or datamapper
+  rake 'db:create:all'
+end
 
 # Create spec directory structure.
 generate 'rspec'
