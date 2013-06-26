@@ -80,7 +80,6 @@ if datamapper
   gem 'dm-aggregates',        version: DM_VERSION
   gem 'dm-timestamps',        version: DM_VERSION
   gem 'dm-observer',          version: DM_VERSION
-  config.plugins = [ :rails_datamapper, :all ] # Make datamapper load first as some plugins have dependencies on it.
   generate 'dm_install' # install datamapper rake tasks
   pull_file 'lib/tasks/data_mapper.rb'
   puts "NOTE: For DataMapper models, use 'script/generate rspec_dm_model --skip-migration --skip-fixture' instead of 'script/generate rspec_model --skip-fixture'."
