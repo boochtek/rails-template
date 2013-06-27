@@ -149,9 +149,7 @@ if activerecord or datamapper
 end
 
 # Create spec directory structure.
-generate 'rspec'
-# Use the 'profile' format, to show 10 slowest specs. (Includes all the info the progress format does, as well.)
-gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
+generate 'rspec:install'
 
 
 # Pull in RSpec support files and matchers.
@@ -159,14 +157,13 @@ gsub_file 'spec/spec.opts', /--format progress/, '--format profile'
 pull_file 'spec/support/running.rb'
 pull_file 'spec/support/require.rb'
 pull_file 'spec/support/shoulda.rb'
+pull_file 'spec/support/email_spec_helper.rb'
 pull_file 'spec/support/matchers/be_in.rb'
 pull_file 'spec/support/matchers/be_sorted.rb'
 pull_file 'spec/support/matchers/allow_values.rb'
 pull_file 'spec/support/matchers/rails.rb'
 pull_file 'spec/support/matchers/should_each.rb'
 
-
-email_spec_helper.rb
 
 # Create features directory for Cucumber, as well as a cucumber config file.
 generate 'cucumber --rspec --capybara'
