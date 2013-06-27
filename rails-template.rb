@@ -227,15 +227,6 @@ run 'haml --rails .'
 gem 'sass', '~> 3.2'
 
 
-## Remove Prototype JavaScript stuff and use jQuery instead.
-# Remove the Prototype files.
-%w{prototype controls dragdrop effects}.each do |f|
-  rm_f "public/javascripts/#{f}.js"
-end
-# Remove Prototype-using JavaScript from default Rails index page.
-gsub_file 'public/index.html', /<script.*<\/script>/m, ''
-# NOTE: We're leaving in ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::PrototypeHelper, and ActionView::Helpers::ScriptaculousHelper. It'd be too difficult to extract them.
-
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '2.0.2'
 file "vendor/assets/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
