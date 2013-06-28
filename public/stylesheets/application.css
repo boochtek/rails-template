@@ -324,15 +324,20 @@ pre code[class=rootshell]:before {
 
 
 /*
+** MESSAGE BOXES
+*/
+
+.message { padding: 1em; max-width: 60%; border: solid black 2px; }
+.error.message { background-color: #FFAAAA; }
+.warning.message { background-color: #FFFF88; }
+.success.message { background-color: #AAFFAA; }
+.info.message { background-color: #AAAAFF; }
+
+
+/*
 ** MISC
 */
 
-/* Message box. */
-.message { padding: 1em; max-width: 60%; border: solid black 2px; }
-
-/* Provide background color indicators for error and warning messages. */
-.error { background-color: #FFAAAA; }
-.warning { background-color: #FFFF88; }
 .highlight { background-color: #FFFF88; }
 
 /* Provide color indicators for good and bad conditions. */
