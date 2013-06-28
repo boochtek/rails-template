@@ -18,6 +18,32 @@ pre, code, tt, kbd, samp, var { font-family: 'DejaVu Sans Mono', 'Bitstream Vera
 
 
 /*
+** BANNER
+*/
+
+header {
+    top: 0; left: 0; right: 0;
+    margin: -12px; /* NOTE: This offsets the BODY's margin. */ *margin: -24px; *margin-top: -36px;
+    padding: 12px; *padding: 24px; padding-bottom: 0; *padding-top: 36px;
+    background-color: #033894;
+    color: white;
+}
+header h1 { margin: 0; }
+nav#utility_nav { position: relative; float: right; font-size: 0.8em; }
+nav#utility_nav a { color: white; }
+nav#main_nav { position: relative; bottom: 0; left: 300px; }
+nav#main_nav ul { margin: 0; }
+nav#main_nav li {
+    background: #865140;
+    display: inline-block; *display: inline;
+    padding: 4px 6px;
+}
+nav#main_nav li a, nav#main_nav li a:link, nav#main_nav li a:visited { color: white; text-decoration: none; }
+nav#main_nav li.active { background: white; margin-bottom: -1px; }
+nav#main_nav li.active a, nav#main_nav li.active a:link, nav#main_nav li.active a:visited { color: #555; font-weight: bold; }
+
+
+/*
 ** LINKS
 */
 
