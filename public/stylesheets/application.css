@@ -118,6 +118,10 @@ button, input[type=button], input[type=submit] {
     padding: 5px;
 }
 
+button, input[type=button][disabled], input[type=submit][disabled] {
+    background-color: rgb(196, 196, 196);
+}
+
 /* Buttons in inline forms need to be a bit shorter. */
 form.search button, form.search input[type=button], form.search input[type=submit] {
     padding: 2px 5px;
