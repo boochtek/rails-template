@@ -14,7 +14,7 @@
 ## Get user input, via environment variables or prompting the user.
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
-email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
+email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
 devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 open_id = ENV['OPEN_ID'] ? ENV['OPEN_ID'] == 'y' : yes?('Use OpenID?')
 airbrake = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
@@ -156,6 +156,7 @@ mkdir_p 'spec/factories'
 # Specs and steps for email.
 if email
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
+  run 'bundle install --path vendor/bundle'
   generate 'email_spec' # Generate email_steps.rb file.
   pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
   pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
