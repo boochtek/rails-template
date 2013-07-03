@@ -358,7 +358,7 @@ bundle
 rake 'tmp:create'
 
 # Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
-['tmp', 'log', 'vendor', 'test'].each do |dir|
+%w[tmp log vendor test doc].each do |dir|
   mkdir_p "#{dir}"
   touch "#{dir}/.gitignore"
 end
@@ -374,6 +374,7 @@ rake 'spec'
 
 # TODO: These should be in the rake task that gets run by the git pre_commit hook.
 #rake 'metrics:all' # Generate coverage, cyclomatic complexity, flog, flay, railroad, reek, roodi, stats... #FIXME: Not running properly.
+
 run 'rake stats > doc/stats.txt'
 run 'rake notes > doc/notes.txt'
 
