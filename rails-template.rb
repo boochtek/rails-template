@@ -376,6 +376,7 @@ db/*.db
 doc/api
 doc/app
 vendor/**/.git
+vendor/bundle/*
 coverage/*
 autotest_result.html
 rerun.txt
