@@ -1,6 +1,6 @@
 #!/bin/env ruby
 
-# Rails template. Loads RSpec, Cucumber, DataMapper (optional), HAML, Sass, Slim, jQuery, etc.
+# Rails template. Loads RSpec, Cucumber, HAML, Sass, Slim, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
 # Copyright 2008,2009,2013 by BoochTek, LLC.
@@ -12,7 +12,6 @@
 
 
 ## Get user input, via environment variables or prompting the user.
-datamapper = ENV['DATAMAPPER'] ? ENV['DATAMAPPER'] == 'y' : yes?('Include DataMapper?')
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
@@ -62,29 +61,6 @@ end
 
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
-
-
-## DataMapper ORM.
-# TODO: See what we can learn from http://github.com/jm/rails-templates/tree/master/datamapper.rb
-if datamapper
-  DM_VERSION = '~> 1.2'
-  gem 'dm-rails',             version: DM_VERSION
-  gem 'dm-sqlite-adapter',    version: DM_VERSION, groups: [:development, :test]
-  gem 'dm-mysql-adapter',     version: DM_VERSION, groups: [:production, :staging]
-  gem 'dm-postgres-adapter',  version: DM_VERSION
-  gem 'dm-migrations',        version: DM_VERSION
-  gem 'dm-types',             version: DM_VERSION
-  gem 'dm-validations',       version: DM_VERSION
-  gem 'dm-constraints',       version: DM_VERSION
-  gem 'dm-transactions',      version: DM_VERSION
-  gem 'dm-aggregates',        version: DM_VERSION
-  gem 'dm-timestamps',        version: DM_VERSION
-  gem 'dm-observer',          version: DM_VERSION
-  generate 'dm_install' # install datamapper rake tasks
-  pull_file 'lib/tasks/data_mapper.rb'
-  puts "NOTE: For DataMapper models, use 'script/generate rspec_dm_model --skip-migration --skip-fixture' instead of 'script/generate rspec_model --skip-fixture'."
-  puts "NOTE: Use 'rake db:auto_upgrade' to make your database schema match your DataMapper models."
-end
 
 
 ## Optionally remove some portions of the standard Rails stack.
@@ -144,7 +120,7 @@ gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 run 'bundle install --path vendor/bundle'
 
 # Create databases.
-if activerecord or datamapper
+if activerecord
   rake 'db:create:all'
 end
 
@@ -407,7 +383,6 @@ rake 'tmp:create'
 end
 
 # Create the database.
-rake 'db:automigrate' if datamapper
 rake 'db:migrate' if activerecord
 
 
