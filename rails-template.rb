@@ -341,6 +341,7 @@ environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :en
 
 
 # Create directory for temp files.
+run 'bundle install --path vendor/bundle'
 rake 'tmp:create'
 
 # Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
