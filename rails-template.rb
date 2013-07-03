@@ -77,6 +77,7 @@ EOF
 # ActiveRecord ORM.
 if activerecord
   gem 'annotate', '~> 2.5', groups: [:development], require: false
+  run 'bundle install --path vendor/bundle'
   generate 'annotate:install'
 else
   gsub_file 'config/application.rb', %r(^require "active_record/railtie"$), '#require "active_record/railtie"'
