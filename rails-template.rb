@@ -15,10 +15,9 @@
 activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
 mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
-devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 airbrake = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
 exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
-email = true if exception_notifier || devise # Force email if we've enabled a plugin that requires it.
+email = true if exception_notifier      # Force email if we've enabled a plugin that requires it.
 
 
 # Allow opening URLs as if they are local files.
@@ -247,36 +246,7 @@ if exception_notifier
 end
 
 
-
 pull_file 'app/controllers/application_controller.rb'
-
-
-## Authentication
-if devise
-  # Devise and Warden.
-  gem 'warden', :version => '0.9.7'
-  gem 'devise', :version => '>= 1.0.5'
-  gem 'bcrypt-ruby', :version => '>= 2.1.2'
-  generate 'devise_install'
-  generate 'devise User'
-  # Using bcrypt is highly recommended. So we change the Devise configuration and the migration to use it.
-  gsub_file 'config/initializers/devise.rb', /^.*config.encryptor =.*$/, 'config.encryptor = :bcrypt'
-  gsub_file Dir.glob('db/migrate/*_devise_create_users.rb'), /t.authenticatable :encryptor => :sha1/, 't.authenticatable :encryptor => :bcrypt'
-  puts 'NOTE: To use Devise, edit config/initializers/devise.rb, the generated User model, and the migration.'
-  puts '  It is recommended to use bcrypt for encryption. (Change in the migration and initializer.)'
-  puts '  After running the migration, you can use these in your controllers:'
-  puts '    before_filter :authenticate_user!'
-  puts '    user_signed_in?'
-  puts '    current_user'
-  puts '    user_session'
-  puts '  In controller specs, include Devise::TestHelpers in ActionController::TestCase, then sign_in @user and sign_out @user.'
-  puts '  In cucumber feature stories, '
-end
-
-
-## Authorization
-#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
-#generate 'roles', 'Role User'
 
 
 ## My personal plugins.
