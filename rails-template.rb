@@ -18,7 +18,7 @@ mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer? (NOTE: ExceptionNotifier requires ActionMailer)')
 devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
 open_id = ENV['OPEN_ID'] ? ENV['OPEN_ID'] == 'y' : yes?('Use OpenID?')
-hoptoad = ENV['HOPTOAD'] ? ENV['HOPTOAD'] == 'y' : yes?('Use HopToad Notifier?')
+airbrake = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
 exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
 email = true if exception_notifier || devise # Force email if we've enabled a plugin that requires it.
 
@@ -239,15 +239,17 @@ pull_file 'public/javascripts/boochtek/google-analytics.js'
 
 
 ## Error notification.
-if hoptoad
-  plugin 'hoptoad_notifier', :git => "git://github.com/thoughtbot/hoptoad_notifier.git", :submodule => true
-  pull_file 'config/initializers/hoptoad.rb'
-  # TODO: Prompt for and change host (default to 'hoptoadapp.com') and api_key config settings.
-  # rake 'hoptoad:test'
+if airbrake
+  gem 'airbrake'
+  run 'bundle install --path vendor/bundle'
+  generate "airbrake --api-key #{ask('Airbrake API Key:')}"
 end
 if exception_notifier
   plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git', :submodule => true
 end
+
+
+
 pull_file 'app/controllers/application_controller.rb'
 
 
