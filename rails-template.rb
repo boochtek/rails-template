@@ -81,7 +81,7 @@ EOF
 if activerecord
   gem 'annotate', '~> 2.5', groups: [:development], require: false
   bundle
-  generate 'annotate:install'
+  generate 'annotate_models:install'
 else
   gsub_file 'config/application.rb', %r(^require "active_record/railtie"$), '#require "active_record/railtie"'
   ['development', 'test', 'production'].each do |env|
