@@ -288,7 +288,7 @@ pull_file 'public/images/invalid.gif'
 # Footnotes at bottom of site when in development, with lots of info and links.
 # TODO: Set up so we can use textmate links to edit files directly from web pages.
 # TODO: Add more notes types. Notes on model methods, SQL table name/row-count/schema (info on each field).
-gem 'rails-footnotes', :version => '~> 3.7', :env => [:development]
+gem 'rails-footnotes', '~> 3.7', groups: [:development]
 pull_file 'config/initializers/footnotes.rb'
 
 
