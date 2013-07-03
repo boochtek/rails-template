@@ -16,7 +16,6 @@ activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include 
 mongoid = ENV['MONGOID'] ? ENV['MONGOID'] == 'y' : yes?('Include Mongoid?')
 email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
 devise = ENV['DEVISE'] ? ENV['DEVISE'] == 'y' : yes?('Use Devise and Warden for authentication?')
-open_id = ENV['OPEN_ID'] ? ENV['OPEN_ID'] == 'y' : yes?('Use OpenID?')
 airbrake = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
 exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
 email = true if exception_notifier || devise # Force email if we've enabled a plugin that requires it.
@@ -272,14 +271,6 @@ if devise
   puts '    user_session'
   puts '  In controller specs, include Devise::TestHelpers in ActionController::TestCase, then sign_in @user and sign_out @user.'
   puts '  In cucumber feature stories, '
-end
-if open_id
-  # NOTE: We should probably use an OpenID strategy from within Warden and Devise instead of open_id_authentication. See http://blog.bitfluent.com/post/318173262/openid-strategy-for-warden for a good start, as well as http://groups.google.com/group/plataformatec-devise/browse_thread/thread/2dd6d14f59d21e83/f033896e83ac8b70.
-  #gem 'ruby-openid' :lib => 'openid'
-  #plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
-  #generate 'authenticated', 'user session' # Requires ActiveRecord.
-  #rake 'db:sessions:create'
-  #rake 'open_id_authentication:db:create'
 end
 
 
