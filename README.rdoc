@@ -4,16 +4,13 @@ This is my Rails template, used to create new Ruby on Rails applications.
 In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
 The template will prompt you to ask if you want some optional components.
-These include DataMapper, ActiveRecord, ActiveResource, ActionMailer, and more.
+These include ActiveRecord, ActiveResource, ActionMailer, and more.
 
 The template can link to a local copy of Edge Rails, if available.
 
 Uses RSpec, Shoulda, Bogus, and Factory Girl for testing.
 
-Slime, HAML, or ERB can be used for view templates.
-
-My default layout uses jQuery.
-I'm considering whether to use jRails to replace Prototype with jQuery when Rails AJAX methods are used, or just not use those methods.
+Slim, HAML, or ERB can be used for view templates.
 
 
 == Usage
