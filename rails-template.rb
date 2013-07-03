@@ -49,8 +49,8 @@ end
 
 
 # Make it easy to pull files from the template repository into the project.
-def pull_file(path)
-  file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read
+def pull_file(path, options={})
+  create_file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read, options
 rescue
   puts "ERROR - Could not pull file."
   exit!
