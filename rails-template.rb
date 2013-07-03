@@ -228,8 +228,20 @@ if airbrake
   run 'bundle install --path vendor/bundle'
   generate "airbrake --api-key #{ask('Airbrake API Key:')}"
 end
+
 if exception_notifier
-  plugin 'exception_notifier', :git => 'git://github.com/rails/exception_notification.git', :submodule => true
+  gem 'exception_notification', version: '~> 4.0.0rc1', require: 'exception_notifier'
+  run 'bundle install --path vendor/bundle'
+  generate 'exception_notification:install --sidekiq'
+  exception_sender = ask('Send exception emails from (Name <address>):')
+  exception_recipients = ask('Send exception emails to (space-separated list):')
+  gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, ":email_prefix => '[#{app_name.classify}] ',"
+  gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{exception_sender}},"
+  gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{exception_recipients}]"
+  # TODO: Add info on the current_user.
+  #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
+  #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
+  #     Step 3: Add to email section of config: sections: ExceptionNotifier.sections + %w[current_user]
 end
 
 
