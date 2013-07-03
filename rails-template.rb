@@ -151,7 +151,14 @@ gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to
 pull_file 'features/support/factory_girl.rb'
 mkdir_p 'spec/factories'
 
-# TODO: Create some commonly-used feature steps.
+
+# TODO: Create some commonly-used feature steps for use in Cucumber.
+
+
+# Background job processing.
+gem 'sidekiq', '~> 2.12'
+run 'bundle install --path vendor/bundle'
+
 
 # Specs and steps for email.
 if email
