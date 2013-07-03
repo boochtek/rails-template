@@ -251,7 +251,7 @@ if exception_notifier
 end
 
 
-pull_file 'app/controllers/application_controller.rb'
+pull_file 'app/controllers/application_controller.rb', force: true
 
 
 ## My personal plugins.
@@ -262,7 +262,7 @@ pull_file 'app/controllers/application_controller.rb'
 
 ## Default HTML code.
 # Default layout.
-pull_file 'app/views/layouts/application.html.erb'
+pull_file 'app/views/layouts/application.html.erb', force: true
 # TODO: 404 and other files in public.
 
 # Display a custom message when site is down for maintenance. From Advanced Rails Recipes #69.
@@ -333,7 +333,7 @@ pull_file 'app/controllers/home_controller.rb'
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano'
 capify!
-pull_file 'config/deploy.rb'
+pull_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
 pull_file 'config/deploy/staging.rb'
 pull_file 'config/deploy/production.rb'
 # Create a config file for the staging environment that we added.
@@ -370,7 +370,7 @@ run 'rake stats > doc/stats.txt'
 run 'rake notes > doc/notes.txt'
 
 # Set up .gitignore file. We load it from here, instead of using pull_file, because the template itself has its own .gitignore file.
-file '.gitignore', <<END
+create_file '.gitignore', <<END, force: true
 # NOTE: We're NOT ignoring config/database.yml, because we're pulling the production passwords from a separate file.
 .DS_Store
 log/*.log
