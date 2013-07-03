@@ -56,6 +56,10 @@ rescue
   exit!
 end
 
+# Helper to make it easier to install gems.
+def bundle
+  bundle_command 'install --path vendor/bundle'
+end
 
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
@@ -77,7 +81,7 @@ EOF
 # ActiveRecord ORM.
 if activerecord
   gem 'annotate', '~> 2.5', groups: [:development], require: false
-  run 'bundle install --path vendor/bundle'
+  bundle
   generate 'annotate:install'
 else
   gsub_file 'config/application.rb', %r(^require "active_record/railtie"$), '#require "active_record/railtie"'
@@ -119,7 +123,7 @@ gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
 gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 
 # Make sure we've got the rspec and cucumber GEMs installed, before we run their generators.
-run 'bundle install --path vendor/bundle'
+bundle
 
 # Create databases.
 if activerecord
@@ -159,13 +163,13 @@ mkdir_p 'spec/factories'
 
 # Background job processing.
 gem 'sidekiq', '~> 2.12'
-run 'bundle install --path vendor/bundle'
+bundle
 
 
 # Specs and steps for email.
 if email
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
-  run 'bundle install --path vendor/bundle'
+  bundle
   generate 'email_spec' # Generate email_steps.rb file.
   pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
   pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
@@ -227,13 +231,13 @@ pull_file 'public/javascripts/boochtek/google-analytics.js'
 ## Error notification.
 if airbrake
   gem 'airbrake'
-  run 'bundle install --path vendor/bundle'
+  bundle
   generate "airbrake --api-key #{ask('Airbrake API Key:')}"
 end
 
 if exception_notifier
   gem 'exception_notification', version: '~> 4.0.0rc1', require: 'exception_notifier'
-  run 'bundle install --path vendor/bundle'
+  bundle
   generate 'exception_notification:install --sidekiq'
   exception_sender = ask('Send exception emails from (Name <address>):')
   exception_recipients = ask('Send exception emails to (space-separated list):')
@@ -317,6 +321,7 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 
 
 ## Create a controller and route for the root/home page.
+bundle
 generate :controller, "home index"
 route "map.root :controller => 'home'"
 route "map.home '', :controller => 'home'"
@@ -341,7 +346,7 @@ environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :en
 
 
 # Create directory for temp files.
-run 'bundle install --path vendor/bundle'
+bundle
 rake 'tmp:create'
 
 # Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
