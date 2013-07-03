@@ -138,7 +138,6 @@ generate 'rspec:install'
 pull_file 'spec/support/running.rb'
 pull_file 'spec/support/require.rb'
 pull_file 'spec/support/shoulda.rb'
-pull_file 'spec/support/email_spec_helper.rb'
 pull_file 'spec/support/matchers/be_in.rb'
 pull_file 'spec/support/matchers/be_sorted.rb'
 pull_file 'spec/support/matchers/allow_values.rb'
@@ -169,7 +168,7 @@ bundle
 if email
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   bundle
-  generate 'email_spec' # Generate email_steps.rb file.
+  generate 'email_spec:steps' # Generate email_steps.rb file.
   pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
   pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
   # USAGE:
