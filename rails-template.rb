@@ -312,16 +312,6 @@ pull_file 'public/images/invalid.gif'
 
 
 ## Other
-plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git', :submodule => true
-rake 'asset:packager:create_yml' # TODO: Use/update the YAML file.
-#gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
-#gem 'nokogiri'
-#plugin 'http://svn.viney.net.nz/things/rails/plugins/acts_as_taggable_on_steroids', :submodule => true
-#generate acts_as_taggable_migration
-#plugin 'limerick_rake', :git => "git://github.com/thoughtbot/limerick_rake.git", :submodule => true
-#plugin 'squirrel', :git => "git://github.com/thoughtbot/squirrel.git", :submodule => true
-plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git', :submodule => true
-# USAGE: Add 'include SslRequirement' and 'ssl_required :action1, :action2' to controller (or ApplicationController).
 
 
 # Footnotes at bottom of site when in development, with lots of info and links.
