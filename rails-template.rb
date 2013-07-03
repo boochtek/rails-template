@@ -331,8 +331,7 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 ## Create a controller and route for the root/home page.
 bundle
 generate :controller, "home index"
-route "map.root :controller => 'home'"
-route "map.home '', :controller => 'home'"
+route "root to: 'home#index', as: 'home'"
 pull_file 'app/views/home/index.html.erb'
 pull_file 'app/controllers/home_controller.rb'
 
