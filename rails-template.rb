@@ -235,7 +235,7 @@ if airbrake
 end
 
 if exception_notifier
-  gem 'exception_notification', version: '~> 4.0.0rc1', require: 'exception_notifier'
+  gem 'exception_notification', '~> 4.0.0rc1'
   bundle
   generate 'exception_notification:install --sidekiq'
   exception_sender = ask('Send exception emails from (Name <address>):')
