@@ -279,18 +279,10 @@ end
 #generate 'roles', 'Role User'
 
 
-## Formtastic and dependencies.
-plugin 'validation_reflection', :git => 'http://github.com/redinger/validation_reflection.git', :submodule => true
-plugin 'country-select', :git => 'http://github.com/rails/iso-3166-country-select.git', :submodule => true
-plugin 'formtastic', :git => 'http://github.com/justinfrench/formtastic.git', :submodule => true
-generate 'formtastic'
-rm_f 'public/stylesheets/formtastic_changes.css' # I'll put my changes in the application.css file.
-
-
 ## My personal plugins.
-plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
-plugin 'crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
-plugin 'attribute_declarations', :git => 'git://github.com/boochtek/activerecord-attribute_declarations.git', :submodule => true
+#plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
+#plugin 'crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
+#plugin 'attribute_declarations', :git => 'git://github.com/boochtek/activerecord-attribute_declarations.git', :submodule => true
 
 
 ## Default HTML code.
