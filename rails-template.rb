@@ -292,7 +292,17 @@ pull_file 'public/images/invalid.gif'
 # TODO: Set up so we can use textmate links to edit files directly from web pages.
 # TODO: Add more notes types. Notes on model methods, SQL table name/row-count/schema (info on each field).
 gem 'rails-footnotes', '~> 3.7', groups: [:development]
-pull_file 'config/initializers/footnotes.rb'
+generate 'rails_footnotes:install'
+pull_file 'lib/footnotes/current_user_note.rb'
+pull_file 'lib/footnotes/global_constants_note.rb'
+inject_into_file 'config/initializers/rails_footnotes.rb', :after => '# ... other init code' do
+  <<-'EOF'
+    require 'footnotes/current_user_note'
+    require 'footnotes/global_constants_note'
+    Footnotes::Filter.notes -= [:general] # I don't see the point of this note.
+    Footnotes::Filter.notes += [:current_user, :global_constants] # Add our custom note.
+  EOF
+end
 
 
 ## My custom generators.
