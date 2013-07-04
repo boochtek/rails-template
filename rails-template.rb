@@ -49,6 +49,9 @@ if rails_template.match(%r{^/})
 else
   running_local = false
 end
+def source_paths
+  [RAILS_TEMPLATE_PATH]
+end
 
 # Check to ensure that we can get to all the files we need.
 begin
@@ -57,14 +60,6 @@ rescue
   raise 'You need to have an Internet connection for this template to work.'
 end
 
-
-# Make it easy to pull files from the template repository into the project.
-def pull_file(path, options={})
-  create_file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read, options
-rescue
-  puts "ERROR - Could not pull file."
-  exit!
-end
 
 # Helper to make it easier to install gems.
 def bundle
@@ -111,12 +106,12 @@ end
 
 ## Database config.
 mv 'config/database.yml', 'config/database.yml.sample'
-pull_file 'config/database.yml'
+copy_file 'config/database.yml'
 
 if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
   gem 'bullet', '~> 4.6', groups: [:development, :test]
-  pull_file 'config/initializers/bullet.rb'
+  copy_file 'config/initializers/bullet.rb'
 end
 
 
@@ -146,14 +141,14 @@ generate 'rspec:install'
 
 # Pull in RSpec support files and matchers.
 # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
-pull_file 'spec/support/running.rb'
-pull_file 'spec/support/require.rb'
-pull_file 'spec/support/shoulda.rb'
-pull_file 'spec/support/matchers/be_in.rb'
-pull_file 'spec/support/matchers/be_sorted.rb'
-pull_file 'spec/support/matchers/allow_values.rb'
-pull_file 'spec/support/matchers/rails.rb'
-pull_file 'spec/support/matchers/should_each.rb'
+copy_file 'spec/support/running.rb'
+copy_file 'spec/support/require.rb'
+copy_file 'spec/support/shoulda.rb'
+copy_file 'spec/support/matchers/be_in.rb'
+copy_file 'spec/support/matchers/be_sorted.rb'
+copy_file 'spec/support/matchers/allow_values.rb'
+copy_file 'spec/support/matchers/rails.rb'
+copy_file 'spec/support/matchers/should_each.rb'
 
 
 # Create features directory for Cucumber, as well as a cucumber config file.
@@ -163,7 +158,7 @@ gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to
 
 
 # Allow use of FactoryGirl factories in Cucumber.
-pull_file 'features/support/factory_girl.rb'
+copy_file 'features/support/factory_girl.rb'
 mkdir_p 'spec/factories'
 
 
@@ -180,8 +175,8 @@ if ACTION_MAILER
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   bundle
   generate 'email_spec:steps' # Generate email_steps.rb file.
-  pull_file 'features/support/email_spec.rb' # Integration into Cucumber.
-  pull_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
+  copy_file 'features/support/email_spec.rb' # Integration into Cucumber.
+  copy_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
   # USAGE:
   #   In features:
   #     Then I should receive an email
@@ -229,12 +224,12 @@ gem 'sass', '~> 3.2'
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '2.0.2'
 file "vendor/assets/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
-pull_file 'app/helpers/jquery_helper.rb'
+copy_file 'app/helpers/jquery_helper.rb'
 
 # Pull in my custom JavaScript code.
-pull_file 'public/javascripts/boochtek.js'
-pull_file 'public/javascripts/boochtek/validation.js'
-pull_file 'public/javascripts/boochtek/google-analytics.js'
+copy_file 'public/javascripts/boochtek.js'
+copy_file 'public/javascripts/boochtek/validation.js'
+copy_file 'public/javascripts/boochtek/google-analytics.js'
 
 
 ## Error notification.
@@ -258,7 +253,7 @@ if EXCEPTION_NOTIFIER
 end
 
 
-pull_file 'app/controllers/application_controller.rb', force: true
+copy_file 'app/controllers/application_controller.rb', force: true
 
 
 ## My personal plugins.
@@ -269,14 +264,14 @@ pull_file 'app/controllers/application_controller.rb', force: true
 
 ## Default HTML code.
 # Default layout.
-pull_file 'app/views/layouts/application.html.erb', force: true
+copy_file 'app/views/layouts/application.html.erb', force: true
 # TODO: 404 and other files in public.
 
 # Display a custom message when site is down for maintenance. From Advanced Rails Recipes #69.
 # Use 'cap deploy:web:disable' to display the maintenance page, and 'cap deploy:web:enable' to return to normal service.
-pull_file 'app/views/admin/maintenance.html.erb'
-pull_file 'public/.htaccess'
-pull_file 'config/deploy/maintenance.rb'
+copy_file 'app/views/admin/maintenance.html.erb'
+copy_file 'public/.htaccess'
+copy_file 'config/deploy/maintenance.rb'
 
 ## Delete some unnecessary files.
 rm_f 'README' # Needed for rake doc:rails for some reason.
@@ -289,8 +284,8 @@ rm_f 'public/images/rails.png'
 
 ## Default assets.
 # Add some images used by the HTML, CSS, and JavaScript.
-pull_file 'public/stylesheets/application.css'
-pull_file 'public/images/invalid.gif'
+copy_file 'public/stylesheets/application.css'
+copy_file 'public/images/invalid.gif'
 
 
 ## Other
@@ -302,8 +297,8 @@ pull_file 'public/images/invalid.gif'
 gem 'rails-footnotes', '~> 3.7', groups: [:development]
 bundle
 generate 'rails_footnotes:install'
-pull_file 'lib/footnotes/current_user_note.rb'
-pull_file 'lib/footnotes/global_constants_note.rb'
+copy_file 'lib/footnotes/current_user_note.rb'
+copy_file 'lib/footnotes/global_constants_note.rb'
 inject_into_file 'config/initializers/rails_footnotes.rb', after: "# ... other init code\n" do
   <<-'EOF'
     require 'footnotes/current_user_note'
@@ -315,25 +310,25 @@ end
 
 
 ## My custom generators.
-pull_file 'lib/generators/controller/USAGE'
-pull_file 'lib/generators/controller/controller_generator.rb'
-pull_file 'lib/generators/controller/templates/controller_spec.rb'
-pull_file 'lib/generators/controller/templates/helper_spec.rb'
-pull_file 'lib/generators/controller/templates/controller.rb'
-pull_file 'lib/generators/controller/templates/functional_test.rb'
-pull_file 'lib/generators/controller/templates/helper.rb'
-pull_file 'lib/generators/controller/templates/helper_test.rb'
-pull_file 'lib/generators/controller/templates/view.html.erb'
-pull_file 'lib/generators/model/USAGE'
-pull_file 'lib/generators/model/model_generator.rb'
-pull_file 'lib/generators/model/templates/model_spec.rb'
-pull_file 'lib/generators/model/templates/model.rb'
-pull_file 'lib/generators/model/templates/migration.rb'
-pull_file 'lib/generators/model/templates/fixtures.yml'
+copy_file 'lib/generators/controller/USAGE'
+copy_file 'lib/generators/controller/controller_generator.rb'
+copy_file 'lib/generators/controller/templates/controller_spec.rb'
+copy_file 'lib/generators/controller/templates/helper_spec.rb'
+copy_file 'lib/generators/controller/templates/controller.rb'
+copy_file 'lib/generators/controller/templates/functional_test.rb'
+copy_file 'lib/generators/controller/templates/helper.rb'
+copy_file 'lib/generators/controller/templates/helper_test.rb'
+copy_file 'lib/generators/controller/templates/view.html.erb'
+copy_file 'lib/generators/model/USAGE'
+copy_file 'lib/generators/model/model_generator.rb'
+copy_file 'lib/generators/model/templates/model_spec.rb'
+copy_file 'lib/generators/model/templates/model.rb'
+copy_file 'lib/generators/model/templates/migration.rb'
+copy_file 'lib/generators/model/templates/fixtures.yml'
 
 
 # Miscellaneous initializers.
-pull_file 'config/initializers/site_config.rb'
+copy_file 'config/initializers/site_config.rb'
 # Inject JQUERY_VERSION (defined above) into site_config.rb file.
 gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_VERSION = '#{JQUERY_VERSION}'"
 
@@ -342,17 +337,17 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 bundle
 generate :controller, "home index"
 route "root to: 'home#index', as: 'home'"
-pull_file 'app/views/home/index.html.erb'
-pull_file 'app/controllers/home_controller.rb'
+copy_file 'app/views/home/index.html.erb'
+copy_file 'app/controllers/home_controller.rb'
 
 
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano'
 capify!
-pull_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
-pull_file 'config/deploy/staging.rb'
-pull_file 'config/deploy/production.rb'
+copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
+copy_file 'config/deploy/staging.rb'
+copy_file 'config/deploy/production.rb'
 # Create a config file for the staging environment that we added.
 cp 'config/environments/production.rb', 'config/environments/staging.rb'
 # Set the staging environment to display tracebacks when errors occur.
@@ -387,7 +382,7 @@ rake 'spec'
 run 'rake stats > doc/stats.txt'
 run 'rake notes > doc/notes.txt'
 
-# Set up .gitignore file. We load it from here, instead of using pull_file, because the template itself has its own .gitignore file.
+# Set up .gitignore file. We load it from here, instead of using copy_file, because the template itself has its own .gitignore file.
 create_file '.gitignore', <<END, force: true
 # NOTE: We're NOT ignoring config/database.yml, because we're pulling the production passwords from a separate file.
 .DS_Store
