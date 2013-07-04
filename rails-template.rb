@@ -14,11 +14,20 @@
 
 
 ## Get user input, via environment variables or prompting the user.
-activerecord = ENV['ACTIVERECORD'] ? ENV['ACTIVERECORD'] == 'y' : yes?('Include ActiveRecord?')
-email = ENV['ACTIONMAILER'] ? ENV['ACTIONMAILER'] == 'y' : yes?('Include ActionMailer?')
-airbrake = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
-exception_notifier = ENV['EXCEPTIONNOTIFIER'] ? ENV['EXCEPTIONNOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
-email = true if exception_notifier      # Force email if we've enabled a plugin that requires it.
+ACTIVE_RECORD = ENV['ACTIVE_RECORD'] ? ENV['ACTIVE_RECORD'] == 'y' : yes?('Include ActiveRecord?')
+ACTION_MAILER = ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : yes?('Include ActionMailer?')
+AIRBRAKE = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
+EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
+
+if AIRBRAKE
+  AIRBRAKE_API_KEY = ask('Airbrake API Key:')
+end
+
+if EXCEPTION_NOTIFIER
+  ACTION_MAILER = true
+  EXCEPTION_NOTIFIER_SENDER = ENV['EXCEPTION_NOTIFIER_SENDER'] ? ENV['EXCEPTION_NOTIFIER_SENDER'] : ask('Send exception emails from (Name <address>):')
+  EXCEPTION_NOTIFIER_RECIPIENTS = ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] ? ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] : ask('Send exception emails to (space-separated list):')
+end
 
 
 # Allow opening URLs as if they are local files.
@@ -80,7 +89,7 @@ EOF
 
 
 # ActiveRecord ORM.
-if activerecord
+if ACTIVE_RECORD
   gem 'annotate', '~> 2.5', groups: [:development], require: false
   bundle
   generate 'annotate_models:install'
@@ -92,7 +101,7 @@ else
 end
 
 # ActionMailer
-if !email
+if !ACTION_MAILER
   gsub_file 'config/application.rb', %r(^require "action_mailer/railtie"$), '#require "action_mailer/railtie"'
   ['development', 'test', 'production'].each do |env|
     gsub_file "config/environments/#{env}.rb", %r(^  config\.action_mailer\.), '  #config.action_mailer.'
@@ -104,7 +113,7 @@ end
 mv 'config/database.yml', 'config/database.yml.sample'
 pull_file 'config/database.yml'
 
-if activerecord
+if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
   gem 'bullet', '~> 4.6', groups: [:development, :test]
   pull_file 'config/initializers/bullet.rb'
@@ -127,7 +136,7 @@ gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 bundle
 
 # Create databases.
-if activerecord
+if ACTIVE_RECORD
   rake 'db:create:all'
 end
 
@@ -167,7 +176,7 @@ bundle
 
 
 # Specs and steps for email.
-if email
+if ACTION_MAILER
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   bundle
   generate 'email_spec:steps' # Generate email_steps.rb file.
@@ -229,21 +238,19 @@ pull_file 'public/javascripts/boochtek/google-analytics.js'
 
 
 ## Error notification.
-if airbrake
+if AIRBRAKE
   gem 'airbrake'
   bundle
-  generate "airbrake --api-key #{ask('Airbrake API Key:')}"
+  generate "airbrake --api-key #{AIRBRAKE_API_KEY}"
 end
 
-if exception_notifier
+if EXCEPTION_NOTIFIER
   gem 'exception_notification', '~> 4.0.0rc1'
   bundle
   generate 'exception_notification:install --sidekiq'
-  exception_sender = ask('Send exception emails from (Name <address>):')
-  exception_recipients = ask('Send exception emails to (space-separated list):')
   gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, ":email_prefix => '[#{app_name.classify}] ',"
-  gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{exception_sender}},"
-  gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{exception_recipients}]"
+  gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{EXCEPTION_NOTIFIER_SENDER}},"
+  gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
   # TODO: Add info on the current_user.
   #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
   #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
@@ -366,7 +373,7 @@ rake 'tmp:create'
 end
 
 # Create the database.
-rake 'db:migrate' if activerecord
+rake 'db:migrate' if ACTIVE_RECORD
 
 
 # Test the base app.
