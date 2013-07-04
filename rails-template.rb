@@ -8,7 +8,9 @@
 # Released under MIT license (same as Ruby on Rails).
 
 
-# Got some of these ideas and code from other templates, including http://github.com/jeremymcanally/rails-templates/ and http://github.com/ffmike/BigOldRailsTemplate/.
+# Got some of these ideas and code from other templates, including:
+#   * http://github.com/jeremymcanally/rails-templates/
+#   * http://github.com/ffmike/BigOldRailsTemplate/
 
 
 ## Get user input, via environment variables or prompting the user.
@@ -104,7 +106,7 @@ pull_file 'config/database.yml'
 
 if activerecord
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
-  gem 'bullet', :version => '~> 4.6', groups: [:development, :test]
+  gem 'bullet', '~> 4.6', groups: [:development, :test]
   pull_file 'config/initializers/bullet.rb'
 end
 
