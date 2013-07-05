@@ -259,10 +259,7 @@ end
 copy_file 'app/controllers/application_controller.rb', force: true
 
 
-## My personal plugins.
-#plugin 'default_views', :git => "git://github.com/boochtek/rails-default_views.git", :submodule => true
-#plugin 'crud_actions', :git => "git://github.com/boochtek/rails-crud_actions.git", :submodule => true
-#plugin 'attribute_declarations', :git => 'git://github.com/boochtek/activerecord-attribute_declarations.git', :submodule => true
+## TODO: My personal plugins - default_views, crud_actions, attribute_declarations.
 
 
 ## Default HTML code.
