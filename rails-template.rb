@@ -57,11 +57,20 @@ rescue
   raise 'You need to have an Internet connection for this template to work.'
 end
 
-
-# Helper to make it easier to install gems.
-def bundle
-  bundle_command 'install --path vendor/bundle'
+# Allow us to defer some actions until after all the gems have been bundled.
+def after_bundle(&block)
+  @after_bundle_blocks ||= []
+  @after_bundle_blocks.append(block)
 end
+
+def run_bundle
+  super
+  @after_bundle_blocks.each do |block|
+    block.call()
+  end
+end
+
+
 
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
@@ -83,8 +92,10 @@ EOF
 # ActiveRecord ORM.
 if ACTIVE_RECORD
   gem 'annotate', '~> 2.5', groups: [:development], require: false
-  bundle
-  generate 'annotate_models:install'
+  after_bundle do
+    generate 'annotate_models:install'
+    rake 'db:create:all'
+  end
 else
   gsub_file 'config/application.rb', %r(^require "active_record/railtie"$), '#require "active_record/railtie"'
   ['development', 'test', 'production'].each do |env|
@@ -124,39 +135,32 @@ gem 'shoulda',            '~> 3.5',   groups: ['test']
 gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
 gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
 
-# Make sure we've got the rspec and cucumber GEMs installed, before we run their generators.
-bundle
+after_bundle do
+  # Create spec directory structure.
+  generate 'rspec:install'
 
-# Create databases.
-if ACTIVE_RECORD
-  rake 'db:create:all'
+  # Pull in RSpec support files and matchers.
+  # TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
+  copy_file 'spec/support/running.rb'
+  copy_file 'spec/support/require.rb'
+  copy_file 'spec/support/shoulda.rb'
+  copy_file 'spec/support/matchers/be_in.rb'
+  copy_file 'spec/support/matchers/be_sorted.rb'
+  copy_file 'spec/support/matchers/allow_values.rb'
+  copy_file 'spec/support/matchers/rails.rb'
+  copy_file 'spec/support/matchers/should_each.rb'
+
+
+  # Create features directory for Cucumber, as well as a cucumber config file.
+  generate 'cucumber:install'
+  gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt' # Move the rerun flag file.
+  gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to use when more than one matches.
+
+
+  # Allow use of FactoryGirl factories in Cucumber.
+  copy_file 'features/support/factory_girl.rb'
+  mkdir_p 'spec/factories'
 end
-
-# Create spec directory structure.
-generate 'rspec:install'
-
-
-# Pull in RSpec support files and matchers.
-# TODO: Should we try to put some of these in GEMs (see how Shoulda does it)?
-copy_file 'spec/support/running.rb'
-copy_file 'spec/support/require.rb'
-copy_file 'spec/support/shoulda.rb'
-copy_file 'spec/support/matchers/be_in.rb'
-copy_file 'spec/support/matchers/be_sorted.rb'
-copy_file 'spec/support/matchers/allow_values.rb'
-copy_file 'spec/support/matchers/rails.rb'
-copy_file 'spec/support/matchers/should_each.rb'
-
-
-# Create features directory for Cucumber, as well as a cucumber config file.
-generate 'cucumber:install'
-gsub_file 'config/cucumber.yml', /rerun\.txt/, 'features/rerun.txt' # Move the rerun flag file.
-gsub_file 'config/cucumber.yml', /--strict/, '--guess' # Guess the right step to use when more than one matches.
-
-
-# Allow use of FactoryGirl factories in Cucumber.
-copy_file 'features/support/factory_girl.rb'
-mkdir_p 'spec/factories'
 
 
 # TODO: Create some commonly-used feature steps for use in Cucumber.
@@ -164,34 +168,35 @@ mkdir_p 'spec/factories'
 
 # Background job processing.
 gem 'sidekiq', '~> 2.12'
-bundle
 
 
 # Specs and steps for email.
 if ACTION_MAILER
   gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
-  bundle
-  generate 'email_spec:steps' # Generate email_steps.rb file.
-  copy_file 'features/support/email_spec.rb' # Integration into Cucumber.
-  copy_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
-  # USAGE:
-  #   In features:
-  #     Then I should receive an email
-  #     When I open the email
-  #     Then I should see "blah" in the subject
-  #     When I click the first link in the email
-  #   In steps:
-  #     def current_email_address; @email || (@current_user && @current_user.email) || 'unknown@example.com'
-  #     unread_emails_for(current_email_address).size.should == 1
-  #     open_email(current_email_address)
-  #     current_email.should have_subject(/blah/)
-  #     click_first_link_in_email()
+  after_bundle do
+    generate 'email_spec:steps' # Generate email_steps.rb file.
+    copy_file 'features/support/email_spec.rb' # Integration into Cucumber.
+    copy_file 'spec/support/email_spec_helper.rb' # Integration into RSpec.
+    # USAGE:
+    #   In features:
+    #     Then I should receive an email
+    #     When I open the email
+    #     Then I should see "blah" in the subject
+    #     When I click the first link in the email
+    #   In steps:
+    #     def current_email_address; @email || (@current_user && @current_user.email) || 'unknown@example.com'
+    #     unread_emails_for(current_email_address).size.should == 1
+    #     open_email(current_email_address)
+    #     current_email.should have_subject(/blah/)
+    #     click_first_link_in_email()
+  end
 end
 
-# Create spec/javascripts directory structure.
-generate 'jasmine:install'
-generate 'jasmine:examples'
-
+after_bundle do
+  # Create spec/javascripts directory structure.
+  generate 'jasmine:install'
+  generate 'jasmine:examples'
+end
 
 ## TODO: Create some sample specs and features that we can start with.
 # NOTE: Be sure to make use of Shoulda RSpec matchers.
@@ -203,8 +208,9 @@ generate 'jasmine:examples'
 
 ## Stats and coverage tools.
 gem 'metric_fu', '~> 4.2.1', groups: ['development' 'test']
-append_file 'Rakefile', "require 'metric_fu'"
-
+after_bundle do
+  append_file 'Rakefile', "require 'metric_fu'"
+end
 
 # Slim templating system.
 gem 'slim-rails', '~> 2.0'
@@ -230,23 +236,24 @@ copy_file 'public/javascripts/boochtek/google-analytics.js'
 ## Error notification.
 if AIRBRAKE
   gem 'airbrake'
-  bundle
-  generate "airbrake --api-key #{AIRBRAKE_API_KEY}"
+  after_bundle do
+    generate "airbrake --api-key #{AIRBRAKE_API_KEY}"
+  end
 end
 
 if EXCEPTION_NOTIFIER
   gem 'exception_notification', '~> 4.0.0rc1'
-  bundle
-  generate 'exception_notification:install --sidekiq'
-  gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, ":email_prefix => '[#{app_name.classify}] ',"
-  gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{EXCEPTION_NOTIFIER_SENDER}},"
-  gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
-  # TODO: Add info on the current_user.
-  #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
-  #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
-  #     Step 3: Add to email section of config: sections: ExceptionNotifier.sections + %w[current_user]
+  after_bundle do
+    generate 'exception_notification:install --sidekiq'
+    gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, ":email_prefix => '[#{app_name.classify}] ',"
+    gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{EXCEPTION_NOTIFIER_SENDER}},"
+    gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
+    # TODO: Add info on the current_user.
+    #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
+    #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
+    #     Step 3: Add to email section of config: sections: ExceptionNotifier.sections + %w[current_user]
+  end
 end
-
 
 copy_file 'app/controllers/application_controller.rb', force: true
 
@@ -290,17 +297,18 @@ copy_file 'public/images/invalid.gif'
 # TODO: Set up so we can use textmate links to edit files directly from web pages.
 # TODO: Add more notes types. Notes on model methods, SQL table name/row-count/schema (info on each field).
 gem 'rails-footnotes', '~> 3.7', groups: [:development]
-bundle
-generate 'rails_footnotes:install'
-copy_file 'lib/footnotes/current_user_note.rb'
-copy_file 'lib/footnotes/global_constants_note.rb'
-inject_into_file 'config/initializers/rails_footnotes.rb', after: "# ... other init code\n" do
-  <<-'EOF'
-    require 'footnotes/current_user_note'
-    require 'footnotes/global_constants_note'
-    Footnotes::Filter.notes -= [:general] # I don't see the point of this note.
-    Footnotes::Filter.notes += [:current_user, :global_constants] # Add our custom note.
-  EOF
+after_bundle do
+  generate 'rails_footnotes:install'
+  copy_file 'lib/footnotes/current_user_note.rb'
+  copy_file 'lib/footnotes/global_constants_note.rb'
+  inject_into_file 'config/initializers/rails_footnotes.rb', after: "# ... other init code\n" do
+    <<-'EOF'
+      require 'footnotes/current_user_note'
+      require 'footnotes/global_constants_note'
+      Footnotes::Filter.notes -= [:general] # I don't see the point of this note.
+      Footnotes::Filter.notes += [:current_user, :global_constants] # Add our custom note.
+    EOF
+  end
 end
 
 
@@ -329,8 +337,9 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 
 
 ## Create a controller and route for the root/home page.
-bundle
-generate :controller, "home index"
+after_bundle do
+  generate :controller, "home index"
+end
 route "root to: 'home#index', as: 'home'"
 copy_file 'app/views/home/index.html.erb'
 copy_file 'app/controllers/home_controller.rb'
@@ -339,22 +348,25 @@ copy_file 'app/controllers/home_controller.rb'
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano'
-capify!
-copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
-copy_file 'config/deploy/staging.rb'
-copy_file 'config/deploy/production.rb'
-# Create a config file for the staging environment that we added.
-cp 'config/environments/production.rb', 'config/environments/staging.rb'
-# Set the staging environment to display tracebacks when errors occur.
-environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
+after_bundle do
+  capify!
+  copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
+  copy_file 'config/deploy/staging.rb'
+  copy_file 'config/deploy/production.rb'
+  # Create a config file for the staging environment that we added.
+  cp 'config/environments/production.rb', 'config/environments/staging.rb'
+  # Set the staging environment to display tracebacks when errors occur.
+  environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
+end
 
 # Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
 environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :env => :development
 
 
 # Create directory for temp files.
-bundle
-rake 'tmp:create'
+after_bundle do
+  rake 'tmp:create'
+end
 
 # Git won't keep an empty directory around, so throw some .keep files in directories we want to keep around even if empty.
 %w[tmp log vendor test doc].each do |dir|
@@ -362,19 +374,23 @@ rake 'tmp:create'
 end
 
 # Create the database.
-rake 'db:migrate' if ACTIVE_RECORD
-
+after_bundle do
+  rake 'db:migrate' if ACTIVE_RECORD
+end
 
 # Test the base app.
-rake 'cucumber'
-rake 'spec'
-#rake 'spec:javascripts' # FIXME: Requires application.js to exist.
+after_bundle do
+  rake 'cucumber'
+  rake 'spec'
+  #rake 'spec:javascripts' # FIXME: Requires application.js to exist.
 
-# TODO: These should be in the rake task that gets run by the git pre_commit hook.
-#rake 'metrics:all' # Generate coverage, cyclomatic complexity, flog, flay, railroad, reek, roodi, stats... #FIXME: Not running properly.
+  # TODO: These should be in the rake task that gets run by the git pre_commit hook.
+  #rake 'metrics:all' # Generate coverage, cyclomatic complexity, flog, flay, railroad, reek, roodi, stats... #FIXME: Not running properly.
 
-run 'rake stats > doc/stats.txt'
-run 'rake notes > doc/notes.txt'
+  run 'rake stats > doc/stats.txt'
+  run 'rake notes > doc/notes.txt'
+end
+
 
 # Set up .gitignore file. We load it from here, instead of using copy_file, because the template itself has its own .gitignore file.
 create_file '.gitignore', <<END, force: true
@@ -408,45 +424,45 @@ END
 #run 'chmod +x .git/hooks/pre-commit'
 
 
-# Initialize submodules
-git :submodule => 'init'
+after_bundle do
+  # Initialize submodules
+  git :submodule => 'init'
 
-# Commit to git repository.
-git :add => '.'
-git :commit => "-a -m 'Initial commit'"
+  # Commit to git repository.
+  git :add => '.'
+  git :commit => "-a -m 'Initial commit'"
 
-# TODO: Set git upstream repository. (Probably just print a reminder to do so.)
-#git remote add origin ''
-#git push origin master
+  # TODO: Set git upstream repository. (Probably just print a reminder to do so.)
+  #git remote add origin ''
+  #git push origin master
+end
 
-# Make sure all the GEMs are installed on development system.
-#rake 'gems:install'
-
-
-puts <<END
-NEXT STEPS:
-    CD into the newly created Rails app.
-    Edit the constants defined in the "config/initializers/site_config.rb" file.
-    Make sure "rake spec" and "rake cucumber" run without errors.
-    Make sure the app runs: "script/server".
-    Commit changes: "git commit -a -m 'Basic site configuration.'"
-    TODO: Create a new GIT branch for the new feature.
-    Write feature ("script/generate feature feature_name") and feature steps.
-    Run "rake cucumber". (FAILS)
-    TODO: Add route.
-    Write spec.
-    Run "rake spec". (FAILS)
-    Write code to pass spec.
-    Run "rake spec". (PASSES)
-    OPTIONAL: Commit the changes: "git commit -a -m 'Add blah for xyz feature.'"
-    Refactor.
-    Run "rake spec". (PASSES)
-    OPTIONAL: Commit the changes: "git commit -a -m 'Refactor blah.'"
-    Continue writing specs and code until feature is complete.
-    Run "rake cucumber". (PASSES)
-    TODO: Merge feature back into master branch.
-    Make sure "rake spec" and "rake cucumber" still pass.
-    OPTIONAL: Generate metrics: "rake metrics:all"
-    Commit the new feature: "git commit -a -m 'Added xyz feature.'"
-    Push to GitHub: "git push".
-END
+after_bundle do
+  puts <<-END
+  NEXT STEPS:
+      CD into the newly created Rails app.
+      Edit the constants defined in the "config/initializers/site_config.rb" file.
+      Make sure "rake spec" and "rake cucumber" run without errors.
+      Make sure the app runs: "script/server".
+      Commit changes: "git commit -a -m 'Basic site configuration.'"
+      TODO: Create a new GIT branch for the new feature.
+      Write feature ("script/generate feature feature_name") and feature steps.
+      Run "rake cucumber". (FAILS)
+      TODO: Add route.
+      Write spec.
+      Run "rake spec". (FAILS)
+      Write code to pass spec.
+      Run "rake spec". (PASSES)
+      OPTIONAL: Commit the changes: "git commit -a -m 'Add blah for xyz feature.'"
+      Refactor.
+      Run "rake spec". (PASSES)
+      OPTIONAL: Commit the changes: "git commit -a -m 'Refactor blah.'"
+      Continue writing specs and code until feature is complete.
+      Run "rake cucumber". (PASSES)
+      TODO: Merge feature back into master branch.
+      Make sure "rake spec" and "rake cucumber" still pass.
+      OPTIONAL: Generate metrics: "rake metrics:all"
+      Commit the new feature: "git commit -a -m 'Added xyz feature.'"
+      Push to GitHub: "git push".
+  END
+end
