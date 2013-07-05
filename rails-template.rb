@@ -56,6 +56,9 @@ rescue
   raise 'You need to have an Internet connection for this template to work.'
 end
 
+# Ensure bundled gems are loaded into vendor/bundler.
+bundle_command 'config --local path vendor/bundle'
+
 # Allow us to defer some actions until after all the gems have been bundled.
 def after_bundle(&block)
   @after_bundle_blocks ||= []
