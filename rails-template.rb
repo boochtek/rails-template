@@ -211,10 +211,8 @@ append_file 'Rakefile', "require 'metric_fu'"
 # Slim templating system.
 gem 'slim-rails', '~> 2.0'
 
-
 # HAML templating system.
 gem 'haml', '~> 4.0'
-run 'haml --rails .'
 
 # Sass CSS templating.
 gem 'sass', '~> 3.2'
