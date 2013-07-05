@@ -15,16 +15,15 @@
 
 ## Get user input, via environment variables or prompting the user.
 ACTIVE_RECORD = ENV['ACTIVE_RECORD'] ? ENV['ACTIVE_RECORD'] == 'y' : yes?('Include ActiveRecord?')
-ACTION_MAILER = ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : yes?('Include ActionMailer?')
 AIRBRAKE = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
 EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
+ACTION_MAILER = EXCEPTION_NOTIFIER || (ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : yes?('Include ActionMailer?'))
 
 if AIRBRAKE
   AIRBRAKE_API_KEY = ask('Airbrake API Key:')
 end
 
 if EXCEPTION_NOTIFIER
-  ACTION_MAILER = true
   EXCEPTION_NOTIFIER_SENDER = ENV['EXCEPTION_NOTIFIER_SENDER'] ? ENV['EXCEPTION_NOTIFIER_SENDER'] : ask('Send exception emails from (Name <address>):')
   EXCEPTION_NOTIFIER_RECIPIENTS = ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] ? ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] : ask('Send exception emails to (space-separated list):')
 end
