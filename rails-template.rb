@@ -246,9 +246,9 @@ if EXCEPTION_NOTIFIER
   gem 'exception_notification', '~> 4.0.0rc1'
   after_bundle do
     generate 'exception_notification:install --sidekiq'
-    gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, ":email_prefix => '[#{app_name.classify}] ',"
-    gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, ":sender_address => %{#{EXCEPTION_NOTIFIER_SENDER}},"
-    gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, ":exception_recipients => %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
+    gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, "email_prefix: '[#{app_name.classify}] ',"
+    gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, "sender_address: %{#{EXCEPTION_NOTIFIER_SENDER}},"
+    gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, "exception_recipients: %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
     # TODO: Add info on the current_user.
     #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
     #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
@@ -356,11 +356,11 @@ after_bundle do
   # Give cucumber the same settings as test.
   cp 'config/environments/test.rb', 'config/environments/cucumber.rb'
   # Set the staging environment to display tracebacks when errors occur.
-  environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
+  environment 'config.action_controller.consider_all_requests_local = true', env: :staging
 end
 
 # Log database access to the console. From http://rubyquicktips.tumblr.com/post/379756937/always-turn-on-activerecord-logging-in-the-console
-environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :env => :development
+environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', env: :development
 
 
 # Create directory for temp files.
@@ -426,11 +426,11 @@ END
 
 after_bundle do
   # Initialize submodules
-  git :submodule => 'init'
+  git submodule: 'init'
 
   # Commit to git repository.
-  git :add => '.'
-  git :commit => "-a -m 'Initial commit'"
+  git add: '.'
+  git commit: "-a -m 'Initial commit'"
 
   # TODO: Set git upstream repository. (Probably just print a reminder to do so.)
   #git remote add origin ''
