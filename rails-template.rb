@@ -36,7 +36,6 @@ require 'open-uri'
 require 'fileutils'
 def cp(src, dest, options = {}); FileUtils.cp(src, dest, options); end
 def mv(src, dest, options = {}); FileUtils.mv(src, dest, options); end
-def mkdir_p(list, options = {}); FileUtils.mkdir_p(list, options); end
 
 
 ## Decide whether to pull all the files from local directory, or from GitHub.
@@ -159,7 +158,7 @@ after_bundle do
 
   # Allow use of FactoryGirl factories in Cucumber.
   copy_file 'features/support/factory_girl.rb'
-  mkdir_p 'spec/factories'
+  empty_directory 'spec/factories'
 end
 
 
