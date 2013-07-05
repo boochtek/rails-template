@@ -37,8 +37,6 @@ require 'fileutils'
 def cp(src, dest, options = {}); FileUtils.cp(src, dest, options); end
 def mv(src, dest, options = {}); FileUtils.mv(src, dest, options); end
 def mkdir_p(list, options = {}); FileUtils.mkdir_p(list, options); end
-def rm_f(list, options = {}); FileUtils.rm_f(list, options); end
-def touch(list, options = {}); FileUtils.touch(list, options); end
 
 
 ## Decide whether to pull all the files from local directory, or from GitHub.
@@ -271,12 +269,12 @@ copy_file 'public/.htaccess'
 copy_file 'config/deploy/maintenance.rb'
 
 ## Delete some unnecessary files.
-rm_f 'README' # Needed for rake doc:rails for some reason.
-rm_f 'doc/README_FOR_APP' # Needed for rake doc:app for some reason.
-rm_f 'public/index.html'
-rm_f 'public/images/rails.png'
-#rm_f 'public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
-#rm_f 'public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
+remove_file 'README' # Needed for rake doc:rails for some reason.
+remove_file 'doc/README_FOR_APP' # Needed for rake doc:app for some reason.
+remove_file 'public/index.html'
+remove_file 'public/images/rails.png'
+#remove_file 'public/favicon.ico' # TODO: Really need to make sure favicon.ico is available, as browsers request it frequently.
+#remove_file 'public/robots.txt'  # TODO: Add a robots.txt to ignore everything, so app starts in "stealth mode"? At least for staging?
 
 
 ## Default assets.
@@ -358,10 +356,9 @@ environment 'ActiveRecord::Base.logger = Logger.new(STDOUT) if "irb" == $0', :en
 bundle
 rake 'tmp:create'
 
-# Git won't keep an empty directory around, so throw some .gitignore files in directories we want to keep around even if empty.
+# Git won't keep an empty directory around, so throw some .keep files in directories we want to keep around even if empty.
 %w[tmp log vendor test doc].each do |dir|
-  mkdir_p "#{dir}"
-  touch "#{dir}/.gitignore"
+  keep_file dir
 end
 
 # Create the database.
