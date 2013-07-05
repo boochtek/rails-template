@@ -334,6 +334,15 @@ copy_file 'config/initializers/site_config.rb'
 gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_VERSION = '#{JQUERY_VERSION}'"
 
 
+# Add some parameters to filter from logging.
+append_file 'config/initializers/filter_parameter_logging.rb' do
+  <<-'EOF'
+    Rails.application.config.filter_parameters += [:password_confirmation, :confirm_password]
+    Rails.application.config.filter_parameters += [:ssn, :social_security_number]
+    Rails.application.config.filter_parameters += [:credit_card, :credit_card_number, :cvv, :cvv2]
+  EOF
+end
+
 ## Create a controller and route for the root/home page.
 after_bundle do
   generate :controller, "home index"
