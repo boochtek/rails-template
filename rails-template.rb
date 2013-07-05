@@ -126,6 +126,7 @@ end
 gem 'rspec',              '~> 2.13',  groups: ['development', 'test']
 gem 'rspec-rails',        '~> 2.13',  groups: ['test']
 gem 'bogus',              '~> 0.1.0', groups: ['test']
+gem 'database_cleaner',   '~> 1.0',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
 gem 'cucumber-rails',     '~> 1.3',   groups: ['test']
 gem 'capybara',           '~> 2.1',   groups: ['test']
@@ -133,6 +134,7 @@ gem 'factory_girl_rails', '~> 4.2',   groups: ['development', 'test']
 gem 'shoulda',            '~> 3.5',   groups: ['test']
 gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
 gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
+
 
 after_bundle do
   # Create spec directory structure.
@@ -354,6 +356,8 @@ after_bundle do
   copy_file 'config/deploy/production.rb'
   # Create a config file for the staging environment that we added.
   cp 'config/environments/production.rb', 'config/environments/staging.rb'
+  # Give cucumber the same settings as test.
+  cp 'config/environments/test.rb', 'config/environments/cucumber.rb'
   # Set the staging environment to display tracebacks when errors occur.
   environment 'config.action_controller.consider_all_requests_local = true', :env => :staging
 end
