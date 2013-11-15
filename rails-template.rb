@@ -359,6 +359,12 @@ copy_file 'app/views/home/index.html.erb'
 copy_file 'app/controllers/home_controller.rb'
 
 
+## App server.
+
+# Use Unicorn in production by default.
+gem 'unicorn', '~> 4.6.0', groups: [:production]
+
+
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
 gem 'capistrano', '~> 2.15'
