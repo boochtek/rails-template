@@ -48,6 +48,9 @@
     <%= javascript_include_tag "application", "data-turbolinks-track" => false %>
     <%= javascript_include_tag 'boochtek/google-analytics' if GOOGLE_ANALYTICS_CODE %>
 
+    <!-- Make sure we're not subject to CSRF attacks. -->
+    <%= csrf_meta_tags %>
+
     <% # TODO: More header/footer stuff. %>
     <%= yield(:head) %>
 
