@@ -54,6 +54,10 @@
   <!-- Provide a CSS signature, derived from site's URI. (http://archivist.incutio.com/viewlist/css-discuss/13291) -->
   <body id="<%= CSS_SIGNATURE %>">
 
+    <header>
+      <h1><a href="/"><%= SITE_NAME %></a></h1>
+    </header>
+
     <div id="container">
       <div id="flash">
 <% flash.each do |name, msg| %>
