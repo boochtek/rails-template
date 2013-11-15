@@ -429,6 +429,8 @@ features/rerun.txt
 public/javascripts/*_[0-9]*.js
 public/stylesheets/*_[0-9]*.css
 public/attachments/*
+bin/*
+.bundle/config
 END
 
 
