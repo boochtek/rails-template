@@ -135,7 +135,7 @@ gem 'rspec-rails',        '~> 2.13',  groups: ['test']
 gem 'bogus',              '~> 0.1.0', groups: ['test']
 gem 'database_cleaner',   '~> 1.0',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
-gem 'cucumber-rails',     '~> 1.3',   groups: ['test']
+gem 'cucumber-rails',     '~> 1.3',   groups: ['test'], require: false
 gem 'capybara',           '~> 2.1',   groups: ['test']
 gem 'factory_girl_rails', '~> 4.2',   groups: ['development', 'test']
 gem 'shoulda',            '~> 3.5',   groups: ['test']
