@@ -1,9 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
-<!-- The DOCTYPE above is the best for putting all browsers into standards or almost-standards mode (per http://hsivonen.iki.fi/doctype/#choosing). -->
-<!-- NOTE: Quirks mode in IE 6, and in later versions of IE, will also be triggered if anything but whitespace precedes the DOCTYPE. -->
-<!-- NOTE: IE 6 will render a page in quirks mode if the DOCTYPE is preceded by an XML prolog, regardless of the DOCTYPE. -->
-<!-- jQuery has known issues with quirks mode, and quirks mode makes other things more difficult to deal with. -->
-
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -69,11 +64,11 @@
       <%= yield %>
     </div>
 
-    <div id="footer">
+    <footer>
       <div id="copyright">
         Copyright &copy; <%= COPYRIGHT_YEARS %> by <%= COPYRIGHT_OWNER %>
       </div>
-    </div>
+    </footer>
 
   </body>
 
