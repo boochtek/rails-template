@@ -361,7 +361,7 @@ copy_file 'app/controllers/home_controller.rb'
 
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
-gem 'capistrano'
+gem 'capistrano', '~> 2.15'
 after_bundle do
   capify!
   copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
