@@ -14,7 +14,7 @@ if defined?(Footnotes)
 
         # The fieldset content
         def content
-          '<pre>' + escape(Object.constants.select{|c| ![Class, Module].include?(c.constantize.class)}.sort.map{|c| {c => " = #{c.constantize.inspect}\n"}}.to_s) + '</pre>'
+          '<pre>' + escape(Object.constants.select{|c| ![Class, Module].include?(c.to_s.constantize.class)}.sort.map{|c| {c => " = #{c.to_s.constantize.inspect}\n"}}.to_s) + '</pre>'
         end
       end
     end
