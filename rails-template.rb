@@ -215,7 +215,7 @@ end
 
 
 ## Stats and coverage tools.
-gem 'metric_fu', '~> 4.2.1', groups: ['development' 'test']
+gem 'metric_fu', '~> 4.2.1', groups: ['development', 'test']
 after_bundle do
   append_file 'Rakefile', "require 'metric_fu'"
 end
