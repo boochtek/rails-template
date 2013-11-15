@@ -1,42 +1,4 @@
-
-# Allow ability to say @record.should_not be_saved or @record.should be_saved (by Craig Buchek)
-module ActiveRecord #:nodoc:
-  class Base
-    def saved?
-      !new_record?
-    end
-  end
-end
-
-
-# Override ApplicationController#current_user, since we cannot set session[:user_id] from RSpec's before.
-class ApplicationController
-  def current_user
-    @current_user ||= User.find(1)
-  end
-end
-
-
-
-# TODO: Perhaps merge be_valid() with be_valid_with().
-#         Maybe use syntax like be_valid(:with => :attrib, :set_to_any_of => [nil, 0, 1.0, 0.01])
-#         Maybe add be_valid(:with => :attrib, :in => 0..1000) which would test endpoints, several internal values.
-#         And the counterpart be_valid(:with => :attrib, :outside => 0..1000)
-
-
-# Got this one from http://opensoul.org/2007/4/18/rspec-model-should-be_valid
-# This should already be supported as a predicate, but this will give more info on failures.
-Spec::Matchers.define :be_valid do |nothing_expected|
-  description { "be a valid model object" }
-  failure_message_for_should { |actual| "#{actual.class} expected to be valid but had errors:\n  #{actual.errors.full_messages.join("\n  ")}" }
-  failure_message_for_should_not { |actual| "expected that #{actual.class} would be invalid, but it was valid" }
-  match do |actual|
-    actual.valid?
-  end
-end
-
-# I wrote this one myself, to combine be_a and be_valid. (Craig Buchek)
-Spec::Matchers.define :be_a_valid do |expected|
+RSpec::Matchers.define :be_a_valid do |expected|
   description { "be a valid model object" }
   failure_message_for_should do |actual|
     message = ''
@@ -55,7 +17,7 @@ end
 
 
 
-module Spec
+module RSpec
   module Rails
     module Matchers
 

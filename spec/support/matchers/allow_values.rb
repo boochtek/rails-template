@@ -18,7 +18,7 @@
 
 # TODO: Implement this.
 if false
-Spec::Matchers.define :allow_values do |attrib, *expected|
+RSpec::Matchers.define :allow_values do |attrib, *expected|
   description { "be valid with given attribute set to each/any of the given values" }
   failure_message_for_should { |actual| "#{actual.class} expected to be valid but had errors:\n  #{actual.errors.full_messages.join("\n  ")}" }
   failure_message_for_should_not { |actual| "expected that #{actual.class} would be invalid, but it was valid" }
@@ -36,7 +36,7 @@ end
 end
 
 
-module Spec
+module RSpec
   module Rails
     module Matchers
 
