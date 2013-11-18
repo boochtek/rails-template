@@ -437,6 +437,7 @@ public/stylesheets/*_[0-9]*.css
 public/attachments/*
 bin/*
 .bundle/config
+.env*
 END
 
 
