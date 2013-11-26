@@ -72,6 +72,9 @@ def run_bundle
   end
 end
 
+after_bundle do
+  rake 'rails:update:bin'
+end
 
 
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
