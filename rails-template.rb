@@ -100,7 +100,7 @@ EOF
 
 # ActiveRecord ORM.
 if ACTIVE_RECORD
-  gem 'annotate', '~> 2.6', groups: [:development], require: false
+  gem 'annotate', '~> 2.6', groups: [:development]
   after_bundle do
     generate 'annotate:install'
     rake 'db:create:all'
