@@ -133,17 +133,16 @@ end
 
 
 ## Testing frameworks.
-gem 'rspec',              '~> 2.13',  groups: ['development', 'test']
-gem 'rspec-rails',        '~> 2.13',  groups: ['development', 'test']
-gem 'bogus',              '~> 0.1.0', groups: ['test']
-gem 'database_cleaner',   '~> 1.0',   groups: ['test']
+gem 'rspec',              '~> 3.1',   groups: ['development', 'test']
+gem 'rspec-rails',        '~> 3.1',   groups: ['development', 'test']
+gem 'bogus',              '~> 0.1.5', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
+gem 'database_cleaner',   '~> 1.3',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
-gem 'cucumber-rails',     '~> 1.3',   groups: ['test'], require: false
-gem 'capybara',           '~> 2.1',   groups: ['test']
-gem 'factory_girl_rails', '~> 4.2',   groups: ['development', 'test']
+gem 'cucumber-rails',     '~> 1.4',   groups: ['test'], require: false
+gem 'capybara',           '~> 2.4',   groups: ['test']
+gem 'factory_girl_rails', '~> 4.4',   groups: ['development', 'test']
 gem 'shoulda',            '~> 3.5',   groups: ['test']
-gem 'shoulda-matchers',   '~> 2.2',   groups: ['test']
-gem 'jasmine',            '~> 1.3',   groups: ['development', 'test']
+gem 'jasmine',            '~> 2.0',   groups: ['development', 'test']
 
 
 after_bundle do
@@ -183,7 +182,7 @@ gem 'sidekiq', '~> 2.12'
 
 # Specs and steps for email.
 if ACTION_MAILER
-  gem 'email_spec', '~> 1.4', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
+  gem 'email_spec', '~> 1.6', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   after_bundle do
     generate 'email_spec:steps' # Generate email_steps.rb file.
     copy_file 'features/support/email_spec.rb' # Integration into Cucumber.
