@@ -1,5 +1,10 @@
-Rails 4
-=======
+SOON
+====
+
+* Add defaults to the questions, so we can hit enter to accept the defaults.
+* Disable Turbolinks. (See http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4)
+* Use readme(NEXT_STEPS.txt) to show the text at the bottom of the template script, instead of printing it from within the script.
+* Add SimpleForm or Formtastic.
 * Add JS classes to HTML tag.
   * Include 'no-js' class in the markup.
   * Have JavaScript remove the 'no-js' class and add a 'js' class.
@@ -19,28 +24,27 @@ Rails 4
     * https://github.com/42dev/bower-rails
     * http://stackoverflow.com/questions/16266528/how-to-manage-javascript-dependencies-with-bower-in-rails-apps
     * https://shellycloud.com/blog/2013/09/how-to-manage-front-end-packages-in-rails-with-bower
-* Updates to template. (Look to see what HTML5 Boilerplate looks like these days.)
+* Updates to HTML template. (Look to see what HTML5 Boilerplate looks like these days.)
   * Add viewport meta tag.
     * <meta name="viewport" content="width=device-width, initial-scale=1">
   * Add apple-touch-icon.
+* Use better_errors, if they come out with a Rails 4.2 version.
+  * Rails 4.2 includes Web Console, which does what the REPL part of better_errors does.
 * Use Sequel ORM.
 * Consider using Puma instead of Unicorn.
+* Ask which DB to use.
+  * For PROD and non-PROD.
+
+
+Later
+=====
+
+* Split into separate files within recipes directory.
+  * Use Thor's apply() action.
+* Use Sneakers (and RabbitMQ) instead of Sidekiq (and Redis).
 * Use Perpetuity / Virtus::Perpetuity when it's ready.
 * Use Virtus::ActiveRecord when it's ready.
 * Use ROM when it's ready.
-
-
-
-SOON
-====
-
-Split into separate files within recipes directory.
-    Use Thor's apply() action.
-
-Ask which DB to use.
-    For PROD and non-PROD.
-
-Use readme(NEXT_STEPS.txt) to show the text at the bottom of the template script, instead of printing it from within the script.
 
 
 BUGS
@@ -51,9 +55,8 @@ Getting an error when we call 'generate controller':
 
 
 
-TODO
-====
-Use Sneakers (and RabbitMQ) instead of SideKiq (and Redis).
+Ideas
+=====
 
 Add show_for >= 0.2.0.
 
@@ -129,6 +132,7 @@ Pull in BaseHTML stuff.
     CSS fragment
         Tables
         Forms
+        Pagination
 
 Upgrade to hoptoad_notifier gem.
     generate hoptoad --api-key your_key_here
@@ -147,8 +151,8 @@ jQuery functionality
             Include the following in application.js:
                 if ( jQuery.fn['autogrow'] ) jQuery('textarea').autogrow();
     Extract my BoochTek jQuery extensions into a separate repository.
-        Put them in a 'boochtek' sub-directory, pull that in via git submodule.
     Pagination.
+        Including CSS.
     Validation.
         How do we tell the view to add required and data-type attributes to INPUT elements?
     Column sorting.
