@@ -23,6 +23,7 @@ Rails 4
   * Add viewport meta tag.
     * <meta name="viewport" content="width=device-width, initial-scale=1">
   * Add apple-touch-icon.
+* Use Sequel ORM.
 * Use Perpetuity / Virtus::Perpetuity when it's ready.
 * Use Virtus::ActiveRecord when it's ready.
 * Use ROM when it's ready.
@@ -31,6 +32,7 @@ Rails 4
 
 SOON
 ====
+
 Split into separate files within recipes directory.
     Use Thor's apply() action.
 
@@ -50,6 +52,8 @@ Getting an error when we call 'generate controller':
 
 TODO
 ====
+Use Sneakers (and RabbitMQ) instead of SideKiq (and Redis).
+
 Add show_for >= 0.2.0.
 
 Add hobofields >= 1.0.0.
