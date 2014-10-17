@@ -256,9 +256,6 @@ gem 'slim-rails', '~> 2.1'
 # HAML templating system.
 gem 'haml', '~> 4.0'
 
-# Sass CSS templating.
-gem 'sass', '~> 3.4'
-
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
 JQUERY_VERSION = '2.1.1'
