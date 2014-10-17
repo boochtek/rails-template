@@ -233,7 +233,7 @@ gem 'sass', '~> 3.4'
 
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
-JQUERY_VERSION = '2.0.2'
+JQUERY_VERSION = '2.1.1'
 file "vendor/assets/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
 copy_file 'app/helpers/jquery_helper.rb'
 
