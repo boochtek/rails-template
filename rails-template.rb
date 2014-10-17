@@ -323,21 +323,21 @@ end
 
 
 ## My custom generators.
-copy_file 'lib/generators/controller/USAGE'
-copy_file 'lib/generators/controller/controller_generator.rb'
-copy_file 'lib/generators/controller/templates/controller_spec.rb'
-copy_file 'lib/generators/controller/templates/helper_spec.rb'
-copy_file 'lib/generators/controller/templates/controller.rb'
-copy_file 'lib/generators/controller/templates/functional_test.rb'
-copy_file 'lib/generators/controller/templates/helper.rb'
-copy_file 'lib/generators/controller/templates/helper_test.rb'
-copy_file 'lib/generators/controller/templates/view.html.erb'
-copy_file 'lib/generators/model/USAGE'
-copy_file 'lib/generators/model/model_generator.rb'
-copy_file 'lib/generators/model/templates/model_spec.rb'
-copy_file 'lib/generators/model/templates/model.rb'
-copy_file 'lib/generators/model/templates/migration.rb'
-copy_file 'lib/generators/model/templates/fixtures.yml'
+# copy_file 'lib/generators/controller/USAGE'
+# copy_file 'lib/generators/controller/controller_generator.rb'
+# copy_file 'lib/generators/controller/templates/controller_spec.rb'
+# copy_file 'lib/generators/controller/templates/helper_spec.rb'
+# copy_file 'lib/generators/controller/templates/controller.rb'
+# copy_file 'lib/generators/controller/templates/functional_test.rb'
+# copy_file 'lib/generators/controller/templates/helper.rb'
+# copy_file 'lib/generators/controller/templates/helper_test.rb'
+# copy_file 'lib/generators/controller/templates/view.html.erb'
+# copy_file 'lib/generators/model/USAGE'
+# copy_file 'lib/generators/model/model_generator.rb'
+# copy_file 'lib/generators/model/templates/model_spec.rb'
+# copy_file 'lib/generators/model/templates/model.rb'
+# copy_file 'lib/generators/model/templates/migration.rb'
+# copy_file 'lib/generators/model/templates/fixtures.yml'
 
 
 # Miscellaneous initializers.
@@ -365,7 +365,7 @@ after_bundle do
 end
 route "root to: 'home#index', as: 'home'"
 copy_file 'app/views/home/index.html.erb'
-copy_file 'app/controllers/home_controller.rb'
+#copy_file 'app/controllers/home_controller.rb' # Already created by generate controller.
 
 
 ## App server.
