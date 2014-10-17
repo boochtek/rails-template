@@ -81,8 +81,8 @@ end
 git :init
 
 
-# Specify the version of Ruby we want to use. (Should work with RVM, rbenv, and rbfu.)
-create_file '.ruby-version', '2.0.0-p353'
+# Specify the version of Ruby we want to use. (Should work with RVM, rbenv, and chruby.)
+create_file '.ruby-version', '2.1.3'
 
 
 ## Optionally remove some portions of the standard Rails stack.
