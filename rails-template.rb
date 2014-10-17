@@ -3,7 +3,7 @@
 # Rails template. Loads RSpec, Cucumber, HAML, Sass, Slim, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
-# Copyright 2008,2009,2013 by BoochTek, LLC.
+# Copyright 2008,2009,2013,2014 by BoochTek, LLC.
 # Originally written by Craig Buchek.
 # Released under MIT license (same as Ruby on Rails).
 
