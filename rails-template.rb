@@ -59,6 +59,9 @@ end
 # Ensure bundled gems are loaded into vendor/bundle.
 bundle_command 'config --local path vendor/bundle'
 
+# Don't allow Bundler to create binstubs. Rails wants to create its own binstubs.
+bundle_command 'config --delete bin'
+
 # Allow us to defer some actions until after all the gems have been bundled.
 def after_bundle(&block)
   @after_bundle_blocks ||= []
