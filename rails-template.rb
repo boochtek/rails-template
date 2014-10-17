@@ -88,6 +88,17 @@ git :init
 create_file '.ruby-version', '2.1.3'
 
 
+## Heroku
+
+# Heroku needs the Ruby version specified in the Gemfile.
+after_bundle do
+  inject_into_file "Gemfile", "ruby '2.1.3'\n", before: "source 'https://rubygems.org'"
+end
+
+# Log to stdout and serve static assets.
+gem 'rails_12factor', group: :production
+
+
 ## Optionally remove some portions of the standard Rails stack.
 
 # Make sure that the config/application.rb lists the individual frameworks, so we can remove ones we don't want.
