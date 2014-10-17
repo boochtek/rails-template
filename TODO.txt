@@ -24,6 +24,7 @@ Rails 4
     * <meta name="viewport" content="width=device-width, initial-scale=1">
   * Add apple-touch-icon.
 * Use Sequel ORM.
+* Consider using Puma instead of Unicorn.
 * Use Perpetuity / Virtus::Perpetuity when it's ready.
 * Use Virtus::ActiveRecord when it's ready.
 * Use ROM when it's ready.
