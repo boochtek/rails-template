@@ -14,10 +14,10 @@
 
 
 ## Get user input, via environment variables or prompting the user.
-ACTIVE_RECORD = ENV['ACTIVE_RECORD'] ? ENV['ACTIVE_RECORD'] == 'y' : yes?('Include ActiveRecord?')
-AIRBRAKE = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier?')
-EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier?')
-ACTION_MAILER = EXCEPTION_NOTIFIER || (ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : yes?('Include ActionMailer?'))
+ACTIVE_RECORD = ENV['ACTIVE_RECORD'] ? ENV['ACTIVE_RECORD'] == 'y' : !no?('Include ActiveRecord? [Y/n]')
+AIRBRAKE = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier? [y/N]')
+EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier? [y/N]')
+ACTION_MAILER = EXCEPTION_NOTIFIER || (ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : !no?('Include ActionMailer? [Y/n]'))
 
 if AIRBRAKE
   AIRBRAKE_API_KEY = ask('Airbrake API Key:')
