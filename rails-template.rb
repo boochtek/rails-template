@@ -370,8 +370,9 @@ copy_file 'app/views/home/index.html.erb'
 
 ## App server.
 
-# Use Unicorn in production by default.
-gem 'unicorn', '~> 4.8', groups: [:production]
+# Use Unicorn in production and development by default.
+gem 'unicorn', '~> 4.8'
+gem 'rack-handlers', '~> 0.7'
 
 
 ## Deployment configuration for Capistrano.
