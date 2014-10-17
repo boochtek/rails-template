@@ -100,7 +100,7 @@ EOF
 
 # ActiveRecord ORM.
 if ACTIVE_RECORD
-  gem 'annotate', '~> 2.5', groups: [:development], require: false
+  gem 'annotate', '~> 2.6', groups: [:development], require: false
   after_bundle do
     generate 'annotate_models:install'
     rake 'db:create:all'
@@ -127,7 +127,7 @@ copy_file 'config/database.yml'
 
 if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
-  gem 'bullet', '~> 4.6', groups: [:development, :test]
+  gem 'bullet', '~> 4.14', groups: [:development, :test]
   copy_file 'config/initializers/bullet.rb'
 end
 
@@ -177,7 +177,7 @@ end
 
 
 # Background job processing.
-gem 'sidekiq', '~> 2.12'
+gem 'sidekiq', '~> 3.2'
 
 
 # Specs and steps for email.
@@ -217,19 +217,19 @@ end
 
 
 ## Stats and coverage tools.
-gem 'metric_fu', '~> 4.2.1', groups: ['development', 'test']
+gem 'metric_fu', '~> 4.11', groups: ['development', 'test']
 after_bundle do
   append_file 'Rakefile', "require 'metric_fu'"
 end
 
 # Slim templating system.
-gem 'slim-rails', '~> 2.0'
+gem 'slim-rails', '~> 2.1'
 
 # HAML templating system.
 gem 'haml', '~> 4.0'
 
 # Sass CSS templating.
-gem 'sass', '~> 3.2'
+gem 'sass', '~> 3.4'
 
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
@@ -252,7 +252,7 @@ if AIRBRAKE
 end
 
 if EXCEPTION_NOTIFIER
-  gem 'exception_notification', '~> 4.0.0rc1'
+  gem 'exception_notification', '~> 4.0'
   after_bundle do
     generate 'exception_notification:install --sidekiq'
     gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, "email_prefix: '[#{app_name.classify}] ',"
@@ -368,12 +368,12 @@ copy_file 'app/controllers/home_controller.rb'
 ## App server.
 
 # Use Unicorn in production by default.
-gem 'unicorn', '~> 4.6.0', groups: [:production]
+gem 'unicorn', '~> 4.8', groups: [:production]
 
 
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
-gem 'capistrano', '~> 2.15'
+gem 'capistrano', '~> 3.2'
 after_bundle do
   capify!
   copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.
