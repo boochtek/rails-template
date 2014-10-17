@@ -3,7 +3,6 @@ SOON
 
 * Add defaults to the questions, so we can hit enter to accept the defaults.
 * Disable Turbolinks. (See http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4)
-* Use readme(NEXT_STEPS.txt) to show the text at the bottom of the template script, instead of printing it from within the script.
 * Add SimpleForm or Formtastic.
 * Add JS classes to HTML tag.
   * Include 'no-js' class in the markup.

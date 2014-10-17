@@ -495,31 +495,5 @@ after_bundle do
 end
 
 after_bundle do
-  puts <<-END
-  NEXT STEPS:
-      CD into the newly created Rails app.
-      Edit the constants defined in the "config/initializers/site_config.rb" file.
-      Make sure "rake spec" and "rake cucumber" run without errors.
-      Make sure the app runs: "script/server".
-      Commit changes: "git commit -a -m 'Basic site configuration.'"
-      TODO: Create a new GIT branch for the new feature.
-      Write feature ("script/generate feature feature_name") and feature steps.
-      Run "rake cucumber". (FAILS)
-      TODO: Add route.
-      Write spec.
-      Run "rake spec". (FAILS)
-      Write code to pass spec.
-      Run "rake spec". (PASSES)
-      OPTIONAL: Commit the changes: "git commit -a -m 'Add blah for xyz feature.'"
-      Refactor.
-      Run "rake spec". (PASSES)
-      OPTIONAL: Commit the changes: "git commit -a -m 'Refactor blah.'"
-      Continue writing specs and code until feature is complete.
-      Run "rake cucumber". (PASSES)
-      TODO: Merge feature back into master branch.
-      Make sure "rake spec" and "rake cucumber" still pass.
-      OPTIONAL: Generate metrics: "rake metrics:all"
-      Commit the new feature: "git commit -a -m 'Added xyz feature.'"
-      Push to GitHub: "git push".
-  END
+  readme('NEXT_STEPS.txt')
 end
