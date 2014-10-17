@@ -1,22 +1,55 @@
+Rails 4
+=======
+* Add JS classes to HTML tag.
+  * Include 'no-js' class in the markup.
+  * Have JavaScript remove the 'no-js' class and add a 'js' class.
+    * Modernizr (and hence HTML5 Boilerplate) does this already.
+      * Modernizr also adds a ton of other classes, 1 for each feature it detects.
+  * Also consider having JavaScript add ie7 and ie8 tags if CSS requires them.
+    * Better to use Modernizr to detect features instead of browsers though.
+* Use Bower (or something similar) to manage JS (and CSS) assets.
+  * Consider rails-assets.org method.
+    * Tricks Bundler into pulling from NPM.
+  * Include these components (if not already included):
+    * normalize-css
+  * See these links for more info:
+    * http://www.iconoclastlabs.com/blog/bower-and-rails-4
+    * https://coderwall.com/p/hhaxlg
+    * http://kaeff.net/posts/sprockets-bower-better-component-packaging-for-rails-asset-pipeline.html
+    * https://github.com/42dev/bower-rails
+    * http://stackoverflow.com/questions/16266528/how-to-manage-javascript-dependencies-with-bower-in-rails-apps
+    * https://shellycloud.com/blog/2013/09/how-to-manage-front-end-packages-in-rails-with-bower
+* Updates to template. (Look to see what HTML5 Boilerplate looks like these days.)
+  * Add viewport meta tag.
+    * <meta name="viewport" content="width=device-width, initial-scale=1">
+  * Add apple-touch-icon.
+* Use Perpetuity / Virtus::Perpetuity when it's ready.
+* Use Virtus::ActiveRecord when it's ready.
+* Use ROM when it's ready.
+
+
+
+SOON
+====
+Split into separate files within recipes directory.
+    Use Thor's apply() action.
+
+Ask which DB to use.
+    For PROD and non-PROD.
+
+Use readme(NEXT_STEPS.txt) to show the text at the bottom of the template script, instead of printing it from within the script.
+
+
 BUGS
 ====
-Need a better way to tell the user to install their own gems locally.
-    Maybe run 'rake gems', see what's not installed, and inform the user.
-I don't like the way git sends lots of "got" and "walk" messages to stderr.
+Getting an error when we call 'generate controller':
+    /Users/booch/Work/Projects/rails-template/name_of_your_new_rails_app/vendor/bundle/ruby/1.9.1/gems/activesupport-4.0.0/lib/active_support/dependencies.rb:228:in `require':
+        cannot load such file -- rails_generator/generators/components/controller/controller_generator (LoadError)
 
-
-TO CONSIDER
-===========
-Break this up into several smaller templates?
-    Then use 'rake rails:template LOCATION=~/template.rb' to load them all.
-        Can we run that rake task from within the main template? I don't see why not.
-    Or use load_template (apply in Rails 3).
 
 
 TODO
 ====
-Ask which DB to use.
-
 Add show_for >= 0.2.0.
 
 Add hobofields >= 1.0.0.
@@ -99,33 +132,30 @@ Upgrade to hoptoad_notifier gem.
     end
 
 jQuery functionality
+    Polyfills.
+        Auto-focus.
+        Placeholder.
+        Autogrow all TEXTAREAs.
+            Git clone the github repo (http://github.com/akaihola/jquery-autogrow).
+                Note that the code has not been updated in well over a year.
+                    Despite bug reports and patches at http://plugins.jquery.com/project/issues/autogrow?categories=support&states=all.
+            Include the following in application.js:
+                if ( jQuery.fn['autogrow'] ) jQuery('textarea').autogrow();
     Extract my BoochTek jQuery extensions into a separate repository.
         Put them in a 'boochtek' sub-directory, pull that in via git submodule.
-    Autogrow all TEXTAREAs.
-        Git clone the github repo (http://github.com/akaihola/jquery-autogrow).
-            Note that the code has not been updated in well over a year.
-                Despite bug reports and patches at http://plugins.jquery.com/project/issues/autogrow?categories=support&states=all.
-        Include the following in application.js:
-            if ( jQuery.fn['autogrow'] ) jQuery('textarea').autogrow();
     Pagination.
     Validation.
         How do we tell the view to add required and data-type attributes to INPUT elements?
     Column sorting.
-    Look into jqGrid.
-
-Figure out what to do about GEM version numbers.
-    Should we be using git submodules, and pulling straight from github?
-        I'd rather use shared system GEMs, in most cases.
+    Look into jqGrid or dataTables.
 
 Add more plugins:
     Automated validations, pulled from DB (DrySQL, Magic???, validation_reflection (valirefl), ???)
     Annotate-models, ColumnComments, or my own annotation/labeling system. (Only if AR is enabled.)
     Auto-migrations? Hobo_Fields does this for us.
     Machinist (fork that handles DM) instead of FactoryGirl (which already handles DataMapper, as long as you require dm-validations)?
-    Exceptional (in addition to HopToad and ExceptionNotifier).
+    Exceptional (in addition to Airbrake and ExceptionNotifier).
     http://github.com/engineyard/rails_metrics - metrics pulled from ActiveSupport notifications.
-
-Allow SVN instead of GIT. (Still pull from GIT, but use SVN after that.)
 
 Add custom generator for Blue Ridge javascript_specs.
     What's wrong with the ones that come with Blue Ridge?
