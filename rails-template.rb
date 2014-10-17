@@ -102,7 +102,7 @@ EOF
 if ACTIVE_RECORD
   gem 'annotate', '~> 2.6', groups: [:development], require: false
   after_bundle do
-    generate 'annotate_models:install'
+    generate 'annotate:install'
     rake 'db:create:all'
   end
 else
