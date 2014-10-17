@@ -107,7 +107,7 @@ after_bundle do
 end
 
 # Log to stdout and serve static assets.
-gem 'rails_12factor', group: :production
+gem 'rails_12factor', groups: [:production, :staging]
 
 
 ## Optionally remove some portions of the standard Rails stack.
