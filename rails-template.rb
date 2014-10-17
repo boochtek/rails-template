@@ -49,6 +49,17 @@ def source_paths
   [RAILS_TEMPLATE_PATH]
 end
 
+if !running_local
+  # Override Thor's `copy_file`, because it doesn't handle copying from a URL.
+  def copy_file(path, options={})
+    create_file "#{path}", open("#{RAILS_TEMPLATE_PATH}/#{path}").read, options
+  rescue
+    puts "ERROR - Could not pull file '#{path}' from '#{RAILS_TEMPLATE_PATH}'."
+    exit!
+  end
+end
+
+
 # Check to ensure that we can get to all the files we need.
 begin
   open("#{RAILS_TEMPLATE_PATH}/rails-template.rb")
