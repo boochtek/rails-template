@@ -1,4 +1,4 @@
-if File.basename($0) != 'rake' && ['development', 'test', 'cucumber'].include? Rails.env
+if File.basename($0) != 'rake' && ['development', 'test', 'cucumber'].include?(Rails.env)
   Bullet.enable = true
   # Log to the standard Rails log as well as log/bullet.log and the browser's console log.
   Bullet.bullet_logger = true
