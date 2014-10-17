@@ -163,7 +163,7 @@ gem 'rspec-rails',        '~> 3.1',   groups: ['development', 'test']
 gem 'bogus',              '~> 0.1.5', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
 gem 'database_cleaner',   '~> 1.3',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
-gem 'cucumber-rails',     '~> 1.4',   groups: ['test'], require: false
+gem 'cucumber-rails',     '~> 1.4',   groups: ['development', 'test']
 gem 'capybara',           '~> 2.4',   groups: ['test']
 gem 'factory_girl_rails', '~> 4.4',   groups: ['development', 'test']
 gem 'shoulda',            '~> 3.5',   groups: ['test']
