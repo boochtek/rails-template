@@ -149,6 +149,9 @@ end
 ## Database config.
 mv 'config/database.yml', 'config/database.yml.sample'
 copy_file 'config/database.yml'
+# Match the names of the databases to the name of the Rails project we're creating.
+gsub_file 'config/database.yml', 'APP_NAME', @app_name
+
 
 if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
