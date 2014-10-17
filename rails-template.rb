@@ -434,8 +434,8 @@ end
 
 # Test the base app.
 after_bundle do
-  run 'cucumber'
-  run 'rspec'
+  run 'bundle exec cucumber'
+  run 'bundle exec rspec'
   #rake 'spec:javascripts' # FIXME: Requires application.js to exist.
 
   # TODO: These should be in the rake task that gets run by the git pre_commit hook.
