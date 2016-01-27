@@ -14,19 +14,20 @@
 
 
 ## Get user input, via environment variables or prompting the user.
-ACTIVE_RECORD = ENV['ACTIVE_RECORD'] ? ENV['ACTIVE_RECORD'] == 'y' : !no?('Include ActiveRecord? [Y/n]')
+ACTIVE_RECORD = !options["skip_active_record"]
+ACTION_MAILER = !options["skip_action_mailer"]
 AIRBRAKE = ENV['AIRBRAKE'] ? ENV['AIRBRAKE'] == 'y' : yes?('Use Airbrake Notifier? [y/N]')
-EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier? [y/N]')
-ACTION_MAILER = EXCEPTION_NOTIFIER || (ENV['ACTION_MAILER'] ? ENV['ACTION_MAILER'] == 'y' : !no?('Include ActionMailer? [Y/n]'))
+# EXCEPTION_NOTIFIER = ENV['EXCEPTION_NOTIFIER'] ? ENV['EXCEPTION_NOTIFIER'] == 'y' : yes?('Use Exception Notifier? [y/N]')
 
 if AIRBRAKE
+  AIRBRAKE_PROJECT_ID = ask('Airbrake Project ID:')
   AIRBRAKE_API_KEY = ask('Airbrake API Key:')
 end
 
-if EXCEPTION_NOTIFIER
-  EXCEPTION_NOTIFIER_SENDER = ENV['EXCEPTION_NOTIFIER_SENDER'] ? ENV['EXCEPTION_NOTIFIER_SENDER'] : ask('Send exception emails from (Name <address>):')
-  EXCEPTION_NOTIFIER_RECIPIENTS = ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] ? ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] : ask('Send exception emails to (space-separated list):')
-end
+# if EXCEPTION_NOTIFIER
+#   EXCEPTION_NOTIFIER_SENDER = ENV['EXCEPTION_NOTIFIER_SENDER'] ? ENV['EXCEPTION_NOTIFIER_SENDER'] : ask('Send exception emails from (Name <address>):')
+#   EXCEPTION_NOTIFIER_RECIPIENTS = ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] ? ENV['EXCEPTION_NOTIFIER_RECIPIENTS'] : ask('Send exception emails to (space-separated list):')
+# end
 
 
 # Allow opening URLs as if they are local files.
@@ -90,20 +91,44 @@ after_bundle do
   rake 'rails:update:bin'
 end
 
-
 # Start a new GIT repository. Do this first, in case we want to install some GEMS as GIT submodules.
 git :init
 
 
 # Specify the version of Ruby we want to use. (Should work with RVM, rbenv, and chruby.)
-create_file '.ruby-version', '2.1.3'
+create_file '.ruby-version', '2.2.4'
+
+
+
+## Error notification.
+if AIRBRAKE
+  gem 'airbrake', '~> 5.0 '
+  after_bundle do
+    generate "airbrake"
+    # generate "airbrake #{AIRBRAKE_PROJECT_ID} #{AIRBRAKE_API_KEY}"
+  end
+end
+
+# if EXCEPTION_NOTIFIER
+#   gem 'exception_notification', '~> 4.1'
+#   after_bundle do
+#     generate 'exception_notification:install --sidekiq'
+#     gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, "email_prefix: '[#{app_name.classify}] ',"
+#     gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, "sender_address: %{#{EXCEPTION_NOTIFIER_SENDER}},"
+#     gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, "exception_recipients: %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
+#     # TODO: Add info on the current_user.
+#     #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
+#     #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
+#     #     Step 3: Add to email section of config: sections: ExceptionNotifier.sections + %w[current_user]
+#   end
+# end
 
 
 ## Heroku
 
 # Heroku needs the Ruby version specified in the Gemfile.
 after_bundle do
-  inject_into_file "Gemfile", "ruby '2.1.3'\n", before: "source 'https://rubygems.org'"
+  inject_into_file "Gemfile", "ruby '2.2.4'\n", before: "source 'https://rubygems.org'"
 end
 
 # Log to stdout and serve static assets.
@@ -125,7 +150,7 @@ EOF
 
 # ActiveRecord ORM.
 if ACTIVE_RECORD
-  gem 'annotate', '~> 2.6', groups: [:development]
+  gem 'annotate', '~> 2.7', groups: [:development]
   after_bundle do
     generate 'annotate:install'
     rake 'db:create:all'
@@ -147,30 +172,37 @@ end
 
 
 ## Database config.
-mv 'config/database.yml', 'config/database.yml.sample'
-copy_file 'config/database.yml'
-# Match the names of the databases to the name of the Rails project we're creating.
-gsub_file 'config/database.yml', 'APP_NAME', @app_name
-
+if ACTIVE_RECORD
+  mv 'config/database.yml', 'config/database.yml.sample'
+  copy_file 'config/database.yml'
+  # Match the names of the databases to the name of the Rails project we're creating.
+  gsub_file 'config/database.yml', 'APP_NAME', @app_name
+end
 
 if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
-  gem 'bullet', '~> 4.14', groups: [:development, :test]
+  gem 'bullet', '~> 5.0', groups: [:development, :test]
   copy_file 'config/initializers/bullet.rb'
 end
 
 
 ## Testing frameworks.
-gem 'rspec',              '~> 3.1',   groups: ['development', 'test']
-gem 'rspec-rails',        '~> 3.1',   groups: ['development', 'test']
-gem 'bogus',              '~> 0.1.5', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
-gem 'database_cleaner',   '~> 1.3',   groups: ['test']
-gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
+# gem 'rspec',              '~> 3.4',   groups: ['development', 'test']
+# gem 'rspec-rails',        '~> 3.4',   groups: ['development', 'test']
+gem "rspec-rails", git: "https://github.com/rspec/rspec-rails.git", branch: "master"
+gem "rspec-core", git: "https://github.com/rspec/rspec-core.git", branch: "master"
+gem "rspec-support", git: "https://github.com/rspec/rspec-support.git", branch: "master"
+gem "rspec-expectations", git: "https://github.com/rspec/rspec-expectations.git", branch: "master"
+gem "rspec-mocks", git: "https://github.com/rspec/rspec-mocks.git", branch: "master"
+
+gem 'bogus',              '~> 0.1.6', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
+gem 'database_cleaner',   '~> 1.5',   groups: ['test']
+gem 'cucumber',           '~> 2.3',   groups: ['development', 'test']
 gem 'cucumber-rails',     '~> 1.4',   groups: ['test'], require: false
-gem 'capybara',           '~> 2.4',   groups: ['test']
-gem 'factory_girl_rails', '~> 4.4',   groups: ['development', 'test']
+gem 'capybara',           '~> 2.6',   groups: ['test']
+gem 'factory_girl_rails', '~> 4.5',   groups: ['development', 'test']
 gem 'shoulda',            '~> 3.5',   groups: ['test']
-gem 'jasmine',            '~> 2.0',   groups: ['development', 'test']
+gem 'jasmine',            '~> 2.4',   groups: ['development', 'test']
 
 
 after_bundle do
@@ -198,6 +230,11 @@ after_bundle do
   # Allow use of FactoryGirl factories in Cucumber.
   copy_file 'features/support/factory_girl.rb'
   empty_directory 'spec/factories'
+
+  # Don't use database_cleaner if we don't have a database.
+  if !ACTIVE_RECORD
+    gsub_file 'features/support/env.rb', /^\s*DatabaseCleaner/, '  # No database, so no `DatabaseCleaner.strategy` setting.'
+  end
 end
 
 
@@ -205,12 +242,12 @@ end
 
 
 # Background job processing.
-gem 'sidekiq', '~> 3.2'
+gem 'sidekiq', '~> 4.0'
 
 
 # Specs and steps for email.
 if ACTION_MAILER
-  gem 'email_spec', '~> 1.6', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
+  gem 'email_spec', '~> 2.0', groups: ['test'] # See http://github.com/bmabey/email-spec for docs.
   after_bundle do
     generate 'email_spec:steps' # Generate email_steps.rb file.
     copy_file 'features/support/email_spec.rb' # Integration into Cucumber.
@@ -245,20 +282,20 @@ end
 
 
 ## Stats and coverage tools.
-gem 'metric_fu', '~> 4.11', groups: ['development', 'test']
+gem 'metric_fu', '~> 4.12', groups: ['development', 'test']
 after_bundle do
   append_file 'Rakefile', "require 'metric_fu'"
 end
 
 # Slim templating system.
-gem 'slim-rails', '~> 2.1'
+gem 'slim-rails', '~> 3.0'
 
 # HAML templating system.
 gem 'haml', '~> 4.0'
 
 
 # jQuery for client-side scripting. NOTE: We inject JQUERY_VERSION into site_config.rb below.
-JQUERY_VERSION = '2.1.1'
+JQUERY_VERSION = '2.2.0'
 file "vendor/assets/javascripts/jquery-#{JQUERY_VERSION}.js", open("http://code.jquery.com/jquery-#{JQUERY_VERSION}.js").read
 copy_file 'app/helpers/jquery_helper.rb'
 
@@ -267,28 +304,6 @@ copy_file 'public/javascripts/boochtek.js'
 copy_file 'public/javascripts/boochtek/validation.js'
 copy_file 'public/javascripts/boochtek/google-analytics.js'
 
-
-## Error notification.
-if AIRBRAKE
-  gem 'airbrake'
-  after_bundle do
-    generate "airbrake --api-key #{AIRBRAKE_API_KEY}"
-  end
-end
-
-if EXCEPTION_NOTIFIER
-  gem 'exception_notification', '~> 4.0'
-  after_bundle do
-    generate 'exception_notification:install --sidekiq'
-    gsub_file 'config/initializers/exception_notification.rb', /:email_prefix.*/, "email_prefix: '[#{app_name.classify}] ',"
-    gsub_file 'config/initializers/exception_notification.rb', /:sender_address.*/, "sender_address: %{#{EXCEPTION_NOTIFIER_SENDER}},"
-    gsub_file 'config/initializers/exception_notification.rb', /:exception_recipients.*/, "exception_recipients: %w[#{EXCEPTION_NOTIFIER_RECIPIENTS}]"
-    # TODO: Add info on the current_user.
-    #     Step 1: Add info to request.env["exception_notifier.exception_data"][:current_user] (probably in a before_filter in ApplicationController).
-    #     Step 2: Create app/views/exception_notifier/_current_user.text.erb with the details from @current_user.
-    #     Step 3: Add to email section of config: sections: ExceptionNotifier.sections + %w[current_user]
-  end
-end
 
 copy_file 'app/controllers/application_controller.rb', force: true
 
@@ -333,13 +348,14 @@ after_bundle do
   generate 'rails_footnotes:install'
   copy_file 'lib/footnotes/current_user_note.rb'
   copy_file 'lib/footnotes/global_constants_note.rb'
-  inject_into_file 'config/initializers/rails_footnotes.rb', after: "# ... other init code\n" do
+  inject_into_file 'config/initializers/rails_footnotes.rb', before: "end\n" do
     <<-'EOF'
-      require 'footnotes/current_user_note'
-      require 'footnotes/global_constants_note'
-      Footnotes::Filter.notes -= [:general] # I don't see the point of this note.
-      Footnotes::Filter.notes += [:current_user, :global_constants] # Add our custom note.
-    EOF
+
+  require 'footnotes/current_user_note'
+  require 'footnotes/global_constants_note'
+  f.notes -= [:general] # I don't see the point of this note.
+  f.notes += [:current_user, :global_constants] # Add our custom notes.
+EOF
   end
 end
 
@@ -393,13 +409,13 @@ copy_file 'app/views/home/index.html.erb'
 ## App server.
 
 # Use Unicorn in production and development by default.
-gem 'unicorn', '~> 4.8'
+gem 'unicorn', '~> 5.0'
 gem 'rack-handlers', '~> 0.7'
 
 
 ## Deployment configuration for Capistrano.
 # TODO: cap deploy:setup should prompt for database name/user/password.
-gem 'capistrano', '~> 3.2'
+gem 'capistrano', '~> 3.4'
 after_bundle do
   capify!
   copy_file 'config/deploy.rb', force: true # TODO: Should modify this file instead of overriding it.

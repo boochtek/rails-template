@@ -16,7 +16,7 @@ HOST = (ENV['SERVER_NAME']||'localhost').gsub(/[^A-Za-z0-9._-]/, '') # Ensure we
 CSS_SIGNATURE = HOST.gsub(/[.]/, '-')
 
 # Years and name to list in copyright statements.
-COPYRIGHT_YEARS = '2008, 2009, 2010'
+COPYRIGHT_YEARS = '2008, 2009, 2010, 2014, 2016'
 COPYRIGHT_OWNER = Etc.getpwuid().gecos # NOTE: This probably isn't what you want -- you should really hard-code this.
 
 # Version of jQuery to use.

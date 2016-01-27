@@ -19,13 +19,13 @@ Usage
 
 ~~~ bash
 APP_NAME='name_of_your_new_rails_app'
-RUBY_VERSION='2.1.3'
-RAILS_VERSION='4.2.0.beta2'
+RUBY_VERSION='2.2.4'
+RAILS_VERSION='5.0.0.beta1.1'
 RAILS_TEMPLATE='https://raw.githubusercontent.com/boochtek/rails-template/master/rails-template.rb'
 chruby $RUBY_VERSION
 gem install rake bundler # You might want to install some utilities as well, such as pry, awesome_print, hirb, and wirble.
 gem install railties --version $RAILS_VERSION --prerelease
-rails "_${RAILS_VERSION}_" new $APP_NAME --template $RAILS_TEMPLATE --database=postgresql --skip-test-unit
+rails "_${RAILS_VERSION}_" new $APP_NAME --template $RAILS_TEMPLATE --database=postgresql --skip-test --skip-active-record --skip-turbolinks --skip-action-mailer --skip-action-cable --skip-javascript
 ~~~
 
 Note that you might have some problems installing newer versions of Ruby.
@@ -38,7 +38,7 @@ CC=/usr/bin/gcc /usr/local/Cellar/ruby-install/0.4.3/bin/ruby-install --md5 02b7
 It's also possible to download a copy of this repository, and refer to the template file via a file path:
 
 ~~~ bash
-RAILS_TEMPLATE='/home/booch/projects/rails-template/rails-template.rb'
+RAILS_TEMPLATE="$HOME/Work/Projects/rails-template/rails-template.rb"
 ~~~
 
 
