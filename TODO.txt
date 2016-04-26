@@ -1,6 +1,7 @@
 SOON
 ====
 
+* Add a RuboCop config file.
 * Disable Turbolinks. (See http://blog.steveklabnik.com/posts/2013-06-25-removing-turbolinks-from-rails-4)
 * Add SimpleForm or Formtastic.
 * Add JS classes to HTML tag.
