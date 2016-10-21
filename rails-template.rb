@@ -369,7 +369,7 @@ gsub_file 'config/initializers/site_config.rb', /^JQUERY_VERSION =.*$/, "JQUERY_
 
 
 # Check to make sure Ruby garbage collection settings have been tuned.
-copy_file 'config/initializers/check_gc.rb'
+#copy_file 'config/initializers/check_gc.rb'
 
 
 # Add some parameters to filter from logging.
