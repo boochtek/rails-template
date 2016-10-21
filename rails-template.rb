@@ -251,7 +251,7 @@ after_bundle do
 end
 
 # Slim templating system.
-gem 'slim-rails', '~> 2.1'
+gem 'slim-rails', '~> 3.1'
 
 # HAML templating system.
 gem 'haml', '~> 4.0'
