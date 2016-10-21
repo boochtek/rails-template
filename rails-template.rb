@@ -161,8 +161,8 @@ end
 
 
 ## Testing frameworks.
-gem 'rspec',              '~> 3.1',   groups: ['development', 'test']
-gem 'rspec-rails',        '~> 3.1',   groups: ['development', 'test']
+gem 'rspec',              '~> 3.5',   groups: ['development', 'test']
+gem 'rspec-rails',        '~> 3.5',   groups: ['development', 'test']
 gem 'bogus',              '~> 0.1.5', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
 gem 'database_cleaner',   '~> 1.3',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
