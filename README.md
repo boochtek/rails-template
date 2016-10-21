@@ -25,7 +25,7 @@ RAILS_TEMPLATE='https://raw.githubusercontent.com/boochtek/rails-template/master
 chruby $RUBY_VERSION
 gem install rake bundler # You might want to install some utilities as well, such as pry, awesome_print, hirb, and wirble.
 gem install railties --version $RAILS_VERSION --prerelease
-rails "_${RAILS_VERSION}_" new $APP_NAME --template $RAILS_TEMPLATE --database=postgresql --skip-test-unit
+rails "_${RAILS_VERSION}_" new $APP_NAME --template $RAILS_TEMPLATE --database=postgresql --skip-test-unit --skip-action-cable
 ~~~
 
 Note that you might have some problems installing newer versions of Ruby.
