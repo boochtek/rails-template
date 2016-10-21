@@ -155,7 +155,7 @@ gsub_file 'config/database.yml', 'APP_NAME', @app_name
 
 if ACTIVE_RECORD
   # Use the Bullet gem to alert developers of unoptimized SQL queries.
-  gem 'bullet', '~> 4.14', groups: [:development, :test]
+  gem 'bullet', '~> 5.4', groups: [:development, :test]
   copy_file 'config/initializers/bullet.rb'
 end
 
