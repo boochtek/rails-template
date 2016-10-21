@@ -19,8 +19,8 @@ Usage
 
 ~~~ bash
 APP_NAME='name_of_your_new_rails_app'
-RUBY_VERSION='2.1.3'
-RAILS_VERSION='4.2.0.beta2'
+RUBY_VERSION='2.3.1'
+RAILS_VERSION='5.0.0.1'
 RAILS_TEMPLATE='https://raw.githubusercontent.com/boochtek/rails-template/master/rails-template.rb'
 chruby $RUBY_VERSION
 gem install rake bundler # You might want to install some utilities as well, such as pry, awesome_print, hirb, and wirble.

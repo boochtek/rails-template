@@ -96,14 +96,14 @@ git :init
 
 
 # Specify the version of Ruby we want to use. (Should work with RVM, rbenv, and chruby.)
-create_file '.ruby-version', '2.1.3'
+create_file '.ruby-version', '2.3.1'
 
 
 ## Heroku
 
 # Heroku needs the Ruby version specified in the Gemfile.
 after_bundle do
-  inject_into_file "Gemfile", "ruby '2.1.3'\n", before: "source 'https://rubygems.org'"
+  inject_into_file "Gemfile", "ruby '2.3.1'\n", before: "source 'https://rubygems.org'"
 end
 
 # Log to stdout and serve static assets.
@@ -467,7 +467,6 @@ features/rerun.txt
 public/javascripts/*_[0-9]*.js
 public/stylesheets/*_[0-9]*.css
 public/attachments/*
-bin/*
 .bundle/config
 .env*
 END
@@ -495,5 +494,5 @@ after_bundle do
 end
 
 after_bundle do
-  readme('NEXT_STEPS.txt')
+  readme 'NEXT_STEPS.txt'
 end
