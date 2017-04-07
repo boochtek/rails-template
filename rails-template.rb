@@ -3,7 +3,7 @@
 # Rails template. Loads RSpec, Cucumber, HAML, Sass, Slim, jQuery, etc.
 # In many ways, this is a collection of my personal knowledge, opinions, and best practices regarding Rails.
 
-# Copyright 2008,2009,2013,2014 by BoochTek, LLC.
+# Copyright 2008,2009,2013,2014,2016 by BoochTek, LLC.
 # Originally written by Craig Buchek.
 # Released under MIT license (same as Ruby on Rails).
 
@@ -11,6 +11,12 @@
 # Got some of these ideas and code from other templates, including:
 #   * http://github.com/jeremymcanally/rails-templates/
 #   * http://github.com/ffmike/BigOldRailsTemplate/
+
+
+# Rails 5 requires Ruby 2.2.2 or newer. Make sure we meet that requirement.
+if (RUBY_VERSION.split('.').map(&:to_i) <=> [2,2,2]) == -1
+  raise 'Rails 5 requires Ruby 2.2.2 or newer.'
+end
 
 
 ## Get user input, via environment variables or prompting the user.
