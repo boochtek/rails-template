@@ -163,6 +163,7 @@ end
 ## Testing frameworks.
 gem 'rspec',              '~> 3.5',   groups: ['development', 'test']
 gem 'rspec-rails',        '~> 3.5',   groups: ['development', 'test']
+gem 'guard-rspec'         '~> 4.7',   groups: ['development', 'test'], require: false
 gem 'bogus',              '~> 0.1.5', groups: ['test'] # Ensures that we don't stub/mock methods that don't exist.
 gem 'database_cleaner',   '~> 1.3',   groups: ['test']
 gem 'cucumber',           '~> 1.3',   groups: ['development', 'test']
@@ -198,6 +199,10 @@ after_bundle do
   # Allow use of FactoryGirl factories in Cucumber.
   copy_file 'features/support/factory_girl.rb'
   empty_directory 'spec/factories'
+
+  # Set up Guard for Rails
+  run 'bundle exec guard init rspec'
+  copy_file 'Guardfile'
 end
 
 
