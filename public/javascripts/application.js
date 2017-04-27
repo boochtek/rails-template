@@ -1,4 +1,4 @@
-// These will be used to add more classes to the HTML or BODY tag for cases where we need to make special-case CSS rules.
+// These will be used to add more classes to the HTML element for cases where we need to make special-case CSS rules.
 // TODO: These should be moved out of the global namespace.
 var isAndroid = /Android/.test(navigator.userAgent);
 var isIOS = /iP(?:ad|hone|od)/.test(navigator.userAgent);
@@ -22,7 +22,7 @@ var primaryModifierKey = isMac ? 'meta' : 'ctrl';
 
 
 // Allow CSS to easily determine whether we're running with JavaScript enabled or not.
-jQuery('body').addClass('hasJS'); // Considered adding the class to HEAD, but while the DOM supports it, the HTML spec doesn't allow className on HEAD.
+jQuery('html').addClass('hasJS');
 
 // This section will run after all the DOM is loaded (i.e. all elements) but right before they're displayed, and before all the images and such are loaded.
 jQuery(document).ready(function(){
