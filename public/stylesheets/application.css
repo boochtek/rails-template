@@ -97,7 +97,7 @@ table.wide { width: 100%; }
 /* Give the tables and cells some borders. */
 /* NOTE: You can't easily override the cell borders for the entire table, unless you make the table borders thicker. */  
 table td, table th { border: 1px solid #888; }
-table { border: 2px solid #666; }
+table { border-collapse: collapse; border: 2px solid #666; }
 table thead { border-bottom: 2px solid #666; }
 
 /* Left-align header cells. */
