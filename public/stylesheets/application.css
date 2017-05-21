@@ -1,3 +1,29 @@
+/* TODO: Split this into separate files for each section. Name it `boochtek.css` or something else. Make it its own repo.
+
+/*
+** HTML 5
+*/
+
+/* Make sure these HTML 5 elements get styled properly when they're not supported. */
+/* These should be covered by normalize.css or HTML5 Shiv, but those may be lagging on some of the newer elements. */
+article, aside, audio, canvas, details, dialog, figcaption, figure, footer, header, hgroup, main, section, summary, video { display: block; }
+data, meter, output, progress, time, svg { display: inline; }
+datalist, dialog, source, template, track { display: none; } /* Not sure if DATALIST, SOURCE, and TRACK should be here; they have no content. */
+nav, picture, slot { display: inherit; } /* Not sure if this is right, but I think it is. */
+dialog[open] { display: block; }
+/* I considered adding `details summary~* {display: none}`, but users would need a way to reveal the full details. */
+dialog {
+    /* I don't like these, but it's cool that you can do them. */
+    filter: opacity(0.7) drop-shadow(5px 5px 2px black);
+    -webkit-filter: opacity(0.7) drop-shadow(5px 5px 2px black);
+}
+/* The latter is for dialog-polyfill. */
+dialog::backdrop, dialog + backdrop {
+    -webkit-filter: grayscale(0.5) blur(2px) brightness(50%);
+    filter: grayscale(0.5) blur(2px) brightness(50%);
+}
+
+
 /*
 ** LAYOUT
 */
